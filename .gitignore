@@ -1,0 +1,4 @@
+data/odoo/.local/
+data/odoo/*
+data/odoo/*
+\!data/odoo/.gitkeep
