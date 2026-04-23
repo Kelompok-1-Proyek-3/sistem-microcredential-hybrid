@@ -6,13 +6,13 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      - ./data/odoo:/var/lib/odoo
+      - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
     environment:
-      - DB_HOST=db
-      - DB_USER=odoo
-      - DB_PASSWORD=!password123
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=!password123
 
   db:
     image: postgres:14
@@ -27,4 +27,5 @@ services:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
 
 volumes:
+  odoo-web-data:
   odoo-db-data:
