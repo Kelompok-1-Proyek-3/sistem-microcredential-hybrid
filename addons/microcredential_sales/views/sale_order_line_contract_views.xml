@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Extend form view sale.order → order_line inline tree:
+         Tambahkan kolom course_id, student_count, redeem_code_count,
+         redeem_code_expiry_days di dalam tab Order Lines.
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="sale_order_line_contract_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.line.contract.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Tambahkan kolom B2B sebelum product_uom_qty di order line tree -->
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']"
+                   position="before">
+                <field name="course_id" optional="show"
+                       string="Kursus"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="student_count" optional="show"
+                       string="Jml Student"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="redeem_code_count" optional="show"
+                       string="Jml Redeem Code"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="redeem_code_expiry_days" optional="hide"
+                       string="Masa Berlaku (hari)"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+            </xpath>
+
+            <!-- Tambahkan field catatan redeem code di dialog form order line -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']"
+                   position="after">
+                <field name="course_id"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="student_count"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="redeem_code_count"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="redeem_code_expiry_days"
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+                <field name="redeem_code_notes"
+                       placeholder="Instruksi distribusi redeem code untuk HR..."
+                       attrs="{'invisible': [('order_id.contract_type', '!=', 'B2B_CONTRACT')]}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
