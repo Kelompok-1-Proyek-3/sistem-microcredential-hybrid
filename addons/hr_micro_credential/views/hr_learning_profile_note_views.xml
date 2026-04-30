@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ============================
+         Learning Profile Note - List View
+    ============================ -->
+    <record id="hr_learning_profile_note_view_list" model="ir.ui.view">
+        <field name="name">hr.learning.profile.note.list</field>
+        <field name="model">hr.learning.profile.note</field>
+        <field name="arch" type="xml">
+            <list string="Learning Notes" editable="bottom">
+                <field name="employee_id"/>
+                <field name="note_date"/>
+                <field name="note_text"/>
+                <field name="created_by" readonly="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================
+         Learning Profile Note - Form View
+    ============================ -->
+    <record id="hr_learning_profile_note_view_form" model="ir.ui.view">
+        <field name="name">hr.learning.profile.note.form</field>
+        <field name="model">hr.learning.profile.note</field>
+        <field name="arch" type="xml">
+            <form string="Learning Note">
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="note_date"/>
+                        <field name="created_by" readonly="1"/>
+                    </group>
+                    <group string="Note">
+                        <field name="note_text" nolabel="1" placeholder="Add private HR note about learning performance..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================
+         Learning Profile Note - Action
+    ============================ -->
+    <record id="hr_learning_profile_note_action" model="ir.actions.act_window">
+        <field name="name">Learning Notes</field>
+        <field name="res_model">hr.learning.profile.note</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

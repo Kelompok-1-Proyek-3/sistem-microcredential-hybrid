@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ============================
+         Cron: Sync Learning Progress (every 5 minutes)
+    ============================ -->
+    <record id="ir_cron_sync_learning_progress" model="ir.cron">
+        <field name="name">HR Microcredential: Sync Learning Progress from eLearning</field>
+        <field name="model_id" ref="model_hr_learning_progress"/>
+        <field name="state">code</field>
+        <field name="code">model._sync_learning_progress_from_elearning()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- ============================
+         Cron: Generate Daily Analytics Snapshot (once daily)
+    ============================ -->
+    <record id="ir_cron_generate_analytics_snapshot" model="ir.cron">
+        <field name="name">HR Microcredential: Generate Daily Analytics Snapshot</field>
+        <field name="model_id" ref="model_hr_learning_analytics_snapshot"/>
+        <field name="state">code</field>
+        <field name="code">model._generate_daily_snapshot()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

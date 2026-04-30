@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ============================
+         Extend Employee Form: Add Learning Tab
+    ============================ -->
+    <record id="hr_employee_view_form_inherit_micro_credential" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.micro.credential</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <!-- Learning Progress Tab -->
+                <page string="Learning &amp; Development" name="learning_development">
+                    <group string="Learning Statistics">
+                        <group>
+                            <field name="active_course_count"/>
+                            <field name="completed_course_count"/>
+                        </group>
+                        <group>
+                            <field name="at_risk_course_count"
+                                   decoration-danger="at_risk_course_count > 0"/>
+                        </group>
+                    </group>
+                    <field name="learning_progress_ids" readonly="1">
+                        <list>
+                            <field name="course_name"/>
+                            <field name="learning_mode" widget="badge"/>
+                            <field name="completion_percentage" widget="progressbar"/>
+                            <field name="attendance_status" widget="badge"
+                                   invisible="learning_mode != 'HYBRID'"/>
+                            <field name="quiz_score"/>
+                            <field name="status" widget="badge"
+                                   decoration-info="status == 'IN_PROGRESS'"
+                                   decoration-success="status == 'COMPLETED'"
+                                   decoration-danger="status == 'AT_RISK'"/>
+                            <field name="last_accessed_date"/>
+                        </list>
+                    </field>
+
+                    <!-- Skill Mapping Log -->
+                    <group string="Skill Change History">
+                        <field name="skill_mapping_log_ids" nolabel="1" readonly="1">
+                            <list>
+                                <field name="skill_id"/>
+                                <field name="course_name"/>
+                                <field name="skill_level_before"/>
+                                <field name="skill_level_after"/>
+                                <field name="change_date"/>
+                            </list>
+                        </field>
+                    </group>
+
+                    <!-- Private HR Notes -->
+                    <group string="HR Notes (Private)">
+                        <field name="learning_note_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="note_date"/>
+                                <field name="note_text"/>
+                                <field name="created_by" readonly="1"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
