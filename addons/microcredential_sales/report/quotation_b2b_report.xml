@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Daftarkan action report PDF Quotation B2B
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="action_report_b2b_quotation" model="ir.actions.report">
+        <field name="name">Quotation B2B Microcredential</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">microcredential_sales.report_b2b_quotation_document</field>
+        <field name="report_file">microcredential_sales.report_b2b_quotation_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         QWeb Template PDF
+    ──────────────────────────────────────────────────────────────────────── -->
+    <template id="report_b2b_quotation_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Penawaran Kontrak B2B Microcredential</h2>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <strong>Nomor:</strong> <t t-out="doc.name"/><br/>
+                                <strong>Customer:</strong> <t t-out="doc.partner_id.name"/><br/>
+                                <strong>Tipe Kontrak:</strong>
+                                    <t t-out="dict(doc.fields_get(['contract_type'])
+                                        ['contract_type']['selection']).get(doc.contract_type, '-')"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Berlaku Hingga:</strong> <t t-out="doc.validity_date"/><br/>
+                                <strong>Periode Akses Kursus:</strong>
+                                    <t t-out="doc.course_access_duration_days"/> hari<br/>
+                                <strong>Mulai Kontrak:</strong>
+                                    <t t-out="doc.contract_start_date or '-'"/>
+                                    s/d <t t-out="doc.contract_end_date or '-'"/>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Tabel Kursus & Harga -->
+                        <table class="table table-sm mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Kursus</th>
+                                    <th>Mode</th>
+                                    <th>Jumlah Student</th>
+                                    <th>Harga Satuan (IDR)</th>
+                                    <th>Subtotal (IDR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <t t-out="line.product_id.name"/>
+                                            <t t-if="line.course_id">
+                                                <br/>
+                                                <small class="text-muted">
+                                                    (<t t-out="line.course_id.name"/>)
+                                                </small>
+                                            </t>
+                                        </td>
+                                        <td><t t-out="line.learning_mode or '-'"/></td>
+                                        <td><t t-out="line.student_count"/></td>
+                                        <td>
+                                            <t t-out="'{:,.0f}'.format(line.price_unit)"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="'{:,.0f}'.format(line.price_subtotal)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Tampilkan ringkasan jadwal hybrid jika ada -->
+                                    <t t-if="line.learning_mode == 'HYBRID' and line.hybrid_session_summary">
+                                        <tr>
+                                            <td colspan="5" class="text-muted">
+                                                <small>
+                                                    <em>Jadwal Sesi Hybrid:
+                                                        <t t-out="line.hybrid_session_summary"/>
+                                                    </em>
+                                                </small>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- Tampilkan catatan redeem code jika ada -->
+                                    <t t-if="line.redeem_code_notes">
+                                        <tr>
+                                            <td colspan="5" class="text-muted">
+                                                <small>
+                                                    Catatan: <t t-out="line.redeem_code_notes"/>
+                                                </small>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Total -->
+                        <div class="row">
+                            <div class="col-6 offset-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>Subtotal</td>
+                                        <td class="text-right">
+                                            <t t-out="'{:,.0f}'.format(doc.amount_untaxed)"/> IDR
+                                        </td>
+                                    </tr>
+                                    <t t-if="doc.amount_tax">
+                                        <tr>
+                                            <td>Pajak</td>
+                                            <td class="text-right">
+                                                <t t-out="'{:,.0f}'.format(doc.amount_tax)"/> IDR
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <strong>
+                                                <t t-out="'{:,.0f}'.format(doc.amount_total)"/> IDR
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Syarat & Ketentuan -->
+                        <div class="mt-5">
+                            <p>
+                                <em>
+                                    Dokumen ini merupakan penawaran resmi dari IMPC.
+                                    Dengan menandatangani, kedua pihak setuju dengan syarat
+                                    dan ketentuan yang berlaku.
+                                </em>
+                            </p>
+                            <div class="row mt-5">
+                                <div class="col-6 text-center">
+                                    <p>___________________________</p>
+                                    <p>Tim Sales IMPC</p>
+                                    <p class="text-muted">
+                                        <small>Tanggal: _________________</small>
+                                    </p>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <p>___________________________</p>
+                                    <p><t t-out="doc.partner_id.name"/></p>
+                                    <p class="text-muted">
+                                        <small>Tanggal: _________________</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Template: Quotation B2B
+         Dikirim saat Sales menekan tombol "Kirim Quotation ke Customer"
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="email_template_b2b_quotation" model="mail.template">
+        <field name="name">B2B Quotation – IMPC Microcredential</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Penawaran Paket Microcredential – {{ object.name }}</field>
+        <field name="body_html" type="html">
+            <p>Yth. <t t-out="object.partner_id.name"/>,</p>
+            <p>Berikut kami sampaikan penawaran paket Microcredential IMPC untuk perusahaan Anda.</p>
+            <p>Nomor Quotation: <strong><t t-out="object.name"/></strong></p>
+            <p>Nilai Total: <strong><t t-out="object.amount_total"/> IDR</strong></p>
+            <p>Berlaku hingga: <t t-out="object.validity_date"/></p>
+            <p>Silakan hubungi tim Sales kami untuk konfirmasi lebih lanjut.</p>
+            <p>Salam,<br/>Tim Sales IMPC</p>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Template: Contract Confirmation
+         Dikirim otomatis saat kontrak B2B dikonfirmasi (action_confirm)
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="email_template_b2b_confirmation" model="mail.template">
+        <field name="name">B2B Contract Confirmation – IMPC</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Konfirmasi Kontrak Microcredential – {{ object.name }}</field>
+        <field name="body_html" type="html">
+            <p>Yth. <t t-out="object.partner_id.name"/>,</p>
+            <p>Kontrak B2B Microcredential IMPC Anda telah <strong>dikonfirmasi</strong>.</p>
+            <p>Nomor Kontrak: <strong><t t-out="object.name"/></strong></p>
+            <p>
+                Periode Akses:
+                <t t-out="object.contract_start_date"/> s/d
+                <t t-out="object.contract_end_date"/>
+            </p>
+            <!-- Tampilkan jadwal sesi hybrid jika ada -->
+            <t t-if="object.order_line.filtered(lambda l: l.learning_mode == 'HYBRID')">
+                <p><strong>Informasi Sesi Tatap Muka (Hybrid):</strong></p>
+                <t t-foreach="object.order_line.filtered(lambda l: l.learning_mode == 'HYBRID')"
+                   t-as="line">
+                    <p>
+                        &#8226; Kursus: <t t-out="line.course_id.name"/>
+                        — <t t-out="line.hybrid_session_summary"/>
+                    </p>
+                </t>
+                <p><em>Instruksi check-in akan dikirimkan terpisah melalui e-ticket.</em></p>
+            </t>
+            <p>Redeem code akan dikirimkan dalam lampiran terpisah oleh tim kami.</p>
+            <p>Salam,<br/>Tim Sales IMPC</p>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Extend form view sale.order:
+         - Tambahkan tab "B2B Contract" dengan semua field kontrak
+         - Tambahkan tombol-tombol workflow approval dan contract status
+         - Tambahkan field contract_type di area header form
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="sale_order_contract_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.contract.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Tambahkan field contract_type setelah partner_id di header -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="contract_type" widget="radio" class="oe_inline"/>
+            </xpath>
+
+            <!-- Tambahkan tab B2B Contract di dalam notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="B2B Contract"
+                      attrs="{'invisible': [('contract_type', '!=', 'B2B_CONTRACT')]}">
+
+                    <!-- Tombol Workflow Approval & Status -->
+                    <div class="o_field_widget mb-3">
+                        <button name="action_request_approval"
+                                string="Kirim untuk Persetujuan"
+                                type="object"
+                                class="btn btn-primary"
+                                attrs="{'invisible': [('approval_state', '!=', 'draft')]}"/>
+
+                        <button name="action_approve_contract"
+                                string="Setujui Kontrak"
+                                type="object"
+                                class="btn btn-success ms-1"
+                                groups="sales_team.group_sale_manager"
+                                attrs="{'invisible': [('approval_state', '!=', 'waiting_approval')]}"/>
+
+                        <button name="action_reject_contract"
+                                string="Tolak"
+                                type="object"
+                                class="btn btn-danger ms-1"
+                                groups="sales_team.group_sale_manager"
+                                attrs="{'invisible': [('approval_state', 'not in', ['waiting_approval'])]}"/>
+
+                        <button name="action_send_quotation"
+                                string="Kirim Quotation ke Customer"
+                                type="object"
+                                class="btn btn-info ms-1"
+                                attrs="{'invisible': [('approval_state', '!=', 'approved')]}"/>
+
+                        <button name="action_customer_approved"
+                                string="Customer Setuju"
+                                type="object"
+                                class="btn btn-secondary ms-1"
+                                attrs="{'invisible': [('contract_status', '!=', 'quotation_sent')]}"/>
+
+                        <button name="action_set_ongoing"
+                                string="Set Berjalan"
+                                type="object"
+                                class="btn btn-warning ms-1"
+                                attrs="{'invisible': [('contract_status', '!=', 'confirmed')]}"/>
+
+                        <button name="action_complete_contract"
+                                string="Selesaikan Kontrak"
+                                type="object"
+                                class="btn btn-secondary ms-1"
+                                attrs="{'invisible': [('contract_status', '!=', 'ongoing')]}"/>
+                    </div>
+
+                    <group>
+                        <group string="Informasi Kontrak">
+                            <field name="contract_type" widget="radio"/>
+                            <field name="partner_type"/>
+                            <field name="contract_start_date"/>
+                            <field name="contract_end_date"/>
+                            <field name="course_access_duration_days"/>
+                        </group>
+                        <group string="Status">
+                            <field name="approval_state" readonly="1"/>
+                            <field name="contract_status"/>
+                            <field name="approved_by" readonly="1"/>
+                            <field name="approved_date" readonly="1"/>
+                            <field name="is_b2b_contract" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Tree view: tambahkan kolom contract_type dan contract_status
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="sale_order_contract_tree_inherit" model="ir.ui.view">
+        <field name="name">sale.order.contract.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="contract_type" optional="show"/>
+                <field name="contract_status" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         Search view: tambahkan filter untuk kontrak B2B
+    ──────────────────────────────────────────────────────────────────────── -->
+    <record id="sale_order_contract_search_inherit" model="ir.ui.view">
+        <field name="name">sale.order.contract.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator/>
+                <filter name="filter_b2b"
+                        string="Hanya Kontrak B2B"
+                        domain="[('contract_type', '=', 'B2B_CONTRACT')]"/>
+                <filter name="filter_b2b_pending_approval"
+                        string="Menunggu Persetujuan"
+                        domain="[
+                            ('contract_type', '=', 'B2B_CONTRACT'),
+                            ('approval_state', '=', 'waiting_approval')
+                        ]"/>
+                <filter name="filter_b2b_ongoing"
+                        string="Kontrak Sedang Berjalan"
+                        domain="[
+                            ('contract_type', '=', 'B2B_CONTRACT'),
+                            ('contract_status', '=', 'ongoing')
+                        ]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter name="group_by_contract_status"
+                        string="Status Kontrak B2B"
+                        context="{'group_by': 'contract_status'}"/>
+                <filter name="group_by_contract_type"
+                        string="Tipe Kontrak"
+                        context="{'group_by': 'contract_type'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
