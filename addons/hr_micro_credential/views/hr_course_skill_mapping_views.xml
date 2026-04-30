@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ============================
+         Course Skill Mapping - List View
+    ============================ -->
+    <record id="hr_course_skill_mapping_view_list" model="ir.ui.view">
+        <field name="name">hr.course.skill.mapping.list</field>
+        <field name="model">hr.course.skill.mapping</field>
+        <field name="arch" type="xml">
+            <list string="Course → Skill Mapping" editable="bottom">
+                <field name="course_id"/>
+                <field name="course_name"/>
+                <field name="skill_id"/>
+                <field name="skill_level" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================
+         Course Skill Mapping - Form View
+    ============================ -->
+    <record id="hr_course_skill_mapping_view_form" model="ir.ui.view">
+        <field name="name">hr.course.skill.mapping.form</field>
+        <field name="model">hr.course.skill.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Course Skill Mapping">
+                <sheet>
+                    <group>
+                        <group string="Course (eLearning)">
+                            <field name="course_id"/>
+                            <field name="course_name"/>
+                        </group>
+                        <group string="Skill Mapping">
+                            <field name="skill_id"/>
+                            <field name="skill_level"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================
+         Course Skill Mapping - Action
+    ============================ -->
+    <record id="hr_course_skill_mapping_action" model="ir.actions.act_window">
+        <field name="name">Course → Skill Mapping</field>
+        <field name="res_model">hr.course.skill.mapping</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define skill mappings for courses
+            </p>
+            <p>
+                Map each eLearning course to the skills it teaches. When an employee
+                completes a course and receives a certificate, these skills will be
+                automatically added to their profile.
+            </p>
+        </field>
+    </record>
+</odoo>
