@@ -11,28 +11,11 @@
                 <field name="department_id"/>
                 <field name="snapshot_date"/>
                 <field name="total_employees_in_learning"/>
-                <field name="avg_completion_percentage" widget="progressbar"/>
+                <field name="avg_completion_percentage"/>
                 <field name="total_certificates_this_period"/>
                 <field name="completion_rate"/>
-                <field name="at_risk_count"
-                       decoration-danger="at_risk_count > 0"/>
+                <field name="at_risk_count"/>
             </list>
-        </field>
-    </record>
-
-    <!-- ============================
-         Learning Analytics Snapshot - Pivot View
-    ============================ -->
-    <record id="hr_learning_analytics_view_pivot" model="ir.ui.view">
-        <field name="name">hr.learning.analytics.snapshot.pivot</field>
-        <field name="model">hr.learning.analytics.snapshot</field>
-        <field name="arch" type="xml">
-            <pivot string="Learning Analytics">
-                <field name="department_id" type="row"/>
-                <field name="snapshot_date" type="col" interval="month"/>
-                <field name="avg_completion_percentage" type="measure"/>
-                <field name="total_certificates_this_period" type="measure"/>
-            </pivot>
         </field>
     </record>
 
@@ -60,12 +43,8 @@
             <search string="Search Analytics">
                 <field name="department_id"/>
                 <field name="snapshot_date"/>
-                <group expand="0" string="Group By">
-                    <filter name="group_department" string="Department"
-                            context="{'group_by': 'department_id'}"/>
-                    <filter name="group_month" string="Month"
-                            context="{'group_by': 'snapshot_date:month'}"/>
-                </group>
+                <filter string="Department" name="group_department" domain="[]" context="{'group_by': 'department_id'}"/>
+                <filter string="Month" name="group_month" domain="[]" context="{'group_by': 'snapshot_date:month'}"/>
             </search>
         </field>
     </record>
@@ -76,15 +55,11 @@
     <record id="hr_learning_analytics_action" model="ir.actions.act_window">
         <field name="name">Learning Analytics</field>
         <field name="res_model">hr.learning.analytics.snapshot</field>
-        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_mode">graph,list</field>
         <field name="search_view_id" ref="hr_learning_analytics_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No analytics data yet
-            </p>
-            <p>
-                Analytics snapshots are generated daily. Once learning progress
-                data is available, analytics will be computed automatically.
             </p>
         </field>
     </record>

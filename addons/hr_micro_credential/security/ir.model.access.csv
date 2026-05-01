@@ -1,11 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_learning_progress_user,hr.learning.progress.user,model_hr_learning_progress,group_hr_micro_credential_user,1,0,0,0
+access_hr_learning_progress_hr_user,hr.learning.progress.hr.user,model_hr_learning_progress,hr.group_hr_user,1,0,0,0
 access_hr_learning_progress_manager,hr.learning.progress.manager,model_hr_learning_progress,group_hr_micro_credential_manager,1,1,1,1
-access_hr_learning_profile_note_user,hr.learning.profile.note.user,model_hr_learning_profile_note,group_hr_micro_credential_user,1,1,1,1
+access_hr_learning_profile_note_hr_user,hr.learning.profile.note.hr.user,model_hr_learning_profile_note,hr.group_hr_user,1,1,1,1
 access_hr_learning_profile_note_manager,hr.learning.profile.note.manager,model_hr_learning_profile_note,group_hr_micro_credential_manager,1,1,1,1
-access_hr_learning_analytics_user,hr.learning.analytics.snapshot.user,model_hr_learning_analytics_snapshot,group_hr_micro_credential_user,1,0,0,0
+access_hr_learning_analytics_hr_user,hr.learning.analytics.snapshot.hr.user,model_hr_learning_analytics_snapshot,hr.group_hr_user,1,0,0,0
 access_hr_learning_analytics_manager,hr.learning.analytics.snapshot.manager,model_hr_learning_analytics_snapshot,group_hr_micro_credential_manager,1,1,1,1
-access_hr_course_skill_mapping_user,hr.course.skill.mapping.user,model_hr_course_skill_mapping,group_hr_micro_credential_user,1,0,0,0
+access_hr_course_skill_mapping_hr_user,hr.course.skill.mapping.hr.user,model_hr_course_skill_mapping,hr.group_hr_user,1,0,0,0
 access_hr_course_skill_mapping_manager,hr.course.skill.mapping.manager,model_hr_course_skill_mapping,group_hr_micro_credential_manager,1,1,1,1
-access_hr_skill_mapping_log_user,hr.skill.mapping.log.user,model_hr_skill_mapping_log,group_hr_micro_credential_user,1,0,0,0
+access_hr_skill_mapping_log_hr_user,hr.skill.mapping.log.hr.user,model_hr_skill_mapping_log,hr.group_hr_user,1,0,0,0
 access_hr_skill_mapping_log_manager,hr.skill.mapping.log.manager,model_hr_skill_mapping_log,group_hr_micro_credential_manager,1,1,1,1
