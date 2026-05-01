@@ -48,7 +48,7 @@ Fitur utama:
     ],
     'installable': True,
     'auto_install': False,
-    'application': False,
+    'application': True,
     'assets': {
         'web.assets_backend': [
             'hr_micro_credential/static/src/**/*',
