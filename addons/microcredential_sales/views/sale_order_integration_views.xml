@@ -3,3 +3,86 @@
 <!-- Owner: Dev 2 — Integration & API Layer -->
 <!-- TODO: Dev 2 mengisi file ini -->
 <odoo/>
+
+<!-- views/sale_order_integration_views.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend order line: tambahkan kolom mode pembelajaran -->
+    <record id="sale_order_line_integration_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.line.integration.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Tambahkan kolom Learning Mode di order lines tree -->
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+                <field name="course_id" optional="show"/>
+                <field name="learning_mode" optional="show" readonly="1"/>
+                <field name="student_count" optional="show"
+                       attrs="{'invisible': [('order_id.contract_type','!=','B2B_CONTRACT')]}"/>
+                <field name="redeem_code_count" optional="show"
+                       attrs="{'invisible': [('order_id.contract_type','!=','B2B_CONTRACT')]}"/>
+            </xpath>
+
+            <!-- Tambahkan panel Redeem Code Status di footer -->
+            <xpath expr="//div[@name='oe_optional_fields']" position="after">
+                <div attrs="{'invisible': [('contract_type','!=','B2B_CONTRACT')]}">
+                    <separator string="Status Redeem Code"/>
+                    <group>
+                        <group>
+                            <field name="redeem_code_batch_status" readonly="1"/>
+                            <field name="redeem_code_batch_id" readonly="1"/>
+                            <field name="redeem_codes_requested_at" readonly="1"/>
+                            <field name="redeem_codes_generated_at" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="redeem_code_csv_url" readonly="1" widget="url"/>
+                        </group>
+                    </group>
+                    <div>
+                        <button name="action_open_redeem_code_wizard"
+                                string="Generate / Retry Redeem Code"
+                                type="object"
+                                class="btn-warning"
+                                attrs="{'invisible': [('redeem_code_batch_status','=','GENERATED')]}"/>
+                    </div>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List view untuk Audit Log -->
+    <record id="redeem_code_log_tree" model="ir.ui.view">
+        <field name="name">redeem.code.request.log.tree</field>
+        <field name="model">redeem.code.request.log</field>
+        <field name="arch" type="xml">
+            <tree string="Log Redeem Code" decoration-success="status=='SUCCESS'" decoration-danger="status=='FAILED'">
+                <field name="sale_order_id"/>
+                <field name="course_id"/>
+                <field name="quantity_requested"/>
+                <field name="status"/>
+                <field name="batch_id"/>
+                <field name="requested_at"/>
+                <field name="completed_at"/>
+                <field name="error_message"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action untuk Audit Log -->
+    <record id="action_redeem_code_log" model="ir.actions.act_window">
+        <field name="name">Log Redeem Code</field>
+        <field name="res_model">redeem.code.request.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item di Sales -->
+    <menuitem id="menu_redeem_code_log"
+              name="Log Redeem Code"
+              parent="sale.sale_order_menu_root"
+              action="action_redeem_code_log"
+              sequence="50"/>
+
+</odoo> 
