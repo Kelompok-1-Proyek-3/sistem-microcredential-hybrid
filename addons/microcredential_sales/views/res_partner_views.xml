@@ -1,5 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!-- views/res_partner_views.xml -->
 <!-- Owner: Dev 3 — CRM, Portal & Dashboard -->
 <!-- TODO: Dev 3 mengisi file ini -->
-<odoo/>
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_microcredential_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.microcredential.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Microcredential B2B"
+                      attrs="{'invisible': [('is_company','=',False)]}">
+                    <group>
+                        <group string="Profil Perusahaan">
+                            <field name="company_type_microcredential"/>
+                            <field name="industry_type"/>
+                            <field name="employee_count"/>
+                            <field name="training_budget_annual" widget="monetary"/>
+                        </group>
+                        <group string="Akses Portal">
+                            <field name="is_hr_partner_admin"/>
+                        </group>
+                    </group>
+                    <separator string="Kontrak B2B"/>
+                    <field name="hr_contract_ids" readonly="1">
+                        <tree>
+                            <field name="name"/>
+                            <field name="contract_status"/>
+                            <field name="contract_start_date"/>
+                            <field name="contract_end_date"/>
+                            <field name="amount_total"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
