@@ -1,8 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- views/res_partner_views.xml -->
 <!-- Owner: Dev 3 — CRM, Portal & Dashboard -->
-<!-- TODO: Dev 3 mengisi file ini -->
-
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="res_partner_microcredential_form_inherit" model="ir.ui.view">
         <field name="name">res.partner.microcredential.form.inherit</field>
@@ -11,7 +9,7 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Microcredential B2B"
-                      attrs="{'invisible': [('is_company','=',False)]}">
+                      invisible="not is_company">
                     <group>
                         <group string="Profil Perusahaan">
                             <field name="company_type_microcredential"/>
@@ -25,13 +23,13 @@
                     </group>
                     <separator string="Kontrak B2B"/>
                     <field name="hr_contract_ids" readonly="1">
-                        <tree>
+                        <list>
                             <field name="name"/>
                             <field name="contract_status"/>
                             <field name="contract_start_date"/>
                             <field name="contract_end_date"/>
                             <field name="amount_total"/>
-                        </tree>
+                        </list>
                     </field>
                 </page>
             </xpath>

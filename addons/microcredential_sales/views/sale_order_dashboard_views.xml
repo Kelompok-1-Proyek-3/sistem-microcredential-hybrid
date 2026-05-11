@@ -1,15 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- views/sale_order_dashboard_views.xml -->
 <!-- Owner: Dev 3 — CRM, Portal & Dashboard -->
-<!-- TODO: Dev 3 mengisi file ini -->
-
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
     <!-- Action untuk B2B Contract Dashboard -->
     <record id="action_b2b_contracts_dashboard" model="ir.actions.act_window">
         <field name="name">Dashboard Kontrak B2B</field>
         <field name="res_model">sale.order</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="domain">[('contract_type','=','B2B_CONTRACT')]</field>
         <field name="context">{
             'search_default_group_by_contract_status': 1
@@ -66,7 +64,7 @@
     <record id="action_renewal_pipeline" model="ir.actions.act_window">
         <field name="name">Kontrak Perlu Renewal</field>
         <field name="res_model">sale.order</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[
             ('contract_type','=','B2B_CONTRACT'),
             ('renewal_opportunity','=',True)
@@ -76,13 +74,13 @@
     <!-- Menu Sales → B2B Contracts -->
     <menuitem id="menu_b2b_dashboard"
               name="Dashboard B2B Contracts"
-              parent="sale.sale_order_menu_root"
+              parent="sale.sale_menu_root"
               action="action_b2b_contracts_dashboard"
               sequence="5"/>
 
     <menuitem id="menu_renewal_pipeline"
               name="Kontrak Perlu Renewal"
-              parent="sale.sale_order_menu_root"
+              parent="sale.sale_menu_root"
               action="action_renewal_pipeline"
               sequence="6"/>
 
