@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- views/sale_order_integration_views.xml -->
-<!-- Owner: Dev 2 — Integration & API Layer -->
-<!-- TODO: Dev 2 mengisi file ini -->
-<odoo/>
-
-<!-- views/sale_order_integration_views.xml -->
-<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner: Dev 2 — Integration &amp; API Layer -->
 <odoo>
 
     <!-- Extend order line: tambahkan kolom mode pembelajaran -->
@@ -16,18 +11,18 @@
         <field name="arch" type="xml">
 
             <!-- Tambahkan kolom Learning Mode di order lines tree -->
-            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
                 <field name="course_id" optional="show"/>
                 <field name="learning_mode" optional="show" readonly="1"/>
                 <field name="student_count" optional="show"
-                       attrs="{'invisible': [('order_id.contract_type','!=','B2B_CONTRACT')]}"/>
+                       column_invisible="parent.contract_type != 'B2B_CONTRACT'"/>
                 <field name="redeem_code_count" optional="show"
-                       attrs="{'invisible': [('order_id.contract_type','!=','B2B_CONTRACT')]}"/>
+                       column_invisible="parent.contract_type != 'B2B_CONTRACT'"/>
             </xpath>
 
-            <!-- Tambahkan panel Redeem Code Status di footer -->
-            <xpath expr="//div[@name='oe_optional_fields']" position="after">
-                <div attrs="{'invisible': [('contract_type','!=','B2B_CONTRACT')]}">
+            <!-- Tambahkan panel Redeem Code Status sebelum chatter -->
+            <xpath expr="//chatter" position="before">
+                <div invisible="contract_type != 'B2B_CONTRACT'">
                     <separator string="Status Redeem Code"/>
                     <group>
                         <group>
@@ -45,7 +40,7 @@
                                 string="Generate / Retry Redeem Code"
                                 type="object"
                                 class="btn-warning"
-                                attrs="{'invisible': [('redeem_code_batch_status','=','GENERATED')]}"/>
+                                invisible="redeem_code_batch_status == 'GENERATED'"/>
                     </div>
                 </div>
             </xpath>
@@ -58,7 +53,7 @@
         <field name="name">redeem.code.request.log.tree</field>
         <field name="model">redeem.code.request.log</field>
         <field name="arch" type="xml">
-            <tree string="Log Redeem Code" decoration-success="status=='SUCCESS'" decoration-danger="status=='FAILED'">
+            <list string="Log Redeem Code" decoration-success="status=='SUCCESS'" decoration-danger="status=='FAILED'">
                 <field name="sale_order_id"/>
                 <field name="course_id"/>
                 <field name="quantity_requested"/>
@@ -67,7 +62,7 @@
                 <field name="requested_at"/>
                 <field name="completed_at"/>
                 <field name="error_message"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -75,13 +70,13 @@
     <record id="action_redeem_code_log" model="ir.actions.act_window">
         <field name="name">Log Redeem Code</field>
         <field name="res_model">redeem.code.request.log</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Menu item di Sales -->
     <menuitem id="menu_redeem_code_log"
               name="Log Redeem Code"
-              parent="sale.sale_order_menu_root"
+              parent="sale.sale_menu_root"
               action="action_redeem_code_log"
               sequence="50"/>
 

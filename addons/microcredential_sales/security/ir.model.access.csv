@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sale_order_b2b_manager,sale.order.b2b.manager,sale.model_sale_order,sales_team.group_sale_manager,1,1,1,1
 access_sale_order_b2b_user,sale.order.b2b.user,sale.model_sale_order,base.group_user,1,0,0,0
+access_redeem_code_log_manager,redeem.code.log.manager,model_redeem_code_request_log,sales_team.group_sale_manager,1,1,1,0
+access_redeem_code_log_user,redeem.code.log.user,model_redeem_code_request_log,base.group_user,1,0,0,0
+access_redeem_code_wizard,redeem.code.wizard,model_redeem_code_wizard,sales_team.group_sale_manager,1,1,1,1
