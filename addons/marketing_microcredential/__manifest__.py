@@ -1,0 +1,27 @@
+{
+    'name': 'Marketing Microcredential',
+    'version': '19.0.1.0.0',
+    'summary': 'Marketing reports and automation for events and surveys',
+    'category': 'Marketing',
+    'author': 'IMPC',
+    'depends': [
+        'event',
+        'website_event',
+        'survey',
+        'marketing_automation',
+        'website_slides',
+        'utm',
+    ],
+    'data': [
+        'security/marketing_microcredential_groups.xml',
+        'security/ir.model.access.csv',
+        'data/ir_cron_data.xml',
+        'views/marketing_event_conversion_views.xml',
+        'views/marketing_survey_report_views.xml',
+        'views/marketing_menus.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

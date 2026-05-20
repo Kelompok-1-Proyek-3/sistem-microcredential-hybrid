@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_marketing_event_conversion_report,marketing.event.conversion.report,model_marketing_event_conversion_report,marketing_microcredential.group_marketing_microcredential_report_manager,1,1,1,0
+access_marketing_survey_report,marketing.survey.report,model_marketing_survey_report,marketing_microcredential.group_marketing_microcredential_report_manager,1,1,1,0
