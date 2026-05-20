@@ -1,6 +1,7 @@
 {
     'name': 'Microcredential Sales',
-    'version': '17.0.1.0.0',
+    'version': '19.0.1.0.0',
+    'license': 'LGPL-3',
     'category': 'Sales',
     'summary': 'B2B Contract Management untuk Platform Microcredential IMPC',
     'author': 'IMPC Dev Team',

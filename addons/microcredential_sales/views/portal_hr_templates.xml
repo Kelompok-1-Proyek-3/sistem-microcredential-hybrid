@@ -1,7 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- views/portal_hr_templates.xml -->
 <!-- Owner: Dev 3 — CRM, Portal & Dashboard -->
-<!-- TODO: Dev 3 mengisi file ini -->
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
     <!-- Halaman Daftar Kontrak -->
