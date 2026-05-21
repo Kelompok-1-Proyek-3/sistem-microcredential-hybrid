@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend Partner Form: tambahkan tab Microcredential -->
+    <record id="view_partner_form_microcredential" model="ir.ui.view">
+        <field name="name">res.partner.form.microcredential</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Microcredential B2B" name="microcredential_b2b">
+                    <group>
+                        <group string="Klasifikasi Partner">
+                            <field name="company_type_microcredential"/>
+                            <field name="industry_type"/>
+                            <!-- KOREKSI: is_hr_partner_admin ADA di res.users, bukan res.partner -->
+                            <!-- Tampilkan di form Settings → Users, bukan di partner form -->
+                        </group>
+                        <group string="Info Perusahaan">
+                            <field name="employee_count"/>
+                            <field name="training_budget_annual"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

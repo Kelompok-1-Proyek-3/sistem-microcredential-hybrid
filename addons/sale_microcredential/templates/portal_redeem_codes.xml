@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Template ini untuk menampilkan daftar redeem code (dari batch_id).
+        Data aktual kode diambil dari Website Group via API — template ini
+        hanya menampilkan metadata batch dan link download CSV.
+        Koordinasikan format response dengan Website Group.
+    -->
+    <template id="portal_redeem_codes" name="Portal: Redeem Codes">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <h3>Redeem Codes — <t t-esc="order.name"/></h3>
+
+                <div class="alert alert-info">
+                    <strong>Batch ID:</strong> <t t-esc="order.redeem_code_batch_id"/><br/>
+                    <strong>Di-generate:</strong> <t t-esc="order.redeem_codes_generated_at"/><br/>
+                    <em>Kode ditampilkan 4 karakter pertama saja untuk keamanan.</em>
+                </div>
+
+                <!-- Download CSV -->
+                <t t-if="order.redeem_codes_generated">
+                    <a t-attf-href="/api/v1/elearning/redeem-codes/download/#{order.redeem_code_batch_id}"
+                       class="btn btn-primary mb-3" target="_blank">
+                        Download CSV Redeem Codes
+                    </a>
+                </t>
+                <t t-else="">
+                    <div class="alert alert-warning">
+                        Redeem code belum di-generate. Hubungi sales manager Anda.
+                    </div>
+                </t>
+
+                <a href="/my/contracts" class="btn btn-secondary">← Kembali</a>
+            </div>
+        </t>
+    </template>
+</odoo>

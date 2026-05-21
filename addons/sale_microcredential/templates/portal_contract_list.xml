@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_contracts" name="Portal: Daftar Kontrak HR">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Kontrak B2B Saya</t>
+            </t>
+
+            <t t-if="not contracts">
+                <div class="alert alert-info">
+                    Belum ada kontrak aktif.
+                </div>
+            </t>
+
+            <t t-if="contracts">
+                <table class="table table-hover o_portal_my_doc_table">
+                    <thead>
+                        <tr>
+                            <th>No. Kontrak</th>
+                            <th>Mulai</th>
+                            <th>Berakhir</th>
+                            <th>Status Kode</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="contracts" t-as="contract">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/contracts/{{ contract.id }}">
+                                        <t t-esc="contract.name"/>
+                                    </a>
+                                </td>
+                                <td><t t-esc="contract.contract_start_date"/></td>
+                                <td><t t-esc="contract.expiry_date"/></td>
+                                <td>
+                                    <span t-attf-class="badge #{
+                                        'bg-success' if contract.redeem_code_batch_status == 'GENERATED'
+                                        else 'bg-warning' if contract.redeem_code_batch_status == 'PENDING'
+                                        else 'bg-danger'
+                                    }">
+                                        <t t-esc="contract.redeem_code_batch_status or 'N/A'"/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <t t-esc="contract.currency_id.symbol"/>
+                                    <t t-esc="'{:,.0f}'.format(contract.amount_total)"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <t t-call="portal.pager" t-value="pager"/>
+            </t>
+        </t>
+    </template>
+</odoo>
