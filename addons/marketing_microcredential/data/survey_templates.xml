@@ -211,7 +211,7 @@
             <field name="sequence">11</field>
         </record>
 
-        <record id="survey_nps_set_question" model="survey.survey">
+        <record id="survey_nps" model="survey.survey">
             <field name="nps_question_id" ref="survey_nps_question"/>
         </record>
     </data>
