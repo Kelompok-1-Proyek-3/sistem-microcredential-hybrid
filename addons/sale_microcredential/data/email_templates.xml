@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Template: Konfirmasi Kontrak B2B -->
+        <record id="email_template_b2b_contract_confirmed" model="mail.template">
+            <field name="name">B2B Contract — Konfirmasi Kontrak</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Konfirmasi Kontrak: {{ object.name }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html"><![CDATA[
+                <p>Yth. {{ object.partner_id.name }},</p>
+                <p>Kontrak <strong>{{ object.name }}</strong> telah dikonfirmasi.</p>
+                <p>Periode: {{ object.contract_start_date }} s/d {{ object.expiry_date }}</p>
+                <p>Redeem code akan dikirimkan setelah proses generate selesai.</p>
+                <p>Salam,<br/>Tim Sales IMPC</p>
+            ]]></field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- Template: Distribusi Redeem Code -->
+        <record id="email_template_redeem_code_ready" model="mail.template">
+            <field name="name">B2B Contract — Redeem Code Siap</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Redeem Code Siap: Kontrak {{ object.name }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html"><![CDATA[
+                <p>Yth. {{ object.partner_id.name }},</p>
+                <p>Redeem code untuk kontrak <strong>{{ object.name }}</strong>
+                   (Batch: {{ object.redeem_code_batch_id }}) telah siap.</p>
+                <p>Silakan unduh via portal HR Anda atau hubungi sales kami.</p>
+            ]]></field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>
