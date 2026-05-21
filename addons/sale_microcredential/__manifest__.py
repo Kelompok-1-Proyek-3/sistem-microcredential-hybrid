@@ -12,33 +12,37 @@
         'portal',
         'mail',
         'base_setup',
+        'website_slides',   # untuk slide.channel (eLearning model di Odoo 19)
     ],
     'data': [
         # Security (DEV 1) — harus di-load pertama
         'security/sale_microcredential_groups.xml',
         'security/ir.model.access.csv',
 
-        # Data & Automation (DEV 2) — uncomment saat merge DEV 2
-        # 'data/email_templates.xml',
-        # 'data/server_actions.xml',
-        # 'data/ir_cron.xml',
+        # Config Parameters
+        'data/ir_config_parameters.xml',
 
-        # Wizard Views (DEV 2) — uncomment saat merge DEV 2
-        # 'wizards/wizard_views.xml',
+        # Data & Automation (DEV 2)
+        'data/email_templates.xml',
+        'data/server_actions.xml',
+        'data/ir_cron.xml',
 
-        # Backend Views (DEV 3) — uncomment saat merge DEV 3
-        # 'views/sale_order_views.xml',
-        # 'views/res_partner_views.xml',
-        # 'views/dashboard_views.xml',
+        # Wizard Views (DEV 2)
+        'wizards/wizard_views.xml',
 
-        # Portal Templates (DEV 3) — uncomment saat merge DEV 3
-        # 'templates/portal_contract_list.xml',
-        # 'templates/portal_contract_detail.xml',
-        # 'templates/portal_redeem_codes.xml',
+        # Backend Views (DEV 3)
+        'views/sale_order_views.xml',
+        'views/res_partner_views.xml',
+        'views/dashboard_views.xml',
 
-        # Report (DEV 2 action + DEV 3 template) — uncomment saat merge
-        # 'report/sale_contract_report_action.xml',
-        # 'report/sale_contract_report_template.xml',
+        # Portal Templates (DEV 3)
+        'templates/portal_contract_list.xml',
+        'templates/portal_contract_detail.xml',
+        'templates/portal_redeem_codes.xml',
+
+        # Report
+        'report/sale_contract_report_action.xml',
+        'report/sale_contract_report_template.xml',
     ],
     'installable': True,
     'application': False,

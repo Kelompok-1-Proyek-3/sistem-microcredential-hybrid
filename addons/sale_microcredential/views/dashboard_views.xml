@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard: B2B Contract Performance -->
+    <record id="view_sale_b2b_dashboard" model="ir.ui.view">
+        <field name="name">sale.order.b2b.dashboard</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Performa Kontrak B2B">
+                <field name="partner_id" type="row"/>
+                <field name="expiry_date" type="col" interval="month"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_sale_b2b_graph" model="ir.ui.view">
+        <field name="name">sale.order.b2b.graph</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="Kontrak B2B — Revenue" type="bar">
+                <field name="partner_id" type="row"/>
+                <field name="amount_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_sale_b2b_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard Kontrak B2B</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[('contract_type', '=', 'B2B_CONTRACT')]</field>
+    </record>
+
+    <menuitem
+        id="menu_sale_b2b_dashboard"
+        name="Dashboard B2B"
+        parent="sale.sale_order_menu"
+        action="action_sale_b2b_dashboard"
+        sequence="30"/>
+</odoo>
