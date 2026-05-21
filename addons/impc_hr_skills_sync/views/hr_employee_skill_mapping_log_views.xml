@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_employee_skill_mapping_log_list" model="ir.ui.view">
+        <field name="name">hr.employee.skill.mapping.log.list</field>
+        <field name="model">hr.employee.skill_mapping_log</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="change_date"/>
+                <field name="employee_id"/>
+                <field name="skill_id"/>
+                <field name="skill_level_before_id"/>
+                <field name="skill_level_after_id"/>
+                <field name="certificate_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_skill_mapping_log_form" model="ir.ui.view">
+        <field name="name">hr.employee.skill.mapping.log.form</field>
+        <field name="model">hr.employee.skill_mapping_log</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <field name="change_date"/>
+                        <field name="employee_id"/>
+                        <field name="skill_id"/>
+                        <field name="skill_level_before_id"/>
+                        <field name="skill_level_after_id"/>
+                        <field name="certificate_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_employee_skill_mapping_log_search" model="ir.ui.view">
+        <field name="name">hr.employee.skill.mapping.log.search</field>
+        <field name="model">hr.employee.skill_mapping_log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="skill_id"/>
+                <field name="certificate_id"/>
+                <field name="change_date"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_skill_mapping_log" model="ir.actions.act_window">
+        <field name="name">Skill Mapping Logs</field>
+        <field name="res_model">hr.employee.skill_mapping_log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_hr_employee_skill_mapping_log"
+        name="Skill Mapping Logs"
+        parent="hr.menu_config_employee"
+        action="action_hr_employee_skill_mapping_log"
+        sequence="30"
+        groups="hr.group_hr_user"/>
+</odoo>
