@@ -1,0 +1,27 @@
+{
+    'name': 'IMPC LMS',
+    'version': '19.0.1.0.0',
+    'summary': 'Custom LMS core models and workflows',
+    'category': 'Website/eLearning',
+    'depends': [
+        'base',
+        'mail',
+        'website_slides',
+        'hr',
+    ],
+    'data': [
+        'security/lms_groups.xml',
+        'security/ir.model.access.csv',
+        'views/lms_learner_views.xml',
+        'views/lms_enrollment_views.xml',
+        'views/lms_offline_session_views.xml',
+        'views/lms_eticket_views.xml',
+        'views/impc_certificate_views.xml',
+        'views/lms_learner_competency_views.xml',
+        'views/lms_menus.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}
