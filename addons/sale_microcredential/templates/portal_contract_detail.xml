@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_contract_detail" name="Portal: Detail Kontrak">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <h3>Kontrak: <t t-esc="order.name"/></h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Customer</dt>
+                            <dd class="col-sm-7"><t t-esc="order.partner_id.name"/></dd>
+                            <dt class="col-sm-5">Mulai</dt>
+                            <dd class="col-sm-7"><t t-esc="order.contract_start_date"/></dd>
+                            <dt class="col-sm-5">Berakhir</dt>
+                            <dd class="col-sm-7"><t t-esc="order.expiry_date"/></dd>
+                            <dt class="col-sm-5">Batch ID</dt>
+                            <dd class="col-sm-7">
+                                <t t-esc="order.redeem_code_batch_id or 'Belum di-generate'"/>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <h5 class="mt-4">Kursus &amp; Redeem Code</h5>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Kursus</th>
+                            <th>Mode</th>
+                            <th>Jumlah Kode</th>
+                            <th>Durasi Akses</th>
+                            <th>Jadwal Sesi (Hybrid)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="order.order_line" t-as="line">
+                            <tr t-if="line.slide_channel_id">  <!-- KOREKSI: slide_channel_id -->
+                                <td><t t-esc="line.slide_channel_id.name"/></td>
+                                <td><t t-esc="line.learning_mode"/></td>
+                                <td><t t-esc="line.redeem_code_count"/></td>
+                                <td><t t-esc="line.course_access_duration_days"/> hari</td>
+                                <td>
+                                    <t t-if="line.learning_mode == 'HYBRID'">
+                                        <t t-esc="line.hybrid_session_summary or 'Info menyusul'"/>
+                                    </t>
+                                    <t t-else="">—</t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <a href="/my/contracts" class="btn btn-secondary mt-3">← Kembali</a>
+            </div>
+        </t>
+    </template>
+</odoo>

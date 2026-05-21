@@ -8,3 +8,4 @@
 #                           routes: /my/contracts, /my/contracts/<int:order_id>
 #                                   /my/redeem-codes/<int:order_id>
 # ============================================================
+from . import portal_contract

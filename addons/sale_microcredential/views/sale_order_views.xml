@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend Form View: sale.order -->
+    <record id="view_sale_order_form_microcredential" model="ir.ui.view">
+        <field name="name">sale.order.form.microcredential</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Tambahkan tab B2B Contract di bawah tab Order Lines -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Kontrak B2B" name="b2b_contract"
+                      invisible="contract_type != 'B2B_CONTRACT'">
+                    <group>
+                        <group string="Tipe Kontrak">
+                            <field name="contract_type"/>
+                            <field name="partner_type"/>
+                        </group>
+                        <group string="Periode Kontrak">
+                            <field name="contract_start_date"/>
+                            <field name="expiry_date"/>
+                            <field name="renewal_opportunity" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Status Redeem Code">
+                        <field name="redeem_code_batch_status"/>
+                        <field name="redeem_code_batch_id" readonly="1"/>
+                        <field name="redeem_codes_requested_at" readonly="1"/>
+                        <field name="redeem_codes_generated_at" readonly="1"/>
+                    </group>
+                    <div>
+                        <!-- Tombol Generate Redeem Code -->
+                        <button name="action_request_redeem_codes"
+                                type="object"
+                                string="Generate Redeem Codes"
+                                class="btn-primary"
+                                invisible="redeem_codes_generated or contract_type != 'B2B_CONTRACT'"/>
+                        <button name="action_retry_redeem_codes"
+                                type="object"
+                                string="Retry Generate"
+                                class="btn-warning"
+                                invisible="redeem_code_batch_status != 'FAILED'"/>
+                    </div>
+                </page>
+            </xpath>
+
+            <!-- Tambah kolom pada order lines untuk B2B -->
+            <xpath expr="//field[@name='order_line']/tree" position="inside">
+                <field name="slide_channel_id" optional="show"/>  <!-- KOREKSI: bukan course_id -->
+                <field name="learning_mode" optional="show" readonly="1"/>
+                <field name="redeem_code_count" optional="show"/>
+                <field name="redeem_code_expiry_days" optional="show"/>
+                <field name="student_count" optional="show"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List View: filter kontrak B2B -->
+    <record id="view_sale_order_list_microcredential" model="ir.ui.view">
+        <field name="name">sale.order.list.microcredential</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="contract_type" optional="show"/>
+                <field name="redeem_code_batch_status" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action: Daftar Kontrak B2B -->
+    <record id="action_sale_b2b_contracts" model="ir.actions.act_window">
+        <field name="name">Kontrak B2B</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('contract_type', '=', 'B2B_CONTRACT')]</field>
+        <field name="context">{'default_contract_type': 'B2B_CONTRACT'}</field>
+    </record>
+
+    <!-- Menu: Sales > B2B Contracts -->
+    <menuitem
+        id="menu_sale_b2b_contracts"
+        name="Kontrak B2B"
+        parent="sale.sale_order_menu"
+        action="action_sale_b2b_contracts"
+        sequence="20"/>
+</odoo>
