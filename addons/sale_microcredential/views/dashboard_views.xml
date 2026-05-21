@@ -27,7 +27,7 @@
     <record id="action_sale_b2b_dashboard" model="ir.actions.act_window">
         <field name="name">Dashboard Kontrak B2B</field>
         <field name="res_model">sale.order</field>
-        <field name="view_mode">graph,pivot,tree</field>
+        <field name="view_mode">graph,pivot,list</field>
         <field name="domain">[('contract_type', '=', 'B2B_CONTRACT')]</field>
     </record>
 

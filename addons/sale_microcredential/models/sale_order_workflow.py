@@ -1,17 +1,6 @@
 # addons/sale_microcredential/models/sale_order_workflow.py
-# ============================================================
-# FILE INI DIKERJAKAN OLEH DEV 2
-# Dev 1 hanya membuat stub kosong agar import di models/__init__.py
-# tidak error saat modul di-install.
-# ============================================================
-# Isi yang akan ditambahkan Dev 2:
-#   - action_confirm_b2b_contract()
-#   - _generate_redeem_codes()
-#   - action_send_redeem_email()
-#   - _check_contract_renewal() (dipanggil ir.cron)
-#   - action_create_renewal_opportunity()
-# ============================================================
 import logging
+from datetime import date, timedelta
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -100,3 +89,20 @@ class SaleOrderWorkflow(models.Model):
 		)
 		return self.action_request_redeem_codes()
 
+	@api.model
+	def _cron_flag_renewal_contracts(self):
+		"""
+		Dipanggil oleh ir.cron setiap hari.
+		Flag kontrak B2B yang expiry_date-nya <= 30 hari dari sekarang.
+		"""
+		today = date.today()
+		threshold = today + timedelta(days=30)
+		expiring = self.search([
+			('state', '=', 'sale'),
+			('contract_type', '=', 'B2B_CONTRACT'),
+			('expiry_date', '!=', False),
+			('expiry_date', '<=', threshold),
+			('renewal_opportunity', '=', False),
+		])
+		expiring.write({'renewal_opportunity': True})
+		_logger.info('Flagged %d B2B contracts for renewal.', len(expiring))

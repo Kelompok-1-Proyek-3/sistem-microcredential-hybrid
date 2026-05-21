@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- Automated Action: Kirim email konfirmasi saat sale order confirmed -->
-        <record id="action_auto_contract_email" model="base.automation">
-            <field name="name">B2B: Kirim Email Konfirmasi Saat Kontrak Confirmed</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="trigger">on_write</field>
-            <field name="filter_pre_domain">[('contract_type', '=', 'B2B_CONTRACT')]</field>
-            <field name="filter_domain">[('state', '=', 'sale'), ('contract_type', '=', 'B2B_CONTRACT')]</field>
-            <field name="action_server_ids" eval="[(4, ref('sale_microcredential.action_server_send_b2b_email'))]"/>
-        </record>
-
+        <!-- Server Action: Send B2B Contract Confirmation Email (dipanggil dari action menu) -->
+        <!-- Catatan: Email juga otomatis terkirim via override action_confirm() di sale_order_workflow.py -->
         <record id="action_server_send_b2b_email" model="ir.actions.server">
             <field name="name">Send B2B Contract Confirmation Email</field>
             <field name="model_id" ref="sale.model_sale_order"/>
