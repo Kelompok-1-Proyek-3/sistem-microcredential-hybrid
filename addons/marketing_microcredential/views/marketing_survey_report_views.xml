@@ -4,14 +4,14 @@
         <field name="name">marketing.survey.report.tree</field>
         <field name="model">marketing.survey.report</field>
         <field name="arch" type="xml">
-            <tree string="Monthly Survey Report">
+            <list string="Monthly Survey Report">
                 <field name="survey_id"/>
                 <field name="month_start"/>
                 <field name="month_end"/>
                 <field name="response_count"/>
                 <field name="avg_score"/>
                 <field name="nps_score"/>
-            </tree>
+            </list>
         </field>
     </record>
 

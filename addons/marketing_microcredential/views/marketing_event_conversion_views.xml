@@ -4,7 +4,7 @@
         <field name="name">marketing.event.conversion.report.tree</field>
         <field name="model">marketing.event.conversion.report</field>
         <field name="arch" type="xml">
-            <tree string="Weekly Event Conversion">
+            <list string="Weekly Event Conversion">
                 <field name="event_id"/>
                 <field name="course_id"/>
                 <field name="week_start"/>
@@ -13,7 +13,7 @@
                 <field name="attended_count"/>
                 <field name="enrolled_count"/>
                 <field name="conversion_rate"/>
-            </tree>
+            </list>
         </field>
     </record>
 

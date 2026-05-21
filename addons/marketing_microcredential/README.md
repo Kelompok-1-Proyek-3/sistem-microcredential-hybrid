@@ -14,7 +14,6 @@ Custom module untuk **Marketing Group** pada platform Microcredential IMPC.
 - `event` (Odoo native)
 - `website_event` (Odoo native)
 - `survey` (Odoo native)
-- `marketing_automation` (Odoo native)
 - `website_slides` (Odoo native)
 - `utm` (Odoo native)
 
@@ -30,31 +29,3 @@ Custom module untuk **Marketing Group** pada platform Microcredential IMPC.
 - Data konversi event mengacu pada event yang di-link ke course via slide.channel.event_id
 - NPS dihitung berdasarkan pertanyaan yang dipilih di survey (field nps_question_id)
 
-## Struktur
-
-```
-marketing_microcredential/
-├── __init__.py
-├── __manifest__.py
-├── controllers/
-│   └── __init__.py
-├── data/
-│   └── ir_cron_data.xml                # Scheduled actions (report sync + export CSV)
-├── models/
-│   ├── __init__.py
-│   ├── marketing_event_conversion.py   # Weekly conversion report
-│   ├── marketing_survey_report.py      # Monthly survey report
-│   ├── slide_channel.py                # Extend slide.channel (event linkage)
-│   └── survey_survey.py                # NPS question link
-├── security/
-│   ├── marketing_microcredential_groups.xml
-│   └── ir.model.access.csv
-├── services/
-│   └── __init__.py
-├── views/
-│   ├── marketing_event_conversion_views.xml
-│   ├── marketing_survey_report_views.xml
-│   └── marketing_menus.xml
-└── wizards/
-    └── __init__.py
-```
