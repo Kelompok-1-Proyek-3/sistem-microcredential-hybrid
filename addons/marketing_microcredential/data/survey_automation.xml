@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="action_send_completion_surveys" model="ir.actions.server">
+            <field name="name">Marketing: Send Completion Surveys</field>
+            <field name="model_id" ref="website_slides.model_slide_channel_partner"/>
+            <field name="state">code</field>
+            <field name="code">records.action_send_completion_surveys()</field>
+        </record>
+
+        <record id="automation_send_completion_surveys" model="base.automation">
+            <field name="name">Marketing: Auto Send Surveys After Completion</field>
+            <field name="model_id" ref="website_slides.model_slide_channel_partner"/>
+            <field name="trigger">on_write</field>
+            <field name="filter_domain">[
+                ('member_status', '=', 'completed'),
+                ('completion', '>=', 100),
+                '|',
+                ('post_course_survey_sent', '=', False),
+                ('nps_survey_sent', '=', False)
+            ]</field>
+            <field name="action_server_ids" eval="[(4, ref('marketing_microcredential.action_send_completion_surveys'))]"/>
+        </record>
+    </data>
+</odoo>

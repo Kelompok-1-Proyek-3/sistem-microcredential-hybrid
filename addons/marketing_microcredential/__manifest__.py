@@ -15,6 +15,9 @@
     'data': [
         'security/marketing_microcredential_groups.xml',
         'security/ir.model.access.csv',
+        'data/survey_templates.xml',
+        'data/survey_mail_templates.xml',
+        'data/survey_automation.xml',
         'data/ir_cron_data.xml',
         'views/marketing_event_conversion_views.xml',
         'views/marketing_survey_report_views.xml',
