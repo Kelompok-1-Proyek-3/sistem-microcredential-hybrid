@@ -11,6 +11,7 @@
         'survey',
         'website_slides',
         'utm',
+        'base_automation',
     ],
     'data': [
         'security/marketing_microcredential_groups.xml',
