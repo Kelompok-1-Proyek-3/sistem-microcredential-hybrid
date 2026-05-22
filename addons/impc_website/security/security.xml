@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- IMPC Security Groups                                         -->
+    <!-- ============================================================ -->
+
+    <!-- Officer: can manage courses, view codes, manage certificates -->
+    <record id="group_impc_officer" model="res.groups">
+        <field name="name">IMPC Officer</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can manage courses, view redeem codes, and manage certificates.</field>
+    </record>
+
+    <!-- Manager: full CRUD on all IMPC models, bulk code generation -->
+    <record id="group_impc_manager" model="res.groups">
+        <field name="name">IMPC Manager</field>
+        <field name="implied_ids" eval="[(4, ref('impc_website.group_impc_officer'))]"/>
+        <field name="comment">Full access to all IMPC models including bulk code generation and certificate management.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Record Rules                                                 -->
+    <!-- ============================================================ -->
+
+    <!-- Portal users can only see their own certificates -->
+    <record id="rule_certificate_portal" model="ir.rule">
+        <field name="name">IMPC Certificate: Portal users see own</field>
+        <field name="model_id" ref="model_impc_certificate"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Portal users can only see their own redeem codes (claimed) -->
+    <record id="rule_redeem_code_portal" model="ir.rule">
+        <field name="name">IMPC Redeem Code: Portal users see own claimed</field>
+        <field name="model_id" ref="model_impc_redeem_code"/>
+        <field name="domain_force">[('claimed_by', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Portal users can only see their own attendance records -->
+    <record id="rule_session_attendance_portal" model="ir.rule">
+        <field name="name">IMPC Session Attendance: Portal users see own</field>
+        <field name="model_id" ref="model_impc_session_attendance"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Internal users (officer+) can see all records -->
+    <record id="rule_certificate_internal" model="ir.rule">
+        <field name="name">IMPC Certificate: Internal users see all</field>
+        <field name="model_id" ref="model_impc_certificate"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('impc_website.group_impc_officer'))]"/>
+    </record>
+
+    <record id="rule_redeem_code_internal" model="ir.rule">
+        <field name="name">IMPC Redeem Code: Internal users see all</field>
+        <field name="model_id" ref="model_impc_redeem_code"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('impc_website.group_impc_officer'))]"/>
+    </record>
+
+    <record id="rule_redeem_code_batch_internal" model="ir.rule">
+        <field name="name">IMPC Redeem Code Batch: Internal users see all</field>
+        <field name="model_id" ref="model_impc_redeem_code_batch"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('impc_website.group_impc_officer'))]"/>
+    </record>
+
+    <record id="rule_session_attendance_internal" model="ir.rule">
+        <field name="name">IMPC Session Attendance: Internal users see all</field>
+        <field name="model_id" ref="model_impc_session_attendance"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('impc_website.group_impc_officer'))]"/>
+    </record>
+
+</odoo>

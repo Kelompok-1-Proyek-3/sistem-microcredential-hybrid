@@ -1,601 +1,270 @@
-/* ============================================
-   IMPC Website - Modern Styling
-   ============================================ */
+/* ============================================================ */
+/* IMPC Website - Main Stylesheet                               */
+/* ============================================================ */
 
+/* === Variables === */
 :root {
-    --primary: #2563EB;
-    --primary-dark: #1E40AF;
-    --secondary: #7C3AED;
-    --success: #10B981;
-    --warning: #F59E0B;
-    --danger: #EF4444;
-    --gray-50: #F9FAFB;
-    --gray-100: #F3F4F6;
-    --gray-200: #E5E7EB;
-    --gray-300: #D1D5DB;
-    --gray-400: #9CA3AF;
-    --gray-500: #6B7280;
-    --gray-600: #4B5563;
-    --gray-700: #374151;
-    --gray-800: #1F2937;
-    --gray-900: #111827;
-    --text-color: var(--gray-800);
-    --text-light: var(--gray-600);
-    --bg-light: var(--gray-50);
+    --impc-primary: #0d6efd;
+    --impc-primary-dark: #0a58ca;
+    --impc-secondary: #1a237e;
+    --impc-success: #198754;
+    --impc-warning: #ffc107;
+    --impc-info: #0dcaf0;
+    --impc-dark: #212529;
+    --impc-light: #f8f9fa;
+    --impc-border-radius: 12px;
+    --impc-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    --impc-shadow-hover: 0 5px 25px rgba(0, 0, 0, 0.12);
+    --impc-transition: all 0.3s ease;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* === Navbar === */
+.impc-navbar {
+    transition: var(--impc-transition);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
 }
 
-html, body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    color: var(--text-color);
-    background-color: #fff;
+.impc-navbar .navbar-brand {
+    font-size: 1.4rem;
 }
 
-/* ============================================
-   HEADER & NAVBAR
-   ============================================ */
-
-#top {
-    background: #fff;
-    border-bottom: 1px solid var(--gray-200);
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.impc-navbar .nav-link {
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem !important;
+    color: #555;
+    transition: var(--impc-transition);
+    border-radius: 6px;
 }
 
-#top .navbar {
-    padding: 0.5rem 0;
+.impc-navbar .nav-link:hover {
+    color: var(--impc-primary);
+    background-color: rgba(13, 110, 253, 0.05);
 }
 
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    text-decoration: none;
+/* === Hero Section === */
+.impc-hero {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 50%, #f0f8ff 100%);
+    min-height: 80vh;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
 }
 
-.navbar-brand:hover {
-    color: var(--primary-dark);
-}
-
-.nav-link {
-    font-weight: 500;
-    color: var(--text-color) !important;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.nav-link:hover {
-    color: var(--primary) !important;
-}
-
-.nav-link.active {
-    color: var(--primary) !important;
-    font-weight: 600;
-}
-
-.nav-link.active::after {
-    content: '';
+.impc-hero-bg {
     position: absolute;
-    bottom: -8px;
+    top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: var(--primary);
-    border-radius: 2px;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(13, 110, 253, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(13, 110, 253, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 60% 80%, rgba(25, 135, 84, 0.03) 0%, transparent 50%);
 }
 
-/* ============================================
-   HERO SECTION
-   ============================================ */
+.min-vh-75 {
+    min-height: 75vh;
+}
 
-.hero-section {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    color: white;
-    padding: 6rem 2rem;
-    text-align: center;
-    position: relative;
+.impc-hero-illustration .card {
+    transform: rotate(-2deg);
+    transition: var(--impc-transition);
+}
+
+.impc-hero-illustration .card:hover {
+    transform: rotate(0deg);
+}
+
+/* === Stats Section === */
+.impc-stats {
+    background: linear-gradient(135deg, var(--impc-primary) 0%, var(--impc-secondary) 100%);
+}
+
+/* === Course Cards === */
+.impc-course-card {
+    transition: var(--impc-transition);
+    border-radius: var(--impc-border-radius) !important;
+}
+
+.impc-course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--impc-shadow-hover);
+}
+
+.impc-course-card .card-img-top {
+    transition: var(--impc-transition);
+}
+
+.impc-course-card:hover .card-img-top {
+    transform: scale(1.03);
+}
+
+.impc-course-card .impc-course-card-img {
     overflow: hidden;
 }
 
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 500px;
-    height: 500px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
+/* === Category Cards === */
+.impc-category-card {
+    transition: var(--impc-transition);
 }
 
-.hero-section::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -5%;
-    width: 300px;
-    height: 300px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 50%;
+.impc-category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--impc-shadow-hover);
 }
 
-.hero-section .container {
-    position: relative;
-    z-index: 1;
+/* === Dashboard === */
+.impc-dashboard .card {
+    transition: var(--impc-transition);
 }
 
-.hero-section h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    line-height: 1.2;
+.impc-dashboard .card:hover {
+    box-shadow: var(--impc-shadow-hover);
 }
 
-.hero-section .lead {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 300;
-    opacity: 0.95;
+/* === Progress Bars === */
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.hero-section .subtitle {
-    font-size: 1.1rem;
-    opacity: 0.85;
-    margin-bottom: 2rem;
+.progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease;
 }
 
-.hero-cta {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-}
-
-/* ============================================
-   BUTTONS
-   ============================================ */
-
-.btn {
-    padding: 0.75rem 2rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    border: none;
-    cursor: pointer;
-}
-
+/* === Buttons === */
 .btn-primary {
-    background: var(--primary);
-    color: white;
+    background: linear-gradient(135deg, var(--impc-primary) 0%, var(--impc-primary-dark) 100%);
+    border: none;
+    transition: var(--impc-transition);
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
 }
 
-.btn-secondary {
-    background: var(--secondary);
-    color: white;
+/* === Cards General === */
+.card {
+    border-radius: var(--impc-border-radius) !important;
 }
 
-.btn-secondary:hover {
-    background: #6D28D9;
-    transform: translateY(-2px);
+.shadow-sm {
+    box-shadow: var(--impc-shadow) !important;
 }
 
-.btn-outline-light {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
+/* === Footer === */
+.impc-footer {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
 }
 
-.btn-outline-light:hover {
-    background: white;
-    color: var(--primary);
+.impc-footer a:hover {
+    color: var(--impc-primary) !important;
+    transition: var(--impc-transition);
 }
 
-.btn-lg {
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
+/* === Pricing Page === */
+.impc-pricing-page .card {
+    transition: var(--impc-transition);
 }
 
-/* ============================================
-   STATS SECTION
-   ============================================ */
-
-.stats-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    padding: 4rem 0;
-    margin: 3rem 0;
-}
-
-.stat-card {
-    text-align: center;
-    padding: 2rem;
-    background: var(--bg-light);
-    border-radius: 1rem;
-    transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-    background: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+.impc-pricing-page .card:hover {
     transform: translateY(-5px);
+    box-shadow: var(--impc-shadow-hover);
 }
 
-.stat-card-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary);
+/* === Certificate Cards === */
+.impc-my-certificates .card-header {
+    border-radius: var(--impc-border-radius) var(--impc-border-radius) 0 0 !important;
 }
 
-.stat-card-label {
-    font-size: 0.95rem;
-    color: var(--text-light);
-    margin-top: 0.5rem;
-    font-weight: 500;
+/* === Redeem Page === */
+.impc-redeem-page input[name="code"] {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
 }
 
-/* ============================================
-   SECTION STYLES
-   ============================================ */
-
-section {
-    padding: 4rem 0;
+.impc-redeem-page input[name="code"]::placeholder {
+    letter-spacing: 2px;
+    font-size: 0.9rem;
 }
 
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--gray-900);
+/* === Course Detail === */
+.impc-course-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
-.section-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-light);
-    margin-bottom: 3rem;
+.impc-course-detail .nav-tabs .nav-link {
+    font-weight: 600;
+    color: #666;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 3px solid transparent;
 }
 
-/* ============================================
-   COURSE CARDS
-   ============================================ */
+.impc-course-detail .nav-tabs .nav-link.active {
+    color: var(--impc-primary);
+    border-bottom-color: var(--impc-primary);
+    background: transparent;
+}
 
-.course-card {
-    background: white;
-    border-radius: 0.75rem;
+.impc-course-detail .accordion-button:not(.collapsed) {
+    background-color: rgba(13, 110, 253, 0.05);
+    color: var(--impc-primary);
+}
+
+/* === Verify Certificate === */
+.impc-verify-page .card,
+.impc-verify-result .card {
     overflow: hidden;
-    transition: all 0.3s ease;
-    border: 1px solid var(--gray-200);
-    display: flex;
-    flex-direction: column;
 }
 
-.course-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-    border-color: var(--primary);
+/* === Events Page === */
+.impc-my-events .card {
+    transition: var(--impc-transition);
 }
 
-.course-card-image {
-    height: 200px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    padding: 1rem;
+.impc-my-events .card:hover {
+    box-shadow: var(--impc-shadow-hover);
 }
 
-.course-card-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.3);
-    color: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 0.3rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    backdrop-filter: blur(10px);
-}
-
-.course-card-body {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.course-card-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--gray-900);
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
-}
-
-.course-card-category {
-    display: inline-block;
-    font-size: 0.8rem;
-    color: var(--primary);
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.course-card-rating {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-bottom: 1rem;
-}
-
-.course-card-rating svg {
-    width: 16px;
-    height: 16px;
-    color: #FBBF24;
-    fill: #FBBF24;
-}
-
-.course-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px solid var(--gray-200);
-}
-
-.course-card-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.course-card .btn {
-    flex: 1;
-    margin-left: 1rem;
-    text-align: center;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-}
-
-/* ============================================
-   FEATURES/MODES SECTION
-   ============================================ */
-
-.feature-card {
-    background: white;
-    border: 2px solid var(--gray-200);
-    border-radius: 0.75rem;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-    border-color: var(--primary);
-    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
-}
-
-.feature-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.feature-card h5 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--gray-900);
-}
-
-.feature-card p {
-    color: var(--text-light);
-    margin-bottom: 1rem;
-}
-
-.feature-list {
-    text-align: left;
-    display: inline-block;
-}
-
-.feature-list li {
-    list-style: none;
-    padding: 0.4rem 0;
-    color: var(--text-light);
-    font-size: 0.9rem;
-}
-
-.feature-list li::before {
-    content: '✓ ';
-    color: var(--success);
-    font-weight: 700;
-    margin-right: 0.5rem;
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-
-#bottom {
-    background: var(--gray-900);
-    color: white;
-    padding: 3rem 0 1rem;
-    margin-top: 5rem;
-}
-
-.footer-section {
-    margin-bottom: 2rem;
-}
-
-.footer-title {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: white;
-}
-
-.footer-link {
-    display: block;
-    color: var(--gray-400);
-    text-decoration: none;
-    margin-bottom: 0.5rem;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.footer-link:hover {
-    color: white;
-    margin-left: 0.3rem;
-}
-
-.footer-bottom {
-    border-top: 1px solid var(--gray-700);
-    padding-top: 2rem;
-    text-align: center;
-    color: var(--gray-400);
-    font-size: 0.9rem;
-}
-
-.footer-brand {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-
-/* ============================================
-   MAIN CONTENT WRAPPER
-   ============================================ */
-
-#wrap {
-    min-height: 80vh;
-}
-
-main {
-    flex: 1;
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.mt-4 {
-    margin-top: 2rem;
-}
-
-.mb-3 {
-    margin-bottom: 1.5rem;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-muted {
-    color: var(--text-light);
-}
-
-.fw-bold {
-    font-weight: 700;
-}
-
-.lead {
-    font-size: 1.2rem;
-    font-weight: 300;
-    line-height: 1.6;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
+/* === Responsive === */
 @media (max-width: 768px) {
-    .hero-section h1 {
-        font-size: 2.5rem;
+    .impc-hero {
+        min-height: 60vh;
     }
 
-    .hero-section .lead {
+    .impc-hero h1 {
+        font-size: 2rem;
+    }
+
+    .impc-navbar .navbar-brand {
         font-size: 1.2rem;
     }
 
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .stats-section {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-
-    .hero-cta {
-        flex-direction: column;
-    }
-
-    .hero-cta .btn {
-        width: 100%;
-    }
-
-    .course-card-footer {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .course-card .btn {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .container {
-        padding: 0 1rem;
+    .impc-stats h3 {
+        font-size: 1.3rem;
     }
 }
 
-@media (max-width: 480px) {
-    .hero-section {
-        padding: 4rem 1rem;
+@media (max-width: 576px) {
+    .impc-hero {
+        min-height: auto;
+        padding: 3rem 0;
     }
 
-    .hero-section h1 {
-        font-size: 2rem;
+    .impc-course-card .card-body {
+        padding: 1rem;
     }
 
-    section {
-        padding: 2rem 0;
-    }
-
-    .stats-section {
-        grid-template-columns: 1fr;
+    .impc-dashboard .card-body {
+        padding: 1rem;
     }
 }
 
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
+/* === Animations === */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -607,6 +276,44 @@ main {
     }
 }
 
-.fade-in-up {
+.impc-homepage section {
     animation: fadeInUp 0.6s ease-out;
+}
+
+/* === Badge Styles === */
+.badge {
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.4em 0.8em;
+}
+
+/* === Accordion === */
+.accordion-item {
+    border: none !important;
+}
+
+.accordion-button {
+    font-size: 0.95rem;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
 }

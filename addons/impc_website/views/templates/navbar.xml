@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="impc_header_extend" inherit_id="website.template_header_default" name="IMPC Navbar - Extend Native Header">
+        <!-- Add impc-navbar class to the navbar via _navbar_classes variable -->
+        <xpath expr="//t[@t-call='website.navbar']/t[@t-set='_navbar_classes']" position="attributes">
+            <attribute name="t-valuef" add=" impc-navbar" separator=" "/>
+        </xpath>
+
+        <!-- Replace brand with IMPC brand -->
+        <xpath expr="//t[@t-call='website.placeholder_header_brand']" position="replace">
+            <a class="navbar-brand fw-bold" href="/">
+                <span class="text-primary">IMPC</span>
+                <span class="text-muted small ms-1 d-none d-md-inline">Microcredential</span>
+            </a>
+        </xpath>
+
+        <!-- Add Redeem Code button for authenticated users after user dropdown -->
+        <xpath expr="//t[@t-call='portal.user_dropdown']" position="after">
+            <t t-if="not request.env.user._is_public()">
+                <a href="/my-learning/redeem"
+                   class="btn btn-outline-success btn-sm ms-2 o_navlink_background text-reset">
+                    Redeem Code
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Course Detail Page                                      -->
+    <!-- ============================================================ -->
+
+    <template id="course_detail" name="IMPC Course Detail">
+        <t t-call="website.layout">
+            <t t-set="title" t-value="course.name"/>
+
+            <div class="impc-course-detail">
+
+                <!-- ===== COURSE HERO BANNER ===== -->
+                <section class="impc-course-hero bg-dark text-white py-5">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <!-- Breadcrumb -->
+                                <nav aria-label="breadcrumb" class="mb-3">
+                                    <ol class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item"><a href="/" class="text-light text-decoration-none">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="/courses" class="text-light text-decoration-none">Courses</a></li>
+                                        <li class="breadcrumb-item active text-white-50" t-out="course.name"/>
+                                    </ol>
+                                </nav>
+
+                                <!-- Tags -->
+                                <div class="mb-2">
+                                    <t t-foreach="course.tag_ids[:3]" t-as="tag">
+                                        <span class="badge bg-primary bg-opacity-75 me-1" t-out="tag.name"/>
+                                    </t>
+                                </div>
+
+                                <!-- Title -->
+                                <h1 class="fw-bold mb-3" t-out="course.name"/>
+
+                                <!-- Short Description -->
+                                <p class="lead opacity-75 mb-4">
+                                    <t t-out="course.short_description or course.description_short or ''"/>
+                                </p>
+
+                                <!-- Meta Info -->
+                                <div class="d-flex flex-wrap gap-4 mb-3">
+                                    <span>
+                                        <i class="fa fa-signal me-1"></i>
+                                        <t t-out="(course.difficulty_level or 'beginner').capitalize()"/>
+                                    </span>
+                                    <span>
+                                        <i class="fa fa-clock-o me-1"></i>
+                                        <t t-out="int(course.estimated_duration or 0)"/> hours
+                                    </span>
+                                    <span>
+                                        <i class="fa fa-users me-1"></i>
+                                        <t t-out="course.enrolled_count or 0"/> students
+                                    </span>
+                                    <span t-attf-class="badge bg-#{course.learning_mode == 'online' and 'success' or course.learning_mode == 'hybrid' and 'warning' or 'info'}">
+                                        <i class="fa fa-globe me-1"></i>
+                                        <t t-out="(course.learning_mode or 'online').upper()"/>
+                                    </span>
+                                </div>
+
+                                <!-- Instructors -->
+                                <t t-if="course.instructor_ids">
+                                    <div class="d-flex align-items-center gap-2 mt-3">
+                                        <span class="opacity-75">Instructors:</span>
+                                        <t t-foreach="course.instructor_ids[:3]" t-as="instructor">
+                                            <span class="badge bg-light text-dark" t-out="instructor.name"/>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="col-lg-4 d-none d-lg-block">
+                                <t t-if="course.image_512">
+                                    <img t-attf-src="/web/image/slide.channel/#{course.id}/image_512"
+                                         class="img-fluid rounded-3 shadow"
+                                         t-att-alt="course.name"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== MAIN CONTENT ===== -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row">
+
+                            <!-- Left: Course Content -->
+                            <div class="col-lg-8">
+
+                                <!-- Tab Navigation -->
+                                <ul class="nav nav-tabs mb-4" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab-overview">Overview</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab-syllabus">Syllabus</a>
+                                    </li>
+                                    <li class="nav-item" t-if="course.instructor_ids">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab-instructor">Instructor</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+
+                                    <!-- Overview Tab -->
+                                    <div class="tab-pane fade show active" id="tab-overview">
+                                        <!-- Description -->
+                                        <div class="mb-4">
+                                            <h5 class="fw-bold mb-3">Tentang Kursus Ini</h5>
+                                            <div class="text-muted" t-if="course.description_html">
+                                                <t t-out="course.description_html"/>
+                                            </div>
+                                            <p class="text-muted" t-if="not course.description_html and course.description">
+                                                <t t-out="course.description"/>
+                                            </p>
+                                        </div>
+
+                                        <!-- Learning Outcomes -->
+                                        <t t-if="course.learning_outcomes">
+                                            <div class="mb-4">
+                                                <h5 class="fw-bold mb-3">Yang Akan Anda Pelajari</h5>
+                                                <div class="card bg-light border-0 p-3 rounded-3">
+                                                    <t t-out="course.learning_outcomes"/>
+                                                </div>
+                                            </div>
+                                        </t>
+
+                                        <!-- Target Audience -->
+                                        <t t-if="course.target_audience">
+                                            <div class="mb-4">
+                                                <h5 class="fw-bold mb-3">Target Peserta</h5>
+                                                <p class="text-muted" t-out="course.target_audience"/>
+                                            </div>
+                                        </t>
+
+                                        <!-- Prerequisites -->
+                                        <t t-if="course.prerequisite_ids">
+                                            <div class="mb-4">
+                                                <h5 class="fw-bold mb-3">Prasyarat</h5>
+                                                <ul class="list-unstyled">
+                                                    <t t-foreach="course.prerequisite_ids" t-as="prereq">
+                                                        <li class="mb-2">
+                                                            <i class="fa fa-check-circle text-primary me-2"></i>
+                                                            <a t-attf-href="/courses/#{slug(prereq)}" class="text-decoration-none">
+                                                                <t t-out="prereq.name"/>
+                                                            </a>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </div>
+                                        </t>
+
+                                        <!-- Hybrid Event Info -->
+                                        <t t-if="course.learning_mode in ('hybrid', 'offline') and course.event_id">
+                                            <div class="mb-4">
+                                                <h5 class="fw-bold mb-3">Sesi Tatap Muka</h5>
+                                                <div class="card border-warning border-start border-4 p-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
+                                                            <i class="fa fa-calendar fa-lg text-warning"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="fw-bold mb-1" t-out="course.event_id.name"/>
+                                                            <p class="text-muted small mb-1">
+                                                                <i class="fa fa-clock-o me-1"></i>
+                                                                <t t-if="course.event_date_begin">
+                                                                    <t t-out="course.event_date_begin" t-options="{'widget': 'datetime'}"/>
+                                                                </t>
+                                                            </p>
+                                                            <p class="text-muted small mb-0" t-if="course.event_location">
+                                                                <i class="fa fa-map-marker me-1"></i>
+                                                                <t t-out="course.event_location"/>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+
+                                    <!-- Syllabus Tab -->
+                                    <div class="tab-pane fade" id="tab-syllabus">
+                                        <h5 class="fw-bold mb-3">Materi Kursus</h5>
+                                        <p class="text-muted mb-4">
+                                            <t t-out="len(slides)"/> materi pembelajaran
+                                            <t t-if="course.estimated_duration">
+                                                | <t t-out="int(course.estimated_duration)"/> jam total
+                                            </t>
+                                        </p>
+
+                                        <!-- Syllabus Accordion -->
+                                        <div class="accordion" id="syllabusAccordion">
+                                            <t t-set="section_index" t-value="0"/>
+                                            <t t-foreach="categories" t-as="cat">
+                                                <t t-set="section_index" t-value="section_index + 1"/>
+                                                <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+                                                    <h2 class="accordion-header">
+                                                        <button class="accordion-button collapsed fw-bold"
+                                                                type="button" data-bs-toggle="collapse"
+                                                                t-attf-data-bs-target="#section-#{section_index}">
+                                                            <span class="badge bg-primary me-2" t-out="section_index"/>
+                                                            <t t-out="cat.name"/>
+                                                        </button>
+                                                    </h2>
+                                                    <div t-attf-id="section-#{section_index}" class="accordion-collapse collapse"
+                                                         data-bs-parent="#syllabusAccordion">
+                                                        <div class="accordion-body p-0">
+                                                            <ul class="list-group list-group-flush">
+                                                                <t t-foreach="slides.filtered(lambda s: s.category_id.id == cat.id)" t-as="slide">
+                                                                    <li class="list-group-item d-flex align-items-center py-3 px-4">
+                                                                        <i t-attf-class="fa me-3 text-muted #{slide.slide_category == 'video' and 'fa-play-circle' or slide.slide_category == 'document' and 'fa-file-text' or slide.slide_category == 'quiz' and 'fa-question-circle' or 'fa-file'}"/>
+                                                                        <div class="flex-grow-1">
+                                                                            <span t-out="slide.name"/>
+                                                                            <t t-if="slide.is_preview">
+                                                                                <span class="badge bg-success ms-2 small">Preview</span>
+                                                                            </t>
+                                                                        </div>
+                                                                        <t t-if="slide.completion_time">
+                                                                            <small class="text-muted">
+                                                                                <t t-out="int(slide.completion_time)"/> min
+                                                                            </small>
+                                                                        </t>
+                                                                    </li>
+                                                                </t>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+
+                                            <!-- Uncategorized slides -->
+                                            <t t-set="uncategorized" t-value="slides.filtered(lambda s: not s.category_id)"/>
+                                            <t t-if="uncategorized">
+                                                <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+                                                    <h2 class="accordion-header">
+                                                        <button class="accordion-button collapsed fw-bold"
+                                                                type="button" data-bs-toggle="collapse"
+                                                                data-bs-target="#section-uncategorized">
+                                                            Materi Lainnya
+                                                        </button>
+                                                    </h2>
+                                                    <div id="section-uncategorized" class="accordion-collapse collapse"
+                                                         data-bs-parent="#syllabusAccordion">
+                                                        <div class="accordion-body p-0">
+                                                            <ul class="list-group list-group-flush">
+                                                                <t t-foreach="uncategorized" t-as="slide">
+                                                                    <li class="list-group-item d-flex align-items-center py-3 px-4">
+                                                                        <i t-attf-class="fa me-3 text-muted #{slide.slide_category == 'video' and 'fa-play-circle' or slide.slide_category == 'document' and 'fa-file-text' or slide.slide_category == 'quiz' and 'fa-question-circle' or 'fa-file'}"/>
+                                                                        <div class="flex-grow-1">
+                                                                            <span t-out="slide.name"/>
+                                                                        </div>
+                                                                        <t t-if="slide.completion_time">
+                                                                            <small class="text-muted">
+                                                                                <t t-out="int(slide.completion_time)"/> min
+                                                                            </small>
+                                                                        </t>
+                                                                    </li>
+                                                                </t>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <!-- Instructor Tab -->
+                                    <div class="tab-pane fade" id="tab-instructor" t-if="course.instructor_ids">
+                                        <h5 class="fw-bold mb-3">Instruktur</h5>
+                                        <t t-foreach="course.instructor_ids" t-as="instructor">
+                                            <div class="card border-0 shadow-sm p-3 mb-3 rounded-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                         style="width: 60px; height: 60px;">
+                                                        <i class="fa fa-user fa-lg text-primary"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="fw-bold mb-0" t-out="instructor.name"/>
+                                                        <small class="text-muted" t-if="instructor.function" t-out="instructor.function"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Right: Sticky Sidebar -->
+                            <div class="col-lg-4">
+                                <div class="card border-0 shadow rounded-3 sticky-top" style="top: 90px;">
+                                    <!-- Course Image (mobile) -->
+                                    <t t-if="course.image_512">
+                                        <img t-attf-src="/web/image/slide.channel/#{course.id}/image_512"
+                                             class="card-img-top d-lg-none rounded-top-3"
+                                             style="height: 200px; object-fit: cover;"
+                                             t-att-alt="course.name"/>
+                                    </t>
+                                    <div class="card-body p-4">
+                                        <!-- Enrollment Status -->
+                                        <t t-if="is_enrolled">
+                                            <div class="text-center mb-3">
+                                                <span class="badge bg-success px-3 py-2">
+                                                    <i class="fa fa-check-circle me-1"></i> Enrolled
+                                                </span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between small mb-1">
+                                                    <span>Progress</span>
+                                                    <span><t t-out="enrollment.completion"/>%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-success"
+                                                         t-attf-style="width: #{enrollment.completion}%"></div>
+                                                </div>
+                                            </div>
+                                            <a t-attf-href="/slides/#{slug(course)}" class="btn btn-primary w-100 mb-2">
+                                                <i class="fa fa-play me-2"></i>Continue Learning
+                                            </a>
+                                        </t>
+
+                                        <!-- Not Enrolled -->
+                                        <t t-if="not is_enrolled">
+                                            <!-- Price (if product linked) -->
+                                            <t t-if="course.product_id">
+                                                <div class="text-center mb-3">
+                                                    <h3 class="fw-bold text-primary mb-0">
+                                                        Rp <t t-out="'{:,.0f}'.format(course.product_id.list_price)"/>
+                                                    </h3>
+                                                </div>
+                                                <a t-attf-href="/shop/product/#{slug(course.product_id.product_tmpl_id)}"
+                                                   class="btn btn-primary w-100 btn-lg mb-2">
+                                                    <i class="fa fa-shopping-cart me-2"></i>Enroll Now
+                                                </a>
+                                            </t>
+                                            <t t-if="not course.product_id">
+                                                <a t-attf-href="/slides/#{slug(course)}" class="btn btn-primary w-100 btn-lg mb-2">
+                                                    <i class="fa fa-sign-in me-2"></i>Enroll Free
+                                                </a>
+                                            </t>
+                                            <a href="/my-learning/redeem" class="btn btn-outline-success w-100 mb-3">
+                                                <i class="fa fa-ticket me-2"></i>Redeem Voucher
+                                            </a>
+                                        </t>
+
+                                        <hr/>
+
+                                        <!-- Course Includes -->
+                                        <h6 class="fw-bold mb-3">Kursus ini mencakup:</h6>
+                                        <ul class="list-unstyled text-muted small">
+                                            <li class="mb-2">
+                                                <i class="fa fa-play-circle text-primary me-2"></i>
+                                                <t t-out="course.total_slides or 0"/> materi pembelajaran
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fa fa-clock-o text-primary me-2"></i>
+                                                <t t-out="int(course.estimated_duration or 0)"/> jam total
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fa fa-signal text-primary me-2"></i>
+                                                Level: <t t-out="(course.difficulty_level or 'beginner').capitalize()"/>
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fa fa-globe text-primary me-2"></i>
+                                                Mode: <t t-out="(course.learning_mode or 'online').capitalize()"/>
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fa fa-certificate text-primary me-2"></i>
+                                                Sertifikat digital
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fa fa-infinity text-primary me-2"></i>
+                                                Akses selamanya
+                                            </li>
+                                            <t t-if="course.sks_weight">
+                                                <li class="mb-2">
+                                                    <i class="fa fa-graduation-cap text-primary me-2"></i>
+                                                    <t t-out="course.sks_weight"/> SKS
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== RELATED COURSES ===== -->
+                <t t-if="related_courses">
+                    <section class="bg-light py-5">
+                        <div class="container">
+                            <h4 class="fw-bold mb-4">Kursus Terkait</h4>
+                            <div class="row g-4">
+                                <t t-foreach="related_courses" t-as="rel">
+                                    <div class="col-md-4">
+                                        <div class="card impc-course-card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                                            <div class="position-relative">
+                                                <t t-if="rel.image_512">
+                                                    <img t-attf-src="/web/image/slide.channel/#{rel.id}/image_512"
+                                                         class="card-img-top" style="height: 140px; object-fit: cover;"
+                                                         t-att-alt="rel.name"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+                                                         style="height: 140px;">
+                                                        <i class="fa fa-book fa-2x text-primary opacity-50"></i>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6 class="fw-bold">
+                                                    <a t-attf-href="/courses/#{slug(rel)}" class="text-dark text-decoration-none stretched-link">
+                                                        <t t-out="rel.name"/>
+                                                    </a>
+                                                </h6>
+                                                <div class="d-flex justify-content-between small text-muted">
+                                                    <span><i class="fa fa-signal me-1"></i><t t-out="(rel.difficulty_level or 'beginner').capitalize()"/></span>
+                                                    <span><i class="fa fa-users me-1"></i><t t-out="rel.enrolled_count or 0"/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </section>
+                </t>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

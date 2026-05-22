@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="impc_footer" name="IMPC Footer" inherit_id="website.layout">
+        <xpath expr="//footer[@id='bottom']" position="inside">
+            <div class="impc-footer bg-dark text-light pt-5 pb-3">
+                <div class="container">
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-6">
+                            <h5 class="fw-bold text-white mb-3">
+                                <span class="text-primary">IMPC</span> Microcredential
+                            </h5>
+                            <p class="text-secondary small">
+                                Indonesia Microcredential Platform Center - Platform pembelajaran
+                                dan sertifikasi mikro yang diakui industri untuk meningkatkan
+                                kompetensi profesional Anda.
+                            </p>
+                            <div class="d-flex gap-3 mt-3">
+                                <a href="#" class="text-secondary"><i class="fa fa-facebook"></i></a>
+                                <a href="#" class="text-secondary"><i class="fa fa-instagram"></i></a>
+                                <a href="#" class="text-secondary"><i class="fa fa-linkedin"></i></a>
+                                <a href="#" class="text-secondary"><i class="fa fa-youtube-play"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-6">
+                            <h6 class="fw-bold text-white mb-3">Platform</h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><a href="/courses" class="text-secondary text-decoration-none">Courses</a></li>
+                                <li class="mb-2"><a href="/pricing" class="text-secondary text-decoration-none">Pricing</a></li>
+                                <li class="mb-2"><a href="/corporate-training" class="text-secondary text-decoration-none">Corporate</a></li>
+                                <li class="mb-2"><a href="/verify-certificate" class="text-secondary text-decoration-none">Verify Certificate</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-2 col-md-6">
+                            <h6 class="fw-bold text-white mb-3">Company</h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><a href="/about" class="text-secondary text-decoration-none">About Us</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Careers</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Contact</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-2 col-md-6">
+                            <h6 class="fw-bold text-white mb-3">Support</h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Help Center</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">FAQ</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Terms of Service</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-2 col-md-6">
+                            <h6 class="fw-bold text-white mb-3">Contact</h6>
+                            <ul class="list-unstyled small text-secondary">
+                                <li class="mb-2"><i class="fa fa-envelope me-2"></i>info@impc.id</li>
+                                <li class="mb-2"><i class="fa fa-phone me-2"></i>+62 21 1234 5678</li>
+                                <li class="mb-2"><i class="fa fa-map-marker me-2"></i>Jakarta, Indonesia</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr class="border-secondary mt-4"/>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="text-secondary small mb-0">
+                                2024-2026 IMPC - Indonesia Microcredential Platform Center. All rights reserved.
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <p class="text-secondary small mb-0">
+                                Powered by Odoo 19
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

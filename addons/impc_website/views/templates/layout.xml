@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="impc_layout" name="IMPC Layout - Head Extras" inherit_id="website.layout">
+        <xpath expr="//head" position="inside">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        </xpath>
+    </template>
+
+</odoo>

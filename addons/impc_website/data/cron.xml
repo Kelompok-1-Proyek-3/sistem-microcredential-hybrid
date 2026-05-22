@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Scheduled Actions (Cron Jobs)                           -->
+    <!-- ============================================================ -->
+
+    <!-- Attendance Sync: Fallback, primary sync is event-driven via event.registration hooks -->
+    <record id="cron_sync_attendance" model="ir.cron">
+        <field name="name">IMPC: Sync Attendance from Events (Fallback)</field>
+        <field name="model_id" ref="model_impc_session_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_attendance()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active">True</field>
+    </record>
+
+    <!-- Certificate Generation: Every 30 minutes -->
+    <record id="cron_generate_certificates" model="ir.cron">
+        <field name="name">IMPC: Generate Pending Certificates</field>
+        <field name="model_id" ref="model_impc_certificate"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_generate_pending_certificates()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+
+    <!-- Expire Codes: Daily -->
+    <record id="cron_expire_codes" model="ir.cron">
+        <field name="name">IMPC: Expire Redeem Codes</field>
+        <field name="model_id" ref="model_impc_redeem_code"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_expire_codes()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Course Catalog Page                                     -->
+    <!-- ============================================================ -->
+
+    <template id="courses_catalog" name="IMPC Course Catalog">
+        <t t-call="website.layout">
+            <t t-set="title">Courses - IMPC Microcredential</t>
+
+            <div class="impc-courses-page">
+
+                <!-- Page Header -->
+                <section class="bg-light py-4 border-bottom">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h2 class="fw-bold mb-1">Katalog Kursus</h2>
+                                <p class="text-muted mb-0">
+                                    <t t-out="total"/> kursus tersedia
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Search Bar -->
+                                <form action="/courses" method="get" class="d-flex">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control"
+                                               placeholder="Cari kursus..." t-att-value="search"/>
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="container py-4">
+                    <div class="row">
+
+                        <!-- ===== SIDEBAR FILTERS ===== -->
+                        <div class="col-lg-3 mb-4">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body">
+                                    <h6 class="fw-bold mb-3">Filter</h6>
+
+                                    <!-- Category Filter -->
+                                    <div class="mb-4">
+                                        <label class="form-label fw-bold small text-muted">Kategori</label>
+                                        <div class="list-group list-group-flush">
+                                            <a href="/courses" t-attf-class="list-group-item list-group-item-action border-0 small px-0 #{not category and 'fw-bold text-primary' or ''}">
+                                                Semua Kategori
+                                            </a>
+                                            <t t-foreach="all_categories" t-as="cat">
+                                                <a t-attf-href="/courses?category=#{cat.id}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=#{sort}"
+                                                   t-attf-class="list-group-item list-group-item-action border-0 small px-0 #{str(category) == str(cat.id) and 'fw-bold text-primary' or ''}">
+                                                    <t t-out="cat.name"/>
+                                                </a>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <!-- Level Filter -->
+                                    <div class="mb-4">
+                                        <label class="form-label fw-bold small text-muted">Level</label>
+                                        <div class="d-flex flex-column gap-1">
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=&amp;mode=#{mode or ''}&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{not level and 'btn-primary' or 'btn-outline-secondary'}">
+                                                All Levels
+                                            </a>
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=beginner&amp;mode=#{mode or ''}&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{level == 'beginner' and 'btn-primary' or 'btn-outline-secondary'}">
+                                                Beginner
+                                            </a>
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=intermediate&amp;mode=#{mode or ''}&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{level == 'intermediate' and 'btn-primary' or 'btn-outline-secondary'}">
+                                                Intermediate
+                                            </a>
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=advanced&amp;mode=#{mode or ''}&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{level == 'advanced' and 'btn-primary' or 'btn-outline-secondary'}">
+                                                Advanced
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mode Filter -->
+                                    <div class="mb-4">
+                                        <label class="form-label fw-bold small text-muted">Mode</label>
+                                        <div class="d-flex flex-column gap-1">
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{not mode and 'btn-primary' or 'btn-outline-secondary'}">
+                                                All Modes
+                                            </a>
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=online&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{mode == 'online' and 'btn-success' or 'btn-outline-secondary'}">
+                                                Online
+                                            </a>
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=hybrid&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{mode == 'hybrid' and 'btn-warning' or 'btn-outline-secondary'}">
+                                                Hybrid
+                                            </a>
+                                            <a t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=offline&amp;sort=#{sort}"
+                                               t-attf-class="btn btn-sm #{mode == 'offline' and 'btn-info' or 'btn-outline-secondary'}">
+                                                Offline
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== COURSE GRID ===== -->
+                        <div class="col-lg-9">
+
+                            <!-- Sort Bar -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <p class="text-muted small mb-0">
+                                    Showing <strong t-out="len(courses)"/> of <strong t-out="total"/> courses
+                                </p>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown">
+                                        Sort by: <t t-out="sort.replace('_', ' ').capitalize()"/>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=newest">Newest</a></li>
+                                        <li><a class="dropdown-item" t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=popular">Most Popular</a></li>
+                                        <li><a class="dropdown-item" t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=name_asc">Name (A-Z)</a></li>
+                                        <li><a class="dropdown-item" t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=name_desc">Name (Z-A)</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Course Cards Grid -->
+                            <t t-if="courses">
+                                <div class="row g-4">
+                                    <t t-foreach="courses" t-as="course">
+                                        <div class="col-md-6 col-xl-4">
+                                            <div class="card impc-course-card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                                                <!-- Course Image -->
+                                                <div class="position-relative">
+                                                    <t t-if="course.image_512">
+                                                        <img t-attf-src="/web/image/slide.channel/#{course.id}/image_512"
+                                                             class="card-img-top" style="height: 160px; object-fit: cover;"
+                                                             t-att-alt="course.name"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div class="bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+                                                             style="height: 160px;">
+                                                            <i class="fa fa-book fa-3x text-primary opacity-50"></i>
+                                                        </div>
+                                                    </t>
+                                                    <span class="badge position-absolute top-0 end-0 m-2"
+                                                          t-attf-class="bg-#{course.learning_mode == 'online' and 'success' or course.learning_mode == 'hybrid' and 'warning' or 'info'}">
+                                                        <t t-out="(course.learning_mode or 'online').upper()"/>
+                                                    </span>
+                                                </div>
+                                                <!-- Card Body -->
+                                                <div class="card-body d-flex flex-column">
+                                                    <div class="mb-2">
+                                                        <t t-foreach="course.tag_ids[:2]" t-as="tag">
+                                                            <span class="badge bg-light text-dark me-1 small" t-out="tag.name"/>
+                                                        </t>
+                                                    </div>
+                                                    <h6 class="card-title fw-bold mb-2">
+                                                        <a t-attf-href="/courses/#{slug(course)}"
+                                                           class="text-dark text-decoration-none stretched-link">
+                                                            <t t-out="course.name"/>
+                                                        </a>
+                                                    </h6>
+                                                    <p class="card-text text-muted small flex-grow-1">
+                                                        <t t-out="(course.short_description or course.description_short or '')[:100]"/>
+                                                        <t t-if="len(course.short_description or course.description_short or '') > 100">...</t>
+                                                    </p>
+                                                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                                                        <span class="small text-muted">
+                                                            <i class="fa fa-signal me-1"></i>
+                                                            <t t-out="(course.difficulty_level or 'beginner').capitalize()"/>
+                                                        </span>
+                                                        <span class="small text-muted">
+                                                            <i class="fa fa-users me-1"></i>
+                                                            <t t-out="course.enrolled_count or 0"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Pagination -->
+                                <t t-if="total_pages > 1">
+                                    <nav class="mt-5" aria-label="Course pagination">
+                                        <ul class="pagination justify-content-center">
+                                            <li t-attf-class="page-item #{page == 1 and 'disabled' or ''}">
+                                                <a class="page-link"
+                                                   t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=#{sort}&amp;page=#{page - 1}">
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </a>
+                                            </li>
+                                            <t t-foreach="range(1, total_pages + 1)" t-as="p">
+                                                <li t-attf-class="page-item #{p == page and 'active' or ''}">
+                                                    <a class="page-link"
+                                                       t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=#{sort}&amp;page=#{p}">
+                                                        <t t-out="p"/>
+                                                    </a>
+                                                </li>
+                                            </t>
+                                            <li t-attf-class="page-item #{page == total_pages and 'disabled' or ''}">
+                                                <a class="page-link"
+                                                   t-attf-href="/courses?category=#{category or ''}&amp;search=#{search}&amp;level=#{level or ''}&amp;mode=#{mode or ''}&amp;sort=#{sort}&amp;page=#{page + 1}">
+                                                    <i class="fa fa-chevron-right"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </t>
+                            </t>
+
+                            <!-- Empty State -->
+                            <t t-if="not courses">
+                                <div class="text-center py-5">
+                                    <i class="fa fa-search fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">Tidak ada kursus ditemukan</h5>
+                                    <p class="text-muted">Coba ubah filter atau kata kunci pencarian Anda.</p>
+                                    <a href="/courses" class="btn btn-outline-primary">Reset Filter</a>
+                                </div>
+                            </t>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
