@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Pricing Page                                            -->
+    <!-- ============================================================ -->
+
+    <template id="pricing_page" name="IMPC Pricing">
+        <t t-call="website.layout">
+            <t t-set="title">Pricing - IMPC Microcredential</t>
+
+            <div class="impc-pricing-page">
+
+                <!-- Header -->
+                <section class="bg-light py-5 text-center">
+                    <div class="container">
+                        <h1 class="fw-bold mb-3">Pilih Paket Belajar Anda</h1>
+                        <p class="text-muted lead">
+                            Investasi terbaik untuk pengembangan karir Anda.
+                            Pilih paket yang sesuai dengan kebutuhan.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Pricing Cards -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row g-4 justify-content-center">
+
+                            <!-- Basic Plan -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card border-0 shadow-sm rounded-3 h-100 text-center p-4">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-book fa-lg text-primary"></i>
+                                        </div>
+                                        <h5 class="fw-bold">Basic</h5>
+                                        <p class="text-muted small">Untuk individu yang ingin memulai</p>
+                                        <div class="my-4">
+                                            <h2 class="fw-bold text-primary mb-0">Rp 299.000</h2>
+                                            <small class="text-muted">per kursus</small>
+                                        </div>
+                                        <ul class="list-unstyled text-start text-muted small flex-grow-1">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Akses 1 kursus pilihan</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Materi video &amp; dokumen</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Quiz &amp; assessment</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Sertifikat digital</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Akses selamanya</li>
+                                            <li class="mb-2 text-muted"><i class="fa fa-times text-danger me-2"></i>Sesi tatap muka</li>
+                                            <li class="mb-2 text-muted"><i class="fa fa-times text-danger me-2"></i>Mentoring 1-on-1</li>
+                                        </ul>
+                                        <a href="/courses" class="btn btn-outline-primary w-100 mt-3">Pilih Kursus</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Professional Plan -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card border-primary border-2 shadow rounded-3 h-100 text-center p-4 position-relative">
+                                    <span class="badge bg-primary position-absolute top-0 start-50 translate-middle px-3 py-2">
+                                        Most Popular
+                                    </span>
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-star fa-lg text-primary"></i>
+                                        </div>
+                                        <h5 class="fw-bold">Professional</h5>
+                                        <p class="text-muted small">Untuk profesional yang serius berkembang</p>
+                                        <div class="my-4">
+                                            <h2 class="fw-bold text-primary mb-0">Rp 799.000</h2>
+                                            <small class="text-muted">per kursus (hybrid)</small>
+                                        </div>
+                                        <ul class="list-unstyled text-start text-muted small flex-grow-1">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Akses 1 kursus hybrid</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Materi video &amp; dokumen</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Quiz &amp; assessment</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Sertifikat digital</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Akses selamanya</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>1x sesi tatap muka</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Forum diskusi</li>
+                                        </ul>
+                                        <a href="/courses?mode=hybrid" class="btn btn-primary w-100 mt-3">Pilih Kursus Hybrid</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Enterprise Plan -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card border-0 shadow-sm rounded-3 h-100 text-center p-4">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="bg-dark bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-building fa-lg text-dark"></i>
+                                        </div>
+                                        <h5 class="fw-bold">Enterprise</h5>
+                                        <p class="text-muted small">Untuk perusahaan &amp; organisasi</p>
+                                        <div class="my-4">
+                                            <h2 class="fw-bold text-dark mb-0">Custom</h2>
+                                            <small class="text-muted">hubungi kami</small>
+                                        </div>
+                                        <ul class="list-unstyled text-start text-muted small flex-grow-1">
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Bulk voucher codes</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Custom learning path</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Dedicated account manager</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Progress reporting</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Sertifikat co-branded</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Sesi tatap muka unlimited</li>
+                                            <li class="mb-2"><i class="fa fa-check text-success me-2"></i>Priority support</li>
+                                        </ul>
+                                        <a href="/corporate-training" class="btn btn-dark w-100 mt-3">Hubungi Kami</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section class="bg-light py-5">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h3 class="fw-bold">Pertanyaan Umum</h3>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="accordion" id="pricingFaq">
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq1">
+                                                Apakah sertifikat berlaku selamanya?
+                                            </button>
+                                        </h2>
+                                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#pricingFaq">
+                                            <div class="accordion-body text-muted">
+                                                Ya, sertifikat digital yang Anda peroleh berlaku selamanya dan dapat
+                                                diverifikasi kapan saja melalui halaman verifikasi kami.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq2">
+                                                Bagaimana cara menggunakan voucher?
+                                            </button>
+                                        </h2>
+                                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#pricingFaq">
+                                            <div class="accordion-body text-muted">
+                                                Setelah login, klik "Redeem Code" di navbar atau akses halaman
+                                                /my-learning/redeem. Masukkan kode voucher Anda dan kursus akan
+                                                otomatis terbuka.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq3">
+                                                Apa perbedaan mode Online dan Hybrid?
+                                            </button>
+                                        </h2>
+                                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#pricingFaq">
+                                            <div class="accordion-body text-muted">
+                                                Mode Online sepenuhnya mandiri melalui platform. Mode Hybrid
+                                                menggabungkan materi online dengan sesi tatap muka yang wajib
+                                                dihadiri untuk mendapatkan sertifikat.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq4">
+                                                Apakah ada refund policy?
+                                            </button>
+                                        </h2>
+                                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#pricingFaq">
+                                            <div class="accordion-body text-muted">
+                                                Kami menyediakan garansi 7 hari. Jika Anda tidak puas dengan kursus,
+                                                hubungi tim support kami untuk proses refund.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

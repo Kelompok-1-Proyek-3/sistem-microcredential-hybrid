@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Certificate PDF Report Action                                -->
+    <!-- ============================================================ -->
+
+    <record id="action_report_certificate" model="ir.actions.report">
+        <field name="name">IMPC Certificate</field>
+        <field name="model">impc.certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">impc_website.report_certificate_document</field>
+        <field name="report_file">impc_website.report_certificate_document</field>
+        <field name="print_report_name">'Certificate - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_impc_certificate"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

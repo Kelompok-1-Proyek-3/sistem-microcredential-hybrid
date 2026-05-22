@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Redeem Code Backend Views                                    -->
+    <!-- ============================================================ -->
+
+    <!-- Redeem Code Tree View -->
+    <record id="view_impc_redeem_code_tree" model="ir.ui.view">
+        <field name="name">impc.redeem.code.tree</field>
+        <field name="model">impc.redeem.code</field>
+        <field name="arch" type="xml">
+            <list string="Redeem Codes" decoration-success="state == 'active'" decoration-muted="state in ('expired', 'revoked')" decoration-info="state == 'claimed'">
+                <field name="code"/>
+                <field name="course_id"/>
+                <field name="batch_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-info="state == 'claimed'" decoration-danger="state == 'expired'" decoration-warning="state == 'revoked'"/>
+                <field name="claimed_by"/>
+                <field name="claimed_date"/>
+                <field name="expiry_date"/>
+                <field name="company_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Redeem Code Form View -->
+    <record id="view_impc_redeem_code_form" model="ir.ui.view">
+        <field name="name">impc.redeem.code.form</field>
+        <field name="model">impc.redeem.code</field>
+        <field name="arch" type="xml">
+            <form string="Redeem Code">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="active,claimed,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Code Details">
+                            <field name="course_id"/>
+                            <field name="batch_id"/>
+                            <field name="expiry_date"/>
+                            <field name="company_id"/>
+                        </group>
+                        <group string="Claim Information">
+                            <field name="claimed_by"/>
+                            <field name="claimed_date"/>
+                            <field name="channel_partner_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Redeem Code Search View -->
+    <record id="view_impc_redeem_code_search" model="ir.ui.view">
+        <field name="name">impc.redeem.code.search</field>
+        <field name="model">impc.redeem.code</field>
+        <field name="arch" type="xml">
+            <search string="Search Redeem Codes">
+                <field name="code"/>
+                <field name="course_id"/>
+                <field name="batch_id"/>
+                <field name="claimed_by"/>
+                <separator/>
+                <filter name="active_codes" string="Active" domain="[('state', '=', 'active')]"/>
+                <filter name="claimed_codes" string="Claimed" domain="[('state', '=', 'claimed')]"/>
+                <filter name="expired_codes" string="Expired" domain="[('state', '=', 'expired')]"/>
+                <separator/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_course" string="Course" context="{'group_by': 'course_id'}"/>
+                    <filter name="group_batch" string="Batch" context="{'group_by': 'batch_id'}"/>
+                    <filter name="group_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Redeem Code Action -->
+    <record id="action_impc_redeem_code" model="ir.actions.act_window">
+        <field name="name">Redeem Codes</field>
+        <field name="res_model">impc.redeem.code</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_impc_redeem_code_search"/>
+        <field name="context">{'search_default_active_codes': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No redeem codes yet
+            </p>
+            <p>
+                Generate redeem codes through batches for B2B corporate enrollment.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Redeem Code Batch Backend Views                              -->
+    <!-- ============================================================ -->
+
+    <!-- Batch Tree View -->
+    <record id="view_impc_redeem_code_batch_tree" model="ir.ui.view">
+        <field name="name">impc.redeem.code.batch.tree</field>
+        <field name="model">impc.redeem.code.batch</field>
+        <field name="arch" type="xml">
+            <list string="Redeem Code Batches">
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="partner_id"/>
+                <field name="quantity"/>
+                <field name="codes_active"/>
+                <field name="codes_claimed"/>
+                <field name="expiry_date"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'generated'" decoration-warning="state == 'distributed'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Batch Form View -->
+    <record id="view_impc_redeem_code_batch_form" model="ir.ui.view">
+        <field name="name">impc.redeem.code.batch.form</field>
+        <field name="model">impc.redeem.code.batch</field>
+        <field name="arch" type="xml">
+            <form string="Redeem Code Batch">
+                <header>
+                    <button name="action_generate_codes" string="Generate Codes" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_mark_distributed" string="Mark as Distributed" type="object"
+                            class="btn-secondary" invisible="state != 'generated'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,generated,distributed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Batch Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Batch Configuration">
+                            <field name="course_id"/>
+                            <field name="partner_id"/>
+                            <field name="quantity" readonly="state != 'draft'"/>
+                            <field name="expiry_date"/>
+                        </group>
+                        <group string="Statistics">
+                            <field name="codes_total"/>
+                            <field name="codes_active"/>
+                            <field name="codes_claimed"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Generated Codes" name="codes">
+                            <field name="code_ids">
+                                <list string="Codes" editable="bottom">
+                                    <field name="code"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="claimed_by"/>
+                                    <field name="claimed_date"/>
+                                    <field name="expiry_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Batch Action -->
+    <record id="action_impc_redeem_code_batch" model="ir.actions.act_window">
+        <field name="name">Redeem Code Batches</field>
+        <field name="res_model">impc.redeem.code.batch</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first batch of redeem codes
+            </p>
+            <p>
+                Generate bulk voucher codes for B2B corporate partners.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Corporate Training Page                                 -->
+    <!-- ============================================================ -->
+
+    <template id="corporate_page" name="IMPC Corporate Training">
+        <t t-call="website.layout">
+            <t t-set="title">Corporate Training - IMPC Microcredential</t>
+
+            <div class="impc-corporate-page">
+
+                <!-- Hero -->
+                <section class="bg-dark text-white py-5">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <span class="badge bg-warning text-dark px-3 py-2 mb-3 rounded-pill">
+                                    B2B Program
+                                </span>
+                                <h1 class="fw-bold mb-3">
+                                    Tingkatkan Kompetensi Tim Anda dengan Program Corporate
+                                </h1>
+                                <p class="lead opacity-75 mb-4">
+                                    Solusi pelatihan terstruktur untuk perusahaan yang ingin
+                                    meningkatkan skill karyawan secara terukur dan tersertifikasi.
+                                </p>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <a href="#contact-form" class="btn btn-warning btn-lg px-4 text-dark fw-bold">
+                                        <i class="fa fa-envelope me-2"></i>Hubungi Kami
+                                    </a>
+                                    <a href="/courses" class="btn btn-outline-light btn-lg px-4">
+                                        Lihat Katalog
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 d-none d-lg-block text-center">
+                                <div class="card bg-white bg-opacity-10 border-0 p-4 rounded-3">
+                                    <div class="row text-center g-3">
+                                        <div class="col-6">
+                                            <h3 class="fw-bold text-warning mb-0">50+</h3>
+                                            <small class="opacity-75">Corporate Partners</small>
+                                        </div>
+                                        <div class="col-6">
+                                            <h3 class="fw-bold text-warning mb-0">5000+</h3>
+                                            <small class="opacity-75">Karyawan Terlatih</small>
+                                        </div>
+                                        <div class="col-6">
+                                            <h3 class="fw-bold text-warning mb-0">95%</h3>
+                                            <small class="opacity-75">Completion Rate</small>
+                                        </div>
+                                        <div class="col-6">
+                                            <h3 class="fw-bold text-warning mb-0">4.8/5</h3>
+                                            <small class="opacity-75">Satisfaction</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Benefits -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold">Mengapa Memilih IMPC Corporate?</h2>
+                            <p class="text-muted">Solusi lengkap untuk pengembangan SDM perusahaan Anda</p>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 rounded-3">
+                                    <div class="bg-primary bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-ticket fa-lg text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Voucher System</h5>
+                                    <p class="text-muted small">
+                                        Beli voucher dalam jumlah besar dan distribusikan ke karyawan.
+                                        Tracking penggunaan real-time melalui dashboard.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 rounded-3">
+                                    <div class="bg-success bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-line-chart fa-lg text-success"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Progress Tracking</h5>
+                                    <p class="text-muted small">
+                                        Monitor progress belajar seluruh tim secara real-time.
+                                        Laporan completion rate dan sertifikasi per departemen.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 rounded-3">
+                                    <div class="bg-warning bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-cogs fa-lg text-warning"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Custom Learning Path</h5>
+                                    <p class="text-muted small">
+                                        Kurikulum disesuaikan dengan kebutuhan spesifik perusahaan.
+                                        Kombinasi kursus online dan sesi tatap muka.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 rounded-3">
+                                    <div class="bg-info bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-certificate fa-lg text-info"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Sertifikasi Terverifikasi</h5>
+                                    <p class="text-muted small">
+                                        Sertifikat digital dengan QR code yang dapat diverifikasi
+                                        secara publik. Co-branding dengan logo perusahaan.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 rounded-3">
+                                    <div class="bg-danger bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-users fa-lg text-danger"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Hybrid Sessions</h5>
+                                    <p class="text-muted small">
+                                        Sesi tatap muka dengan instruktur berpengalaman.
+                                        Dapat dilaksanakan di lokasi perusahaan (in-house training).
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 rounded-3">
+                                    <div class="bg-dark bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-headphones fa-lg text-dark"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Dedicated Support</h5>
+                                    <p class="text-muted small">
+                                        Account manager khusus untuk membantu perencanaan
+                                        dan pelaksanaan program pelatihan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How It Works -->
+                <section class="bg-light py-5">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold">Alur Kerjasama</h2>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-3 text-center">
+                                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm mb-3"
+                                     style="width: 60px; height: 60px;">
+                                    <span class="fw-bold text-primary">1</span>
+                                </div>
+                                <h6 class="fw-bold">Konsultasi</h6>
+                                <p class="text-muted small">Diskusi kebutuhan pelatihan dan target kompetensi</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm mb-3"
+                                     style="width: 60px; height: 60px;">
+                                    <span class="fw-bold text-primary">2</span>
+                                </div>
+                                <h6 class="fw-bold">Proposal</h6>
+                                <p class="text-muted small">Penyusunan program dan penawaran harga</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm mb-3"
+                                     style="width: 60px; height: 60px;">
+                                    <span class="fw-bold text-primary">3</span>
+                                </div>
+                                <h6 class="fw-bold">Distribusi Voucher</h6>
+                                <p class="text-muted small">Generate dan distribusi kode akses ke karyawan</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm mb-3"
+                                     style="width: 60px; height: 60px;">
+                                    <span class="fw-bold text-primary">4</span>
+                                </div>
+                                <h6 class="fw-bold">Monitoring</h6>
+                                <p class="text-muted small">Tracking progress dan laporan sertifikasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact Form -->
+                <section class="py-5" id="contact-form">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="text-center mb-4">
+                                    <h2 class="fw-bold">Hubungi Tim Corporate Kami</h2>
+                                    <p class="text-muted">
+                                        Isi form di bawah dan tim kami akan menghubungi Anda dalam 1x24 jam.
+                                    </p>
+                                </div>
+                                <div class="card border-0 shadow-sm rounded-3 p-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Nama Lengkap</label>
+                                            <input type="text" class="form-control" placeholder="Nama Anda"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Perusahaan</label>
+                                            <input type="text" class="form-control" placeholder="Nama Perusahaan"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Email</label>
+                                            <input type="email" class="form-control" placeholder="email@company.com"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Telepon</label>
+                                            <input type="tel" class="form-control" placeholder="+62 xxx xxxx xxxx"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Jumlah Karyawan</label>
+                                            <select class="form-select">
+                                                <option>10 - 50</option>
+                                                <option>51 - 100</option>
+                                                <option>101 - 500</option>
+                                                <option>500+</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Budget Range</label>
+                                            <select class="form-select">
+                                                <option>Rp 5 - 20 Juta</option>
+                                                <option>Rp 20 - 50 Juta</option>
+                                                <option>Rp 50 - 100 Juta</option>
+                                                <option>Rp 100 Juta+</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small fw-bold">Kebutuhan Pelatihan</label>
+                                            <textarea class="form-control" rows="4"
+                                                      placeholder="Jelaskan kebutuhan pelatihan perusahaan Anda..."></textarea>
+                                        </div>
+                                        <div class="col-12 text-center mt-3">
+                                            <button type="button" class="btn btn-primary btn-lg px-5">
+                                                <i class="fa fa-paper-plane me-2"></i>Kirim Permintaan
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

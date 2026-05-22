@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Certificate PDF QWeb Template                                -->
+    <!-- ============================================================ -->
+
+    <template id="report_certificate_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="padding: 0; margin: 0;">
+
+                        <!-- Certificate Container -->
+                        <div style="border: 3px solid #1a237e; padding: 40px; margin: 20px; min-height: 500px; position: relative; background: linear-gradient(135deg, #fafbff 0%, #f0f4ff 100%);">
+
+                            <!-- Corner Decorations -->
+                            <div style="position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-top: 3px solid #0d47a1; border-left: 3px solid #0d47a1;"></div>
+                            <div style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-top: 3px solid #0d47a1; border-right: 3px solid #0d47a1;"></div>
+                            <div style="position: absolute; bottom: 10px; left: 10px; width: 40px; height: 40px; border-bottom: 3px solid #0d47a1; border-left: 3px solid #0d47a1;"></div>
+                            <div style="position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px; border-bottom: 3px solid #0d47a1; border-right: 3px solid #0d47a1;"></div>
+
+                            <!-- Header -->
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <h2 style="color: #1a237e; font-size: 18px; margin: 0; letter-spacing: 3px; text-transform: uppercase;">
+                                    Indonesia Microcredential Platform Center
+                                </h2>
+                                <p style="color: #666; font-size: 11px; margin: 5px 0 0 0;">IMPC</p>
+                            </div>
+
+                            <!-- Certificate Title -->
+                            <div style="text-align: center; margin: 30px 0;">
+                                <h1 style="color: #0d47a1; font-size: 32px; font-weight: bold; margin: 0; font-family: serif;">
+                                    Certificate of Completion
+                                </h1>
+                                <div style="width: 100px; height: 3px; background-color: #0d47a1; margin: 15px auto;"></div>
+                            </div>
+
+                            <!-- Presented To -->
+                            <div style="text-align: center; margin: 20px 0;">
+                                <p style="color: #666; font-size: 14px; margin: 0 0 10px 0;">
+                                    This is to certify that
+                                </p>
+                                <h2 style="color: #1a237e; font-size: 28px; font-weight: bold; margin: 0; font-family: serif; border-bottom: 2px solid #0d47a1; display: inline-block; padding: 0 30px 5px 30px;">
+                                    <t t-out="doc.partner_id.name"/>
+                                </h2>
+                            </div>
+
+                            <!-- Course Info -->
+                            <div style="text-align: center; margin: 25px 0;">
+                                <p style="color: #666; font-size: 14px; margin: 0 0 10px 0;">
+                                    has successfully completed the course
+                                </p>
+                                <h3 style="color: #333; font-size: 20px; font-weight: bold; margin: 0;">
+                                    <t t-out="doc.channel_id.name"/>
+                                </h3>
+                                <t t-if="doc.channel_id.estimated_duration">
+                                    <p style="color: #666; font-size: 12px; margin: 5px 0 0 0;">
+                                        Duration: <t t-out="int(doc.channel_id.estimated_duration)"/> hours
+                                        | Level: <t t-out="(doc.channel_id.difficulty_level or 'beginner').capitalize()"/>
+                                    </p>
+                                </t>
+                            </div>
+
+                            <!-- Date & Signature Area -->
+                            <div style="margin-top: 40px;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <!-- QR Code -->
+                                        <td style="width: 25%; text-align: center; vertical-align: bottom;">
+                                            <t t-if="doc.qr_code">
+                                                <img t-att-src="'data:image/png;base64,' + doc.qr_code.decode('utf-8')"
+                                                     style="width: 90px; height: 90px;"/>
+                                            </t>
+                                            <p style="font-size: 8px; color: #999; margin: 5px 0 0 0;">Scan to verify</p>
+                                        </td>
+
+                                        <!-- Date -->
+                                        <td style="width: 50%; text-align: center; vertical-align: bottom;">
+                                            <p style="color: #666; font-size: 12px; margin: 0;">
+                                                Issued on
+                                            </p>
+                                            <p style="color: #333; font-size: 14px; font-weight: bold; margin: 5px 0 0 0;">
+                                                <t t-out="doc.completion_date" t-options="{'widget': 'date'}"/>
+                                            </p>
+                                        </td>
+
+                                        <!-- Certificate Number -->
+                                        <td style="width: 25%; text-align: center; vertical-align: bottom;">
+                                            <div style="border-top: 1px solid #ccc; padding-top: 5px;">
+                                                <p style="font-size: 10px; color: #666; margin: 0;">Certificate No.</p>
+                                                <p style="font-size: 11px; color: #333; font-weight: bold; margin: 3px 0 0 0;">
+                                                    <t t-out="doc.name"/>
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Verification Hash -->
+                            <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ccc;">
+                                <p style="font-size: 8px; color: #999; margin: 0; font-family: monospace;">
+                                    Verification: <t t-out="doc.verification_code"/>
+                                </p>
+                                <p style="font-size: 8px; color: #999; margin: 3px 0 0 0;">
+                                    Verify at: <t t-out="doc.verification_url"/>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

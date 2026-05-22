@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Student Dashboard                                       -->
+    <!-- ============================================================ -->
+
+    <template id="portal_dashboard" name="IMPC Student Dashboard">
+        <t t-call="website.layout">
+            <t t-set="title">My Learning - IMPC</t>
+
+            <div class="impc-dashboard py-4">
+                <div class="container">
+
+                    <!-- Welcome Banner -->
+                    <div class="card border-0 bg-primary text-white rounded-3 mb-4 overflow-hidden">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <h3 class="fw-bold mb-2">
+                                        Selamat Datang, <t t-out="request.env.user.name"/>!
+                                    </h3>
+                                    <p class="opacity-75 mb-3">
+                                        Lanjutkan perjalanan belajar Anda. Konsistensi adalah kunci keberhasilan.
+                                    </p>
+                                    <t t-if="continue_course">
+                                        <a t-attf-href="/slides/#{slug(continue_course.channel_id)}"
+                                           class="btn btn-light btn-sm px-4 fw-bold">
+                                            <i class="fa fa-play me-2"></i>Lanjutkan Belajar
+                                        </a>
+                                    </t>
+                                    <t t-else="">
+                                        <a href="/courses" class="btn btn-light btn-sm px-4 fw-bold">
+                                            <i class="fa fa-search me-2"></i>Jelajahi Kursus
+                                        </a>
+                                    </t>
+                                </div>
+                                <div class="col-lg-4 d-none d-lg-block text-end">
+                                    <i class="fa fa-graduation-cap fa-5x opacity-25"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center p-3">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-book fa-lg text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="fw-bold mb-0" t-out="total_in_progress"/>
+                                        <small class="text-muted">In Progress</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center p-3">
+                                    <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-check-circle fa-lg text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="fw-bold mb-0" t-out="total_completed"/>
+                                        <small class="text-muted">Completed</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center p-3">
+                                    <div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fa fa-certificate fa-lg text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="fw-bold mb-0" t-out="total_certificates"/>
+                                        <small class="text-muted">Certificates</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+
+                        <!-- Main Content -->
+                        <div class="col-lg-8">
+
+                            <!-- Continue Learning -->
+                            <t t-if="continue_course">
+                                <div class="card border-0 shadow-sm rounded-3 mb-4">
+                                    <div class="card-header bg-white border-0 pt-3 px-4">
+                                        <h5 class="fw-bold mb-0">
+                                            <i class="fa fa-play-circle text-primary me-2"></i>Lanjutkan Belajar
+                                        </h5>
+                                    </div>
+                                    <div class="card-body px-4 pb-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0 me-3">
+                                                <t t-if="continue_course.channel_id.image_512">
+                                                    <img t-attf-src="/web/image/slide.channel/#{continue_course.channel_id.id}/image_512"
+                                                         class="rounded-3" style="width: 80px; height: 80px; object-fit: cover;"
+                                                         t-att-alt="continue_course.channel_id.name"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center"
+                                                         style="width: 80px; height: 80px;">
+                                                        <i class="fa fa-book fa-2x text-primary"></i>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="fw-bold mb-1" t-out="continue_course.channel_id.name"/>
+                                                <div class="d-flex justify-content-between small mb-1">
+                                                    <span class="text-muted">Progress</span>
+                                                    <span class="fw-bold"><t t-out="continue_course.completion"/>%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-primary"
+                                                         t-attf-style="width: #{continue_course.completion}%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ms-3">
+                                                <a t-attf-href="/slides/#{slug(continue_course.channel_id)}"
+                                                   class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-play"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Enrolled Courses -->
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+                                    <h5 class="fw-bold mb-0">
+                                        <i class="fa fa-book text-primary me-2"></i>Kursus Saya
+                                    </h5>
+                                    <a href="/my-learning/courses" class="btn btn-outline-primary btn-sm">
+                                        Lihat Semua
+                                    </a>
+                                </div>
+                                <div class="card-body px-4 pb-4">
+                                    <t t-if="enrollments">
+                                        <t t-foreach="enrollments[:5]" t-as="enrollment">
+                                            <div class="d-flex align-items-center py-3 border-bottom">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <t t-if="enrollment.channel_id.image_512">
+                                                        <img t-attf-src="/web/image/slide.channel/#{enrollment.channel_id.id}/image_512"
+                                                             class="rounded" style="width: 50px; height: 50px; object-fit: cover;"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                                             style="width: 50px; height: 50px;">
+                                                            <i class="fa fa-book text-muted"></i>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1 small fw-bold" t-out="enrollment.channel_id.name"/>
+                                                    <div class="progress" style="height: 5px;">
+                                                        <div class="progress-bar"
+                                                             t-attf-class="bg-#{enrollment.member_status == 'completed' and 'success' or 'primary'}"
+                                                             t-attf-style="width: #{enrollment.completion}%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-3 text-end">
+                                                    <span t-attf-class="badge bg-#{enrollment.member_status == 'completed' and 'success' or enrollment.member_status == 'ongoing' and 'primary' or 'secondary'} bg-opacity-10 text-#{enrollment.member_status == 'completed' and 'success' or enrollment.member_status == 'ongoing' and 'primary' or 'secondary'}">
+                                                        <t t-out="enrollment.completion"/>%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                    <t t-if="not enrollments">
+                                        <div class="text-center py-4">
+                                            <i class="fa fa-book fa-2x text-muted mb-2"></i>
+                                            <p class="text-muted mb-2">Belum ada kursus yang diikuti.</p>
+                                            <a href="/courses" class="btn btn-primary btn-sm">Jelajahi Kursus</a>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar -->
+                        <div class="col-lg-4">
+
+                            <!-- Quick Actions -->
+                            <div class="card border-0 shadow-sm rounded-3 mb-4">
+                                <div class="card-body p-3">
+                                    <h6 class="fw-bold mb-3">Quick Actions</h6>
+                                    <div class="d-grid gap-2">
+                                        <a href="/my-learning/redeem" class="btn btn-outline-success btn-sm text-start">
+                                            <i class="fa fa-ticket me-2"></i>Redeem Voucher
+                                        </a>
+                                        <a href="/courses" class="btn btn-outline-primary btn-sm text-start">
+                                            <i class="fa fa-search me-2"></i>Browse Courses
+                                        </a>
+                                        <a href="/my-learning/certificates" class="btn btn-outline-warning btn-sm text-start">
+                                            <i class="fa fa-certificate me-2"></i>My Certificates
+                                        </a>
+                                        <a href="/my-learning/events" class="btn btn-outline-info btn-sm text-start">
+                                            <i class="fa fa-calendar me-2"></i>My Events
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Certificates -->
+                            <t t-if="certificates">
+                                <div class="card border-0 shadow-sm rounded-3 mb-4">
+                                    <div class="card-body p-3">
+                                        <h6 class="fw-bold mb-3">
+                                            <i class="fa fa-certificate text-warning me-2"></i>Sertifikat Terbaru
+                                        </h6>
+                                        <t t-foreach="certificates[:3]" t-as="cert">
+                                            <div class="d-flex align-items-center py-2 border-bottom">
+                                                <div class="bg-warning bg-opacity-10 rounded p-2 me-2">
+                                                    <i class="fa fa-certificate text-warning small"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <small class="fw-bold d-block" t-out="cert.channel_id.name"/>
+                                                    <small class="text-muted" t-out="cert.name"/>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Upcoming Events -->
+                            <t t-if="upcoming_events">
+                                <div class="card border-0 shadow-sm rounded-3">
+                                    <div class="card-body p-3">
+                                        <h6 class="fw-bold mb-3">
+                                            <i class="fa fa-calendar text-info me-2"></i>Upcoming Events
+                                        </h6>
+                                        <t t-foreach="upcoming_events" t-as="ev">
+                                            <div class="d-flex align-items-center py-2 border-bottom">
+                                                <div class="bg-info bg-opacity-10 rounded p-2 me-2">
+                                                    <i class="fa fa-map-marker text-info small"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <small class="fw-bold d-block" t-out="ev['event'].name"/>
+                                                    <small class="text-muted">
+                                                        <t t-out="ev['event'].date_begin" t-options="{'widget': 'date'}"/>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

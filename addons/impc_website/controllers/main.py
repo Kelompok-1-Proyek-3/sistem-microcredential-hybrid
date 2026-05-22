@@ -1,147 +1,148 @@
-"""
-IMPC Website Controllers
-"""
-
 from odoo import http
 from odoo.http import request
 
 
-class ImpcPublicController(http.Controller):
-    """Public website routes for IMPC"""
+class IMPCWebsiteController(http.Controller):
+    """Public website controller for IMPC Microcredential Platform."""
 
-    @http.route('/impc', type='http', auth='public', website=True)
-    def homepage(self, **kwargs):
-        """GET /impc - Public homepage with featured courses"""
-        context = {}
-        
-        try:
-            # Get featured courses (limit to 6)
-            courses = request.env['elearning.course'].sudo().search(
-                [],
-                order='create_date desc',
-                limit=6
-            )
-            context['courses'] = courses
-        except KeyError:
-            context['courses'] = []
-        
-        try:
-            # Get course categories
-            categories = request.env['elearning.category'].sudo().search([])
-            context['categories'] = categories
-        except KeyError:
-            context['categories'] = []
-        
-        try:
-            # Get stats
-            total_courses = request.env['elearning.course'].sudo().search_count([])
-            context['total_courses'] = total_courses
-        except KeyError:
-            context['total_courses'] = 0
-        
-        try:
-            # Get total students (count partners with student category or check enrollments)
-            total_students = request.env['elearning.enrollment'].sudo().search_count([])
-            context['total_students'] = total_students
-        except KeyError:
-            context['total_students'] = 0
-        
-        # Try to render - with fallback to plain response for debugging
-        try:
-            return request.render('impc_website.impc_homepage', context)
-        except Exception as e:
-            # If template not found, return debug info
-            return f"<h1>DEBUG: Template Error</h1><p>Error: {str(e)}</p><p>Context: {context}</p>"
+    @http.route('/', type='http', auth='public', website=True)
+    def homepage(self, **kw):
+        """Landing page with featured courses, stats, and CTA."""
+        SlideChannel = request.env['slide.channel'].sudo()
 
-    @http.route('/impc/courses', type='http', auth='public', website=True)
-    def courses(self, **kwargs):
-        """GET /impc/courses - Course catalog with search/filter/sort"""
-        context = {}
-        
-        # Get search/filter/sort parameters
-        search_query = kwargs.get('search', '')
-        category_id = kwargs.get('category', '')
-        difficulty = kwargs.get('difficulty', '')
-        sort = kwargs.get('sort', 'newest')
-        
-        try:
-            # Build domain for search
-            domain = []
-            if search_query:
-                domain.append(('name', 'ilike', search_query))
-            
-            if category_id:
-                try:
-                    category_id = int(category_id)
-                    domain.append(('category_id', '=', category_id))
-                except (ValueError, TypeError):
-                    pass
-            
-            if difficulty:
-                domain.append(('difficulty', '=', difficulty))
-            
-            # Determine sort order
-            order = 'create_date desc'
-            if sort == 'popular':
-                order = 'student_count desc'
-            elif sort == 'rating':
-                order = 'average_rating desc'
-            elif sort == 'name':
-                order = 'name asc'
-            
-            # Query courses
-            courses = request.env['elearning.course'].sudo().search(
-                domain,
-                order=order
-            )
-            context['courses'] = courses
-        except KeyError:
-            context['courses'] = []
-        
-        try:
-            # Get all categories for filter dropdown
-            categories = request.env['elearning.category'].sudo().search([])
-            context['categories'] = categories
-        except KeyError:
-            context['categories'] = []
-        
-        # Get current filters/search for template
-        context['search_query'] = search_query
-        context['current_category'] = category_id if category_id else ''
-        context['current_difficulty'] = difficulty if difficulty else ''
-        context['current_sort'] = sort
-        
-        return request.render('impc_website.impc_courses', context)
+        featured_courses = SlideChannel.search([
+            ('is_published', '=', True),
+            ('is_featured', '=', True),
+        ], limit=6, order='create_date desc')
 
-    @http.route('/impc/dashboard', type='http', auth='user', website=True)
-    def dashboard(self, **kwargs):
-        """GET /impc/dashboard - Student dashboard (auth required)"""
-        user = request.env.user
-        context = {'user': user}
-        
-        try:
-            # Get enrolled courses for current user
-            enrollments = request.env['elearning.enrollment'].sudo().search(
-                [('student_id', '=', user.partner_id.id)]
-            )
-            enrolled_courses = enrollments.mapped('course_id')
-            context['enrolled_courses'] = enrolled_courses
-            context['total_enrolled'] = len(enrollments)
-            context['in_progress'] = len(enrollments.filtered(lambda e: not hasattr(e, 'completion_date') or not e.completion_date))
-        except KeyError:
-            context['enrolled_courses'] = []
-            context['total_enrolled'] = 0
-            context['in_progress'] = 0
-        
-        try:
-            # Get completed certificates
-            certificates = request.env['elearning.certificate'].sudo().search(
-                [('student_id', '=', user.partner_id.id)]
-            )
-            context['certificates'] = certificates
-            context['total_completed'] = len(certificates)
-        except KeyError:
-            context['certificates'] = []
-            context['total_completed'] = 0
-        
-        return request.render('impc_website.impc_dashboard', context)
+        # Fallback: if no featured, show latest published
+        if not featured_courses:
+            featured_courses = SlideChannel.search([
+                ('is_published', '=', True),
+            ], limit=6, order='create_date desc')
+
+        # Stats
+        total_courses = SlideChannel.search_count([('is_published', '=', True)])
+        total_students = request.env['slide.channel.partner'].sudo().search_count([
+            ('member_status', 'in', ['joined', 'ongoing', 'completed']),
+        ])
+        total_certificates = request.env['impc.certificate'].sudo().search_count([
+            ('state', '=', 'issued'),
+        ])
+
+        # Categories (tags)
+        categories = request.env['slide.channel.tag'].sudo().search([], limit=8)
+
+        values = {
+            'featured_courses': featured_courses,
+            'total_courses': total_courses,
+            'total_students': total_students,
+            'total_certificates': total_certificates,
+            'categories': categories,
+        }
+        return request.render('impc_website.homepage', values)
+
+    @http.route('/courses', type='http', auth='public', website=True, sitemap=True)
+    def courses(self, search='', category=None, level=None, mode=None, sort='newest', page=1, **kw):
+        """Course catalog with search, filter, and pagination."""
+        SlideChannel = request.env['slide.channel'].sudo()
+        result = SlideChannel.search_published_courses(
+            search=search, category=category, level=level,
+            mode=mode, sort=sort, page=page,
+        )
+
+        all_categories = request.env['slide.channel.tag'].sudo().search([])
+
+        values = {
+            **result,
+            'search': search,
+            'category': category,
+            'level': level,
+            'mode': mode,
+            'sort': sort,
+            'all_categories': all_categories,
+        }
+        return request.render('impc_website.courses_catalog', values)
+
+    @http.route('/courses/<model("slide.channel"):course>', type='http', auth='public', website=True, sitemap=True)
+    def course_detail(self, course, **kw):
+        """Single course detail page with syllabus, pricing, and enrollment."""
+        if not course.is_published and not request.env.user.has_group('website.group_website_designer'):
+            return request.redirect('/courses')
+
+        # Check if current user is enrolled
+        is_enrolled = False
+        enrollment = None
+        if not request.env.user._is_public():
+            enrollment = request.env['slide.channel.partner'].sudo().search([
+                ('channel_id', '=', course.id),
+                ('partner_id', '=', request.env.user.partner_id.id),
+            ], limit=1)
+            is_enrolled = bool(enrollment)
+
+        # Course content (slides grouped by category)
+        categories = request.env['slide.slide'].sudo().search([
+            ('channel_id', '=', course.id),
+            ('is_category', '=', True),
+        ], order='sequence')
+
+        slides = request.env['slide.slide'].sudo().search([
+            ('channel_id', '=', course.id),
+            ('is_category', '=', False),
+            ('is_published', '=', True),
+        ], order='sequence')
+
+        # Related courses
+        related_courses = request.env['slide.channel'].sudo().search([
+            ('is_published', '=', True),
+            ('id', '!=', course.id),
+            ('tag_ids', 'in', course.tag_ids.ids),
+        ], limit=3)
+
+        values = {
+            'course': course,
+            'is_enrolled': is_enrolled,
+            'enrollment': enrollment,
+            'categories': categories,
+            'slides': slides,
+            'related_courses': related_courses,
+        }
+        return request.render('impc_website.course_detail', values)
+
+    @http.route('/pricing', type='http', auth='public', website=True, sitemap=True)
+    def pricing(self, **kw):
+        """Pricing packages page."""
+        return request.render('impc_website.pricing_page', {})
+
+    @http.route('/about', type='http', auth='public', website=True, sitemap=True)
+    def about(self, **kw):
+        """About IMPC page."""
+        return request.render('impc_website.about_page', {})
+
+    @http.route('/corporate-training', type='http', auth='public', website=True, sitemap=True)
+    def corporate_training(self, **kw):
+        """Corporate/B2B training page."""
+        return request.render('impc_website.corporate_page', {})
+
+    @http.route('/verify-certificate', type='http', auth='public', website=True, sitemap=True)
+    def verify_certificate_form(self, code=None, **kw):
+        """Certificate verification form page. Also handles ?code= query param."""
+        if code:
+            return request.redirect(f'/verify-certificate/{code}')
+        return request.render('impc_website.verify_certificate_form', {})
+
+    @http.route('/verify-certificate/<string:code>', type='http', auth='public', website=True)
+    def verify_certificate(self, code, **kw):
+        """Certificate verification result page."""
+        certificate = request.env['impc.certificate'].sudo().search([
+            ('verification_code', '=', code),
+            ('state', '!=', 'draft'),
+        ], limit=1)
+
+        values = {
+            'certificate': certificate,
+            'code': code,
+            'found': bool(certificate),
+            'is_valid': certificate.state == 'issued' if certificate else False,
+        }
+        return request.render('impc_website.verify_certificate_result', values)

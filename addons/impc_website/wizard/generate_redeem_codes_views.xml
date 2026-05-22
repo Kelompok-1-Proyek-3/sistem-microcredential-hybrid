@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Generate Redeem Codes Wizard View                            -->
+    <!-- ============================================================ -->
+
+    <record id="view_generate_redeem_codes_wizard_form" model="ir.ui.view">
+        <field name="name">impc.generate.redeem.codes.wizard.form</field>
+        <field name="model">impc.generate.redeem.codes.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Redeem Codes">
+                <group>
+                    <group>
+                        <field name="batch_name"/>
+                        <field name="course_id"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <field name="quantity"/>
+                        <field name="expiry_date"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate Codes" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_generate_redeem_codes_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Redeem Codes</field>
+        <field name="res_model">impc.generate.redeem.codes.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

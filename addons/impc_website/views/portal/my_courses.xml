@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC My Courses Portal Page                                  -->
+    <!-- ============================================================ -->
+
+    <template id="portal_my_courses" name="IMPC My Courses">
+        <t t-call="website.layout">
+            <t t-set="title">My Courses - IMPC</t>
+
+            <div class="impc-my-courses py-4">
+                <div class="container">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h3 class="fw-bold mb-1">Kursus Saya</h3>
+                            <p class="text-muted mb-0">
+                                <t t-out="len(enrollments)"/> kursus
+                            </p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a t-attf-href="/my-learning/courses?status=all"
+                               t-attf-class="btn btn-sm #{status == 'all' and 'btn-primary' or 'btn-outline-secondary'}">
+                                All
+                            </a>
+                            <a t-attf-href="/my-learning/courses?status=in_progress"
+                               t-attf-class="btn btn-sm #{status == 'in_progress' and 'btn-primary' or 'btn-outline-secondary'}">
+                                In Progress
+                            </a>
+                            <a t-attf-href="/my-learning/courses?status=completed"
+                               t-attf-class="btn btn-sm #{status == 'completed' and 'btn-success' or 'btn-outline-secondary'}">
+                                Completed
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Course Grid -->
+                    <t t-if="enrollments">
+                        <div class="row g-4">
+                            <t t-foreach="enrollments" t-as="enrollment">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden">
+                                        <!-- Course Image -->
+                                        <div class="position-relative">
+                                            <t t-if="enrollment.channel_id.image_512">
+                                                <img t-attf-src="/web/image/slide.channel/#{enrollment.channel_id.id}/image_512"
+                                                     class="card-img-top" style="height: 150px; object-fit: cover;"
+                                                     t-att-alt="enrollment.channel_id.name"/>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
+                                                     style="height: 150px;">
+                                                    <i class="fa fa-book fa-3x text-primary opacity-50"></i>
+                                                </div>
+                                            </t>
+                                            <!-- Status Badge -->
+                                            <span class="badge position-absolute top-0 end-0 m-2"
+                                                  t-attf-class="bg-#{enrollment.member_status == 'completed' and 'success' or enrollment.member_status == 'ongoing' and 'primary' or 'secondary'}">
+                                                <t t-if="enrollment.member_status == 'completed'">Completed</t>
+                                                <t t-elif="enrollment.member_status == 'ongoing'">In Progress</t>
+                                                <t t-else="">Joined</t>
+                                            </span>
+                                            <!-- Mode Badge -->
+                                            <span class="badge position-absolute top-0 start-0 m-2"
+                                                  t-attf-class="bg-#{enrollment.channel_id.learning_mode == 'online' and 'success' or enrollment.channel_id.learning_mode == 'hybrid' and 'warning' or 'info'}">
+                                                <t t-out="(enrollment.channel_id.learning_mode or 'online').upper()"/>
+                                            </span>
+                                        </div>
+
+                                        <!-- Card Body -->
+                                        <div class="card-body d-flex flex-column p-3">
+                                            <h6 class="fw-bold mb-2" t-out="enrollment.channel_id.name"/>
+
+                                            <!-- Progress Bar -->
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between small mb-1">
+                                                    <span class="text-muted">Progress</span>
+                                                    <span class="fw-bold"><t t-out="enrollment.completion"/>%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar"
+                                                         t-attf-class="bg-#{enrollment.member_status == 'completed' and 'success' or 'primary'}"
+                                                         t-attf-style="width: #{enrollment.completion}%"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Meta -->
+                                            <div class="d-flex justify-content-between align-items-center small text-muted mb-3">
+                                                <span>
+                                                    <i class="fa fa-calendar me-1"></i>
+                                                    <t t-out="enrollment.enrollment_date" t-options="{'widget': 'date'}"/>
+                                                </span>
+                                                <span t-if="enrollment.enrollment_type == 'b2b_voucher'"
+                                                      class="badge bg-info bg-opacity-10 text-info">
+                                                    Voucher
+                                                </span>
+                                            </div>
+
+                                            <!-- Action Button -->
+                                            <div class="mt-auto">
+                                                <t t-if="enrollment.member_status == 'completed'">
+                                                    <div class="d-flex gap-2">
+                                                        <a t-attf-href="/slides/#{slug(enrollment.channel_id)}"
+                                                           class="btn btn-outline-primary btn-sm flex-grow-1">
+                                                            <i class="fa fa-eye me-1"></i>Review
+                                                        </a>
+                                                        <t t-if="enrollment.certificate_id">
+                                                            <a t-attf-href="/my-learning/certificate/#{enrollment.certificate_id.id}/download"
+                                                               class="btn btn-success btn-sm">
+                                                                <i class="fa fa-download"></i>
+                                                            </a>
+                                                        </t>
+                                                    </div>
+                                                </t>
+                                                <t t-else="">
+                                                    <a t-attf-href="/slides/#{slug(enrollment.channel_id)}"
+                                                       class="btn btn-primary btn-sm w-100">
+                                                        <i class="fa fa-play me-1"></i>Continue Learning
+                                                    </a>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- Empty State -->
+                    <t t-if="not enrollments">
+                        <div class="text-center py-5">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                 style="width: 100px; height: 100px;">
+                                <i class="fa fa-book fa-3x text-muted"></i>
+                            </div>
+                            <h5 class="text-muted">Belum ada kursus</h5>
+                            <p class="text-muted">
+                                <t t-if="status == 'completed'">
+                                    Anda belum menyelesaikan kursus apapun.
+                                </t>
+                                <t t-elif="status == 'in_progress'">
+                                    Tidak ada kursus yang sedang berjalan.
+                                </t>
+                                <t t-else="">
+                                    Mulai perjalanan belajar Anda dengan mendaftar kursus.
+                                </t>
+                            </p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="/courses" class="btn btn-primary">Jelajahi Kursus</a>
+                                <a href="/my-learning/redeem" class="btn btn-outline-success">Redeem Voucher</a>
+                            </div>
+                        </div>
+                    </t>
+
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Slide Channel (Course) Backend View Extensions               -->
+    <!-- ============================================================ -->
+
+    <!-- Extend slide.channel form view -->
+    <record id="view_slide_channel_form_impc" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
+        <field name="arch" type="xml">
+            <!-- Add IMPC tab in the notebook -->
+            <xpath expr="//page[@name='options']" position="after">
+                <page string="IMPC Settings" name="impc_settings">
+                    <group>
+                        <group string="Learning Mode">
+                            <field name="learning_mode"/>
+                            <field name="event_id" required="learning_mode in ('hybrid', 'offline')" invisible="learning_mode == 'online'"/>
+                            <field name="event_date_begin" invisible="not event_id" readonly="1"/>
+                            <field name="event_date_end" invisible="not event_id" readonly="1"/>
+                            <field name="event_location" invisible="not event_id" readonly="1"/>
+                            <field name="difficulty_level"/>
+                            <field name="estimated_duration"/>
+                            <field name="sks_weight"/>
+                            <field name="is_featured"/>
+                        </group>
+                        <group string="Additional Info">
+                            <field name="instructor_ids" widget="many2many_tags"/>
+                            <field name="prerequisite_ids" widget="many2many_tags"/>
+                            <field name="enrolled_count"/>
+                            <field name="certificate_count"/>
+                        </group>
+                    </group>
+                    <group string="Content Description">
+                        <field name="short_description"/>
+                        <field name="target_audience"/>
+                        <field name="learning_outcomes"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extend slide.channel tree view -->
+    <record id="view_slide_channel_tree_impc" model="ir.ui.view">
+        <field name="name">slide.channel.tree.impc</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.slide_channel_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_published']" position="before">
+                <field name="learning_mode"/>
+                <field name="difficulty_level"/>
+                <field name="is_featured"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

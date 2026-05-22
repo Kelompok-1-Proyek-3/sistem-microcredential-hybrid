@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Certificate Verification Pages                          -->
+    <!-- ============================================================ -->
+
+    <!-- Verification Form -->
+    <template id="verify_certificate_form" name="IMPC Verify Certificate Form">
+        <t t-call="website.layout">
+            <t t-set="title">Verify Certificate - IMPC Microcredential</t>
+
+            <div class="impc-verify-page py-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="text-center mb-4">
+                                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                     style="width: 80px; height: 80px;">
+                                    <i class="fa fa-shield fa-2x text-primary"></i>
+                                </div>
+                                <h2 class="fw-bold">Verifikasi Sertifikat</h2>
+                                <p class="text-muted">
+                                    Masukkan kode verifikasi untuk memvalidasi keaslian sertifikat IMPC.
+                                </p>
+                            </div>
+                            <div class="card border-0 shadow-sm rounded-3 p-4">
+                                <form action="/verify-certificate" method="get" class="text-center">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Verification Code</label>
+                                        <input type="text" name="code" class="form-control form-control-lg text-center"
+                                               placeholder="Masukkan kode verifikasi (64 karakter)"
+                                               required="required" style="font-family: monospace;"/>
+                                        <small class="text-muted">
+                                            Kode dapat ditemukan di sertifikat atau hasil scan QR code.
+                                        </small>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fa fa-search me-2"></i>Verifikasi
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Verification Result -->
+    <template id="verify_certificate_result" name="IMPC Verify Certificate Result">
+        <t t-call="website.layout">
+            <t t-set="title">Certificate Verification Result - IMPC</t>
+
+            <div class="impc-verify-result py-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+
+                            <!-- Valid Certificate -->
+                            <t t-if="found and is_valid">
+                                <div class="card border-success border-2 shadow rounded-3 overflow-hidden">
+                                    <div class="bg-success text-white p-4 text-center">
+                                        <i class="fa fa-check-circle fa-3x mb-2"></i>
+                                        <h3 class="fw-bold mb-0">Sertifikat Valid</h3>
+                                        <p class="opacity-75 mb-0">Sertifikat ini terverifikasi dan sah.</p>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <table class="table table-borderless mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="fw-bold text-muted" style="width: 40%;">Nomor Sertifikat</td>
+                                                    <td t-out="certificate.name"/>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Nama Pemegang</td>
+                                                    <td t-out="certificate.partner_id.name"/>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Nama Kursus</td>
+                                                    <td t-out="certificate.channel_id.name"/>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Tanggal Selesai</td>
+                                                    <td>
+                                                        <t t-out="certificate.completion_date" t-options="{'widget': 'date'}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Status</td>
+                                                    <td><span class="badge bg-success">Valid &amp; Issued</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-bold text-muted">Diterbitkan Oleh</td>
+                                                    <td>IMPC - Indonesia Microcredential Platform Center</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Revoked Certificate -->
+                            <t t-if="found and not is_valid">
+                                <div class="card border-warning border-2 shadow rounded-3 overflow-hidden">
+                                    <div class="bg-warning text-dark p-4 text-center">
+                                        <i class="fa fa-exclamation-triangle fa-3x mb-2"></i>
+                                        <h3 class="fw-bold mb-0">Sertifikat Dicabut</h3>
+                                        <p class="mb-0">Sertifikat ini telah dicabut dan tidak lagi valid.</p>
+                                    </div>
+                                    <div class="card-body p-4 text-center">
+                                        <p class="text-muted">
+                                            Nomor sertifikat: <strong t-out="certificate.name"/>
+                                        </p>
+                                        <p class="text-muted small">
+                                            Jika Anda merasa ini adalah kesalahan, silakan hubungi tim IMPC.
+                                        </p>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Not Found -->
+                            <t t-if="not found">
+                                <div class="card border-danger border-2 shadow rounded-3 overflow-hidden">
+                                    <div class="bg-danger text-white p-4 text-center">
+                                        <i class="fa fa-times-circle fa-3x mb-2"></i>
+                                        <h3 class="fw-bold mb-0">Sertifikat Tidak Ditemukan</h3>
+                                        <p class="opacity-75 mb-0">Kode verifikasi tidak valid atau tidak terdaftar.</p>
+                                    </div>
+                                    <div class="card-body p-4 text-center">
+                                        <p class="text-muted">
+                                            Kode yang dimasukkan: <code t-out="code"/>
+                                        </p>
+                                        <p class="text-muted small">
+                                            Pastikan kode yang Anda masukkan benar. Kode verifikasi terdiri dari
+                                            64 karakter hexadecimal.
+                                        </p>
+                                        <a href="/verify-certificate" class="btn btn-outline-primary">
+                                            <i class="fa fa-arrow-left me-2"></i>Coba Lagi
+                                        </a>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Back Link -->
+                            <div class="text-center mt-4">
+                                <a href="/verify-certificate" class="text-muted text-decoration-none">
+                                    <i class="fa fa-arrow-left me-1"></i> Verifikasi sertifikat lain
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

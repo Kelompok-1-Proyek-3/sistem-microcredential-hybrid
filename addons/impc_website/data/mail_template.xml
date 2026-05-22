@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Mail Templates                                          -->
+    <!-- ============================================================ -->
+
+    <!-- Enrollment Confirmation Email -->
+    <record id="mail_template_enrollment_confirmation" model="mail.template">
+        <field name="name">IMPC: Enrollment Confirmation</field>
+        <field name="model_id" ref="website_slides.model_slide_channel_partner"/>
+        <field name="subject">Akses Kursus: {{ object.channel_id.name }} Telah Aktif</field>
+        <field name="email_from">{{ (object.channel_id.user_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                    <tr>
+                        <td style="background-color: #0d6efd; padding: 30px; text-align: center;">
+                            <h1 style="color: white; margin: 0;">IMPC Microcredential</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 30px; background-color: #ffffff;">
+                            <h2 style="color: #333;">Selamat, <t t-out="object.partner_id.name"/>!</h2>
+                            <p style="color: #666; line-height: 1.6;">
+                                Anda telah berhasil terdaftar di kursus:
+                            </p>
+                            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                <h3 style="color: #0d6efd; margin: 0 0 10px 0;">
+                                    <t t-out="object.channel_id.name"/>
+                                </h3>
+                                <p style="color: #666; margin: 0;">
+                                    Mode: <t t-out="(object.channel_id.learning_mode or 'online').capitalize()"/>
+                                    | Level: <t t-out="(object.channel_id.difficulty_level or 'beginner').capitalize()"/>
+                                </p>
+                            </div>
+                            <p style="color: #666; line-height: 1.6;">
+                                Anda dapat langsung memulai belajar dengan mengakses dashboard Anda:
+                            </p>
+                            <p style="text-align: center; margin: 30px 0;">
+                                <a href="/my-learning"
+                                   style="background-color: #0d6efd; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                    Mulai Belajar
+                                </a>
+                            </p>
+                            <p style="color: #999; font-size: 12px;">
+                                Jika Anda memiliki pertanyaan, hubungi kami di info@impc.id
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                            <p style="color: #999; font-size: 12px; margin: 0;">
+                                IMPC - Indonesia Microcredential Platform Center
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </field>
+        <field name="auto_delete">True</field>
+    </record>
+
+    <!-- Certificate Ready Email -->
+    <record id="mail_template_certificate_ready" model="mail.template">
+        <field name="name">IMPC: Certificate Ready</field>
+        <field name="model_id" ref="model_impc_certificate"/>
+        <field name="subject">Sertifikat Anda Telah Terbit: {{ object.channel_id.name }}</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                    <tr>
+                        <td style="background-color: #198754; padding: 30px; text-align: center;">
+                            <h1 style="color: white; margin: 0;">Selamat!</h1>
+                            <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Sertifikat Anda telah diterbitkan</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 30px; background-color: #ffffff;">
+                            <h2 style="color: #333;">Halo, <t t-out="object.partner_id.name"/>!</h2>
+                            <p style="color: #666; line-height: 1.6;">
+                                Selamat atas penyelesaian kursus! Sertifikat digital Anda telah diterbitkan.
+                            </p>
+                            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #198754;">
+                                <p style="margin: 0 0 5px 0;"><strong>Kursus:</strong> <t t-out="object.channel_id.name"/></p>
+                                <p style="margin: 0 0 5px 0;"><strong>No. Sertifikat:</strong> <t t-out="object.name"/></p>
+                                <p style="margin: 0;"><strong>Tanggal:</strong> <t t-out="object.completion_date"/></p>
+                            </div>
+                            <p style="color: #666; line-height: 1.6;">
+                                Anda dapat mengunduh sertifikat dan membagikan kode verifikasi kepada pihak yang membutuhkan.
+                            </p>
+                            <p style="text-align: center; margin: 30px 0;">
+                                <a href="/my-learning/certificates"
+                                   style="background-color: #198754; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                    Lihat Sertifikat
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                            <p style="color: #999; font-size: 12px; margin: 0;">
+                                IMPC - Indonesia Microcredential Platform Center
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </field>
+        <field name="auto_delete">True</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC My Certificates Portal Page                             -->
+    <!-- ============================================================ -->
+
+    <template id="portal_my_certificates" name="IMPC My Certificates">
+        <t t-call="website.layout">
+            <t t-set="title">My Certificates - IMPC</t>
+
+            <div class="impc-my-certificates py-4">
+                <div class="container">
+
+                    <!-- Header -->
+                    <div class="mb-4">
+                        <h3 class="fw-bold mb-1">Sertifikat Saya</h3>
+                        <p class="text-muted mb-0">
+                            <t t-out="len(certificates)"/> sertifikat diterbitkan
+                        </p>
+                    </div>
+
+                    <!-- Certificates Grid -->
+                    <t t-if="certificates">
+                        <div class="row g-4">
+                            <t t-foreach="certificates" t-as="cert">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                                        <!-- Certificate Header -->
+                                        <div class="card-header bg-gradient text-white text-center py-4 border-0"
+                                             style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);">
+                                            <i class="fa fa-certificate fa-2x mb-2"></i>
+                                            <h6 class="fw-bold mb-0">Certificate of Completion</h6>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <!-- Course Name -->
+                                            <h6 class="fw-bold text-center mb-3" t-out="cert.channel_id.name"/>
+
+                                            <!-- Certificate Details -->
+                                            <div class="small text-muted">
+                                                <div class="d-flex justify-content-between py-2 border-bottom">
+                                                    <span>Certificate No.</span>
+                                                    <span class="fw-bold" t-out="cert.name"/>
+                                                </div>
+                                                <div class="d-flex justify-content-between py-2 border-bottom">
+                                                    <span>Completion Date</span>
+                                                    <span>
+                                                        <t t-out="cert.completion_date" t-options="{'widget': 'date'}"/>
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between py-2">
+                                                    <span>Status</span>
+                                                    <span class="badge bg-success">Valid</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Actions -->
+                                            <div class="d-flex gap-2 mt-3">
+                                                <a t-attf-href="/my-learning/certificate/#{cert.id}/download"
+                                                   class="btn btn-primary btn-sm flex-grow-1">
+                                                    <i class="fa fa-download me-1"></i>Download PDF
+                                                </a>
+                                                <a t-att-href="cert.verification_url"
+                                                   class="btn btn-outline-secondary btn-sm" target="_blank"
+                                                   title="Verify Certificate">
+                                                    <i class="fa fa-qrcode"></i>
+                                                </a>
+                                            </div>
+
+                                            <!-- Verification Code (copyable) -->
+                                            <div class="mt-3 p-2 bg-light rounded text-center">
+                                                <small class="text-muted d-block mb-1">Verification Code:</small>
+                                                <code class="small" style="word-break: break-all;">
+                                                    <t t-out="cert.verification_code[:32]"/>...
+                                                </code>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- Empty State -->
+                    <t t-if="not certificates">
+                        <div class="text-center py-5">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                 style="width: 100px; height: 100px;">
+                                <i class="fa fa-certificate fa-3x text-muted"></i>
+                            </div>
+                            <h5 class="text-muted">Belum ada sertifikat</h5>
+                            <p class="text-muted">
+                                Selesaikan kursus untuk mendapatkan sertifikat digital Anda.
+                            </p>
+                            <a href="/my-learning/courses" class="btn btn-primary">Lihat Kursus Saya</a>
+                        </div>
+                    </t>
+
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

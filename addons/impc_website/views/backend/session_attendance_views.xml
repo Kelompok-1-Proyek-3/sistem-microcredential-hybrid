@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Session Attendance Backend Views                             -->
+    <!-- ============================================================ -->
+
+    <!-- Attendance Tree View -->
+    <record id="view_impc_session_attendance_tree" model="ir.ui.view">
+        <field name="name">impc.session.attendance.tree</field>
+        <field name="model">impc.session.attendance</field>
+        <field name="arch" type="xml">
+            <list string="Session Attendance" decoration-success="attendance_status == 'hadir'" decoration-danger="attendance_status == 'tidak_hadir'" decoration-warning="attendance_status == 'pending'">
+                <field name="partner_id"/>
+                <field name="channel_id"/>
+                <field name="event_id"/>
+                <field name="registration_id"/>
+                <field name="attendance_status" widget="badge" decoration-success="attendance_status == 'hadir'" decoration-danger="attendance_status == 'tidak_hadir'" decoration-warning="attendance_status == 'pending'"/>
+                <field name="sync_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Attendance Form View -->
+    <record id="view_impc_session_attendance_form" model="ir.ui.view">
+        <field name="name">impc.session.attendance.form</field>
+        <field name="model">impc.session.attendance</field>
+        <field name="arch" type="xml">
+            <form string="Session Attendance">
+                <sheet>
+                    <group>
+                        <group string="Enrollment">
+                            <field name="channel_partner_id"/>
+                            <field name="partner_id"/>
+                            <field name="channel_id"/>
+                        </group>
+                        <group string="Event">
+                            <field name="event_id"/>
+                            <field name="registration_id"/>
+                            <field name="attendance_status"/>
+                            <field name="sync_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Attendance Search View -->
+    <record id="view_impc_session_attendance_search" model="ir.ui.view">
+        <field name="name">impc.session.attendance.search</field>
+        <field name="model">impc.session.attendance</field>
+        <field name="arch" type="xml">
+            <search string="Search Attendance">
+                <field name="partner_id"/>
+                <field name="channel_id"/>
+                <field name="event_id"/>
+                <separator/>
+                <filter name="hadir" string="Hadir" domain="[('attendance_status', '=', 'hadir')]"/>
+                <filter name="pending" string="Pending" domain="[('attendance_status', '=', 'pending')]"/>
+                <filter name="tidak_hadir" string="Tidak Hadir" domain="[('attendance_status', '=', 'tidak_hadir')]"/>
+                <separator/>
+                <group>
+                    <filter name="group_status" string="Status" context="{'group_by': 'attendance_status'}"/>
+                    <filter name="group_event" string="Event" context="{'group_by': 'event_id'}"/>
+                    <filter name="group_course" string="Course" context="{'group_by': 'channel_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Attendance Action -->
+    <record id="action_impc_session_attendance" model="ir.actions.act_window">
+        <field name="name">Session Attendance</field>
+        <field name="res_model">impc.session.attendance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_impc_session_attendance_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No attendance records yet
+            </p>
+            <p>
+                Attendance is automatically synced from Events module for hybrid/offline courses.
+            </p>
+        </field>
+    </record>
+
+</odoo>

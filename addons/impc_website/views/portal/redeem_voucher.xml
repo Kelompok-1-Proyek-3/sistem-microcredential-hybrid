@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Redeem Voucher Portal Page                              -->
+    <!-- ============================================================ -->
+
+    <template id="portal_redeem_voucher" name="IMPC Redeem Voucher">
+        <t t-call="website.layout">
+            <t t-set="title">Redeem Voucher - IMPC</t>
+
+            <div class="impc-redeem-page py-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+
+                            <!-- Header -->
+                            <div class="text-center mb-4">
+                                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                     style="width: 80px; height: 80px;">
+                                    <i class="fa fa-ticket fa-2x text-success"></i>
+                                </div>
+                                <h2 class="fw-bold">Redeem Voucher</h2>
+                                <p class="text-muted">
+                                    Masukkan kode voucher untuk mendapatkan akses kursus.
+                                </p>
+                            </div>
+
+                            <!-- Success Message -->
+                            <t t-if="success">
+                                <div class="alert alert-success rounded-3 shadow-sm" role="alert">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-check-circle fa-2x me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Voucher Berhasil Diredeem!</h6>
+                                            <p class="mb-0 small">
+                                                Anda telah terdaftar di kursus
+                                                <strong><t t-out="course_name or 'course'"/></strong>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="/my-learning/courses" class="btn btn-success btn-sm">
+                                            <i class="fa fa-book me-1"></i>Lihat Kursus Saya
+                                        </a>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Error Message -->
+                            <t t-if="error">
+                                <div class="alert alert-danger rounded-3 shadow-sm" role="alert">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-exclamation-circle fa-lg me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Gagal Redeem</h6>
+                                            <p class="mb-0 small" t-out="error"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Redeem Form -->
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-body p-4">
+                                    <form action="/my-learning/redeem/submit" method="post">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                        <div class="mb-4">
+                                            <label class="form-label fw-bold">Kode Voucher</label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text bg-light">
+                                                    <i class="fa fa-ticket text-success"></i>
+                                                </span>
+                                                <input type="text" name="code" id="redeem_code_input"
+                                                       class="form-control text-center fw-bold"
+                                                       placeholder="IMPC-XXXX-XXXX-XXXX"
+                                                       style="font-family: monospace; letter-spacing: 2px;"
+                                                       maxlength="19" required="required"
+                                                       autocomplete="off"/>
+                                            </div>
+                                            <small class="text-muted mt-1 d-block">
+                                                Format: IMPC-XXXX-XXXX-XXXX (16 karakter alfanumerik)
+                                            </small>
+                                            <!-- Real-time validation feedback -->
+                                            <div id="redeem_validation_feedback" class="mt-2" style="display: none;"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success btn-lg w-100" id="redeem_submit_btn">
+                                            <i class="fa fa-check-circle me-2"></i>Redeem Code
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Help Section -->
+                            <div class="card border-0 bg-light rounded-3 mt-4">
+                                <div class="card-body p-4">
+                                    <h6 class="fw-bold mb-3">
+                                        <i class="fa fa-question-circle text-primary me-2"></i>Bantuan
+                                    </h6>
+                                    <div class="small text-muted">
+                                        <p class="mb-2">
+                                            <strong>Dari mana saya mendapatkan voucher?</strong><br/>
+                                            Voucher diberikan oleh perusahaan atau institusi yang bekerja sama
+                                            dengan IMPC melalui program Corporate Training.
+                                        </p>
+                                        <p class="mb-2">
+                                            <strong>Voucher tidak berfungsi?</strong><br/>
+                                            Pastikan kode dimasukkan dengan benar (termasuk tanda "-").
+                                            Periksa apakah voucher belum expired atau sudah digunakan.
+                                        </p>
+                                        <p class="mb-0">
+                                            <strong>Butuh bantuan lebih?</strong><br/>
+                                            Hubungi tim support kami di info@impc.id
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

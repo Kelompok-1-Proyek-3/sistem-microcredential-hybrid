@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Backend Menu                                            -->
+    <!-- ============================================================ -->
+
+    <!-- Top-level menu -->
+    <menuitem id="menu_impc_root"
+              name="IMPC Microcredential"
+              web_icon="impc_website,static/description/icon.png"
+              sequence="100"/>
+
+    <!-- Sub-menus -->
+    <menuitem id="menu_impc_redeem"
+              name="Redeem Codes"
+              parent="menu_impc_root"
+              sequence="10"/>
+
+    <menuitem id="menu_impc_redeem_codes"
+              name="Redeem Codes"
+              parent="menu_impc_redeem"
+              action="action_impc_redeem_code"
+              sequence="10"/>
+
+    <menuitem id="menu_impc_redeem_batches"
+              name="Batches"
+              parent="menu_impc_redeem"
+              action="action_impc_redeem_code_batch"
+              sequence="20"/>
+
+    <menuitem id="menu_impc_certificates"
+              name="Certificates"
+              parent="menu_impc_root"
+              action="action_impc_certificate"
+              sequence="20"/>
+
+    <menuitem id="menu_impc_attendance"
+              name="Session Attendance"
+              parent="menu_impc_root"
+              action="action_impc_session_attendance"
+              sequence="30"/>
+
+</odoo>
