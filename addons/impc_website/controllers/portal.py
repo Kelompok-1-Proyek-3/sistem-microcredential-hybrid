@@ -7,7 +7,7 @@ from odoo.http import request
 class IMPCPortalController(http.Controller):
     """Student portal controller for IMPC Microcredential Platform."""
 
-    @http.route('/my-learning', type='http', auth='user', website=True)
+    @http.route(['/my-learning', '/impc/my-learning'], type='http', auth='user', website=True)
     def my_learning_dashboard(self, **kw):
         """Student dashboard with progress overview."""
         partner = request.env.user.partner_id
@@ -55,7 +55,7 @@ class IMPCPortalController(http.Controller):
         }
         return request.render('impc_website.portal_dashboard', values)
 
-    @http.route('/my-learning/courses', type='http', auth='user', website=True)
+    @http.route(['/my-learning/courses', '/impc/my-learning/courses'], type='http', auth='user', website=True)
     def my_courses(self, status='all', **kw):
         """Student enrolled courses list."""
         partner = request.env.user.partner_id
@@ -86,7 +86,7 @@ class IMPCPortalController(http.Controller):
         }
         return request.render('impc_website.portal_my_courses', values)
 
-    @http.route('/my-learning/certificates', type='http', auth='user', website=True)
+    @http.route(['/my-learning/certificates', '/impc/my-learning/certificates'], type='http', auth='user', website=True)
     def my_certificates(self, **kw):
         """Student certificates list."""
         partner = request.env.user.partner_id
@@ -101,7 +101,7 @@ class IMPCPortalController(http.Controller):
         }
         return request.render('impc_website.portal_my_certificates', values)
 
-    @http.route('/my-learning/events', type='http', auth='user', website=True)
+    @http.route(['/my-learning/events', '/impc/my-learning/events'], type='http', auth='user', website=True)
     def my_events(self, **kw):
         """Student upcoming events/sessions."""
         partner = request.env.user.partner_id
@@ -143,7 +143,10 @@ class IMPCPortalController(http.Controller):
         }
         return request.render('impc_website.portal_my_events', values)
 
-    @http.route('/my-learning/certificate/<int:cert_id>/download', type='http', auth='user', website=True)
+    @http.route([
+        '/my-learning/certificate/<int:cert_id>/download',
+        '/impc/my-learning/certificate/<int:cert_id>/download',
+    ], type='http', auth='user', website=True)
     def download_certificate(self, cert_id, **kw):
         """Download certificate PDF."""
         partner = request.env.user.partner_id

@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class IMPCRedeemController(http.Controller):
     """Redeem voucher controller for IMPC Microcredential Platform."""
 
-    @http.route('/my-learning/redeem', type='http', auth='user', website=True)
+    @http.route(['/my-learning/redeem', '/impc/my-learning/redeem'], type='http', auth='user', website=True)
     def redeem_form(self, **kw):
         """Redeem voucher form page."""
         values = {
@@ -16,7 +16,10 @@ class IMPCRedeemController(http.Controller):
         }
         return request.render('impc_website.portal_redeem_voucher', values)
 
-    @http.route('/my-learning/redeem/submit', type='http', auth='user', website=True, methods=['POST'], csrf=True)
+    @http.route([
+        '/my-learning/redeem/submit',
+        '/impc/my-learning/redeem/submit',
+    ], type='http', auth='user', website=True, methods=['POST'], csrf=True)
     def redeem_submit(self, code='', **kw):
         """Process voucher redemption."""
         if not code or not code.strip():
@@ -49,7 +52,10 @@ class IMPCRedeemController(http.Controller):
             error_msg = str(e).replace(' ', '+')
             return request.redirect(f'/my-learning/redeem?error={error_msg}')
 
-    @http.route('/my-learning/redeem/validate', type='json', auth='user', website=True)
+    @http.route([
+        '/my-learning/redeem/validate',
+        '/impc/my-learning/redeem/validate',
+    ], type='json', auth='user', website=True)
     def redeem_validate_ajax(self, code='', **kw):
         """AJAX endpoint for real-time code validation."""
         if not code or not code.strip():

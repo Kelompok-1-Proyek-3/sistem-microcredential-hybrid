@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC FAQ Page                                               -->
+    <!-- ============================================================ -->
+
+    <template id="faq_page" name="IMPC FAQ">
+        <t t-call="website.layout">
+            <t t-set="title">FAQ - IMPC Microcredential</t>
+
+            <div class="impc-faq-page">
+
+                <!-- Header -->
+                <section class="bg-light py-5 text-center">
+                    <div class="container">
+                        <h1 class="fw-bold mb-3">Pertanyaan Umum</h1>
+                        <p class="text-muted lead">
+                            Jawaban cepat untuk pertanyaan yang paling sering diajukan.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- FAQ List -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+                                <div class="accordion" id="impcFaq">
+
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#impcFaq1">
+                                                Apakah sertifikat berlaku selamanya?
+                                            </button>
+                                        </h2>
+                                        <div id="impcFaq1" class="accordion-collapse collapse" data-bs-parent="#impcFaq">
+                                            <div class="accordion-body text-muted">
+                                                Ya, sertifikat digital berlaku selamanya dan dapat diverifikasi
+                                                kapan saja melalui halaman verifikasi.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#impcFaq2">
+                                                Bagaimana cara menggunakan voucher?
+                                            </button>
+                                        </h2>
+                                        <div id="impcFaq2" class="accordion-collapse collapse" data-bs-parent="#impcFaq">
+                                            <div class="accordion-body text-muted">
+                                                Setelah login, klik "Redeem Code" di navbar atau buka
+                                                /my-learning/redeem. Masukkan kode voucher Anda untuk membuka kursus.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#impcFaq3">
+                                                Apa perbedaan mode Online dan Hybrid?
+                                            </button>
+                                        </h2>
+                                        <div id="impcFaq3" class="accordion-collapse collapse" data-bs-parent="#impcFaq">
+                                            <div class="accordion-body text-muted">
+                                                Mode Online sepenuhnya mandiri. Mode Hybrid menggabungkan materi online
+                                                dengan sesi tatap muka yang wajib dihadiri untuk sertifikasi.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#impcFaq4">
+                                                Bagaimana cara verifikasi sertifikat?
+                                            </button>
+                                        </h2>
+                                        <div id="impcFaq4" class="accordion-collapse collapse" data-bs-parent="#impcFaq">
+                                            <div class="accordion-body text-muted">
+                                                Buka halaman verifikasi dan masukkan kode sertifikat Anda.
+                                                Sistem akan menampilkan status validitas secara real time.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#impcFaq5">
+                                                Apakah tersedia refund?
+                                            </button>
+                                        </h2>
+                                        <div id="impcFaq5" class="accordion-collapse collapse" data-bs-parent="#impcFaq">
+                                            <div class="accordion-body text-muted">
+                                                Kami menyediakan garansi 7 hari. Silakan hubungi tim support untuk
+                                                proses refund jika diperlukan.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA -->
+                <section class="bg-primary text-white py-5">
+                    <div class="container text-center">
+                        <h3 class="fw-bold mb-3">Masih ada pertanyaan?</h3>
+                        <p class="opacity-75 mb-4">Tim kami siap membantu Anda.</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="/courses" class="btn btn-light btn-lg px-4">Jelajahi Kursus</a>
+                            <a href="/verify-certificate" class="btn btn-outline-light btn-lg px-4">Verifikasi Sertifikat</a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>
