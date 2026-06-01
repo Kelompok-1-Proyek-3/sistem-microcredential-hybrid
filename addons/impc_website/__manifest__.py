@@ -58,6 +58,7 @@ Features:
         'views/templates/course_detail.xml',
         'views/templates/pricing.xml',
         'views/templates/about.xml',
+        'views/templates/faq.xml',
         'views/templates/corporate.xml',
         'views/templates/verify_certificate.xml',
         # Portal Templates

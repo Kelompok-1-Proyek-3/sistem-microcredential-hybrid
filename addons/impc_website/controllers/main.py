@@ -5,7 +5,7 @@ from odoo.http import request
 class IMPCWebsiteController(http.Controller):
     """Public website controller for IMPC Microcredential Platform."""
 
-    @http.route('/', type='http', auth='public', website=True)
+    @http.route(['/', '/impc'], type='http', auth='public', website=True)
     def homepage(self, **kw):
         """Landing page with featured courses, stats, and CTA."""
         SlideChannel = request.env['slide.channel'].sudo()
@@ -42,7 +42,7 @@ class IMPCWebsiteController(http.Controller):
         }
         return request.render('impc_website.homepage', values)
 
-    @http.route('/courses', type='http', auth='public', website=True, sitemap=True)
+    @http.route(['/courses', '/impc/courses'], type='http', auth='public', website=True, sitemap=True)
     def courses(self, search='', category=None, level=None, mode=None, sort='newest', page=1, **kw):
         """Course catalog with search, filter, and pagination."""
         SlideChannel = request.env['slide.channel'].sudo()
@@ -64,7 +64,10 @@ class IMPCWebsiteController(http.Controller):
         }
         return request.render('impc_website.courses_catalog', values)
 
-    @http.route('/courses/<model("slide.channel"):course>', type='http', auth='public', website=True, sitemap=True)
+    @http.route([
+        '/courses/<model("slide.channel"):course>',
+        '/impc/courses/<model("slide.channel"):course>',
+    ], type='http', auth='public', website=True, sitemap=True)
     def course_detail(self, course, **kw):
         """Single course detail page with syllabus, pricing, and enrollment."""
         if not course.is_published and not request.env.user.has_group('website.group_website_designer'):
@@ -109,29 +112,42 @@ class IMPCWebsiteController(http.Controller):
         }
         return request.render('impc_website.course_detail', values)
 
-    @http.route('/pricing', type='http', auth='public', website=True, sitemap=True)
+    @http.route(['/pricing', '/impc/pricing'], type='http', auth='public', website=True, sitemap=True)
     def pricing(self, **kw):
         """Pricing packages page."""
         return request.render('impc_website.pricing_page', {})
 
-    @http.route('/about', type='http', auth='public', website=True, sitemap=True)
+    @http.route(['/about', '/impc/about'], type='http', auth='public', website=True, sitemap=True)
     def about(self, **kw):
         """About IMPC page."""
         return request.render('impc_website.about_page', {})
 
-    @http.route('/corporate-training', type='http', auth='public', website=True, sitemap=True)
+    @http.route(['/faq', '/impc/faq'], type='http', auth='public', website=True, sitemap=True)
+    def faq(self, **kw):
+        """FAQ page."""
+        return request.render('impc_website.faq_page', {})
+
+    @http.route(['/corporate-training', '/impc/corporate-training'], type='http', auth='public', website=True, sitemap=True)
     def corporate_training(self, **kw):
         """Corporate/B2B training page."""
         return request.render('impc_website.corporate_page', {})
 
-    @http.route('/verify-certificate', type='http', auth='public', website=True, sitemap=True)
+    @http.route([
+        '/verify-certificate',
+        '/impc/verify',
+        '/impc/verify-certificate',
+    ], type='http', auth='public', website=True, sitemap=True)
     def verify_certificate_form(self, code=None, **kw):
         """Certificate verification form page. Also handles ?code= query param."""
         if code:
             return request.redirect(f'/verify-certificate/{code}')
         return request.render('impc_website.verify_certificate_form', {})
 
-    @http.route('/verify-certificate/<string:code>', type='http', auth='public', website=True)
+    @http.route([
+        '/verify-certificate/<string:code>',
+        '/impc/verify/<string:code>',
+        '/impc/verify-certificate/<string:code>',
+    ], type='http', auth='public', website=True)
     def verify_certificate(self, code, **kw):
         """Certificate verification result page."""
         certificate = request.env['impc.certificate'].sudo().search([
