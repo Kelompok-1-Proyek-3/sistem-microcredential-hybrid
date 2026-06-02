@@ -5,23 +5,55 @@ from odoo.http import request
 class IMPCWebsiteController(http.Controller):
     """Public website controller for IMPC Microcredential Platform."""
 
+    def _get_auth_data(self):
+        """Return auth-related context for all public templates."""
+        is_authenticated = not request.env.user._is_public()
+        return {
+            'is_authenticated': is_authenticated,
+        }
+
+    def _get_portal_data(self):
+        """Return personalized data for authenticated users on public pages."""
+        partner = request.env.user.partner_id
+        enrollments = request.env['slide.channel.partner'].sudo().search([
+            ('partner_id', '=', partner.id),
+            ('member_status', 'in', ['joined', 'ongoing', 'completed']),
+        ], order='create_date desc')
+        in_progress = enrollments.filtered(lambda e: e.member_status in ('joined', 'ongoing'))
+        completed = enrollments.filtered(lambda e: e.member_status == 'completed')
+        certificates = request.env['impc.certificate'].sudo().search_count([
+            ('partner_id', '=', partner.id),
+            ('state', '=', 'issued'),
+        ])
+        continue_course = in_progress[:1] if in_progress else None
+        return {
+            'enrollments': enrollments,
+            'in_progress': in_progress,
+            'completed': completed,
+            'certificates': certificates,
+            'continue_course': continue_course,
+            'total_in_progress': len(in_progress),
+            'total_completed': len(completed),
+        }
+
     @http.route(['/', '/impc'], type='http', auth='public', website=True)
     def homepage(self, **kw):
-        """Landing page with featured courses, stats, and CTA."""
+        """Landing page with featured courses, stats, and CTA.
+        Auth-aware: shows marketing content for guests, dashboard for logged-in users.
+        """
         SlideChannel = request.env['slide.channel'].sudo()
+        is_authenticated = not request.env.user._is_public()
 
         featured_courses = SlideChannel.search([
             ('is_published', '=', True),
             ('is_featured', '=', True),
         ], limit=6, order='create_date desc')
 
-        # Fallback: if no featured, show latest published
         if not featured_courses:
             featured_courses = SlideChannel.search([
                 ('is_published', '=', True),
             ], limit=6, order='create_date desc')
 
-        # Stats
         total_courses = SlideChannel.search_count([('is_published', '=', True)])
         total_students = request.env['slide.channel.partner'].sudo().search_count([
             ('member_status', 'in', ['joined', 'ongoing', 'completed']),
@@ -29,8 +61,6 @@ class IMPCWebsiteController(http.Controller):
         total_certificates = request.env['impc.certificate'].sudo().search_count([
             ('state', '=', 'issued'),
         ])
-
-        # Categories (tags)
         categories = request.env['slide.channel.tag'].sudo().search([], limit=8)
 
         values = {
@@ -39,7 +69,14 @@ class IMPCWebsiteController(http.Controller):
             'total_students': total_students,
             'total_certificates': total_certificates,
             'categories': categories,
+            'is_authenticated': is_authenticated,
+            'enrolled_ids': [],
         }
+
+        if is_authenticated:
+            values.update(self._get_portal_data())
+            values['enrolled_ids'] = [e.channel_id.id for e in values['enrollments']]
+
         return request.render('impc_website.homepage', values)
 
     @http.route(['/courses', '/impc/courses'], type='http', auth='public', website=True, sitemap=True)
@@ -53,6 +90,15 @@ class IMPCWebsiteController(http.Controller):
 
         all_categories = request.env['slide.channel.tag'].sudo().search([])
 
+        is_authenticated = not request.env.user._is_public()
+        enrolled_ids = []
+        if is_authenticated:
+            enrollments = request.env['slide.channel.partner'].sudo().search([
+                ('partner_id', '=', request.env.user.partner_id.id),
+                ('member_status', 'in', ['joined', 'ongoing', 'completed']),
+            ])
+            enrolled_ids = [e.channel_id.id for e in enrollments]
+
         values = {
             **result,
             'search': search,
@@ -61,6 +107,8 @@ class IMPCWebsiteController(http.Controller):
             'mode': mode,
             'sort': sort,
             'all_categories': all_categories,
+            'is_authenticated': is_authenticated,
+            'enrolled_ids': enrolled_ids,
         }
         return request.render('impc_website.courses_catalog', values)
 
@@ -73,17 +121,16 @@ class IMPCWebsiteController(http.Controller):
         if not course.is_published and not request.env.user.has_group('website.group_website_designer'):
             return request.redirect('/courses')
 
-        # Check if current user is enrolled
+        is_authenticated = not request.env.user._is_public()
         is_enrolled = False
         enrollment = None
-        if not request.env.user._is_public():
+        if is_authenticated:
             enrollment = request.env['slide.channel.partner'].sudo().search([
                 ('channel_id', '=', course.id),
                 ('partner_id', '=', request.env.user.partner_id.id),
             ], limit=1)
             is_enrolled = bool(enrollment)
 
-        # Course content (slides grouped by category)
         categories = request.env['slide.slide'].sudo().search([
             ('channel_id', '=', course.id),
             ('is_category', '=', True),
@@ -95,7 +142,6 @@ class IMPCWebsiteController(http.Controller):
             ('is_published', '=', True),
         ], order='sequence')
 
-        # Related courses
         related_courses = request.env['slide.channel'].sudo().search([
             ('is_published', '=', True),
             ('id', '!=', course.id),
@@ -109,28 +155,33 @@ class IMPCWebsiteController(http.Controller):
             'categories': categories,
             'slides': slides,
             'related_courses': related_courses,
+            'is_authenticated': is_authenticated,
         }
         return request.render('impc_website.course_detail', values)
 
     @http.route(['/pricing', '/impc/pricing'], type='http', auth='public', website=True, sitemap=True)
     def pricing(self, **kw):
         """Pricing packages page."""
-        return request.render('impc_website.pricing_page', {})
+        values = self._get_auth_data()
+        return request.render('impc_website.pricing_page', values)
 
     @http.route(['/about', '/impc/about'], type='http', auth='public', website=True, sitemap=True)
     def about(self, **kw):
         """About IMPC page."""
-        return request.render('impc_website.about_page', {})
+        values = self._get_auth_data()
+        return request.render('impc_website.about_page', values)
 
     @http.route(['/faq', '/impc/faq'], type='http', auth='public', website=True, sitemap=True)
     def faq(self, **kw):
         """FAQ page."""
-        return request.render('impc_website.faq_page', {})
+        values = self._get_auth_data()
+        return request.render('impc_website.faq_page', values)
 
     @http.route(['/corporate-training', '/impc/corporate-training'], type='http', auth='public', website=True, sitemap=True)
     def corporate_training(self, **kw):
         """Corporate/B2B training page."""
-        return request.render('impc_website.corporate_page', {})
+        values = self._get_auth_data()
+        return request.render('impc_website.corporate_page', values)
 
     @http.route([
         '/verify-certificate',
@@ -141,7 +192,8 @@ class IMPCWebsiteController(http.Controller):
         """Certificate verification form page. Also handles ?code= query param."""
         if code:
             return request.redirect(f'/verify-certificate/{code}')
-        return request.render('impc_website.verify_certificate_form', {})
+        values = self._get_auth_data()
+        return request.render('impc_website.verify_certificate_form', values)
 
     @http.route([
         '/verify-certificate/<string:code>',
@@ -161,4 +213,5 @@ class IMPCWebsiteController(http.Controller):
             'found': bool(certificate),
             'is_valid': certificate.state == 'issued' if certificate else False,
         }
+        values.update(self._get_auth_data())
         return request.render('impc_website.verify_certificate_result', values)

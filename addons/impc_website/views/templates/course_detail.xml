@@ -323,26 +323,44 @@
 
                                         <!-- Not Enrolled -->
                                         <t t-if="not is_enrolled">
-                                            <!-- Price (if product linked) -->
-                                            <t t-if="course.product_id">
+                                            <!-- Guest: prompt login first -->
+                                            <t t-if="not is_authenticated">
                                                 <div class="text-center mb-3">
-                                                    <h3 class="fw-bold text-primary mb-0">
-                                                        Rp <t t-out="'{:,.0f}'.format(course.product_id.list_price)"/>
-                                                    </h3>
+                                                    <i class="fa fa-lock fa-2x text-muted mb-2"></i>
+                                                    <p class="text-muted small">Login untuk mendaftar kursus ini</p>
                                                 </div>
-                                                <a t-attf-href="/shop/product/#{slug(course.product_id.product_tmpl_id)}"
+                                                <a t-attf-href="/web/login?redirect=/courses/#{slug(course)}"
                                                    class="btn btn-primary w-100 btn-lg mb-2">
-                                                    <i class="fa fa-shopping-cart me-2"></i>Enroll Now
+                                                    <i class="fa fa-sign-in me-2"></i>Login to Enroll
+                                                </a>
+                                                <a t-attf-href="/web/login?redirect=/courses/#{slug(course)}"
+                                                   class="btn btn-outline-success w-100 mb-3">
+                                                    <i class="fa fa-ticket me-2"></i>Login to Redeem
                                                 </a>
                                             </t>
-                                            <t t-if="not course.product_id">
-                                                <a t-attf-href="/slides/#{slug(course)}" class="btn btn-primary w-100 btn-lg mb-2">
-                                                    <i class="fa fa-sign-in me-2"></i>Enroll Free
+                                            <!-- Authenticated: show enrollment options -->
+                                            <t t-if="is_authenticated">
+                                                <!-- Price (if product linked) -->
+                                                <t t-if="course.product_id">
+                                                    <div class="text-center mb-3">
+                                                        <h3 class="fw-bold text-primary mb-0">
+                                                            Rp <t t-out="'{:,.0f}'.format(course.product_id.list_price)"/>
+                                                        </h3>
+                                                    </div>
+                                                    <a t-attf-href="/shop/product/#{slug(course.product_id.product_tmpl_id)}"
+                                                       class="btn btn-primary w-100 btn-lg mb-2">
+                                                        <i class="fa fa-shopping-cart me-2"></i>Enroll Now
+                                                    </a>
+                                                </t>
+                                                <t t-if="not course.product_id">
+                                                    <a t-attf-href="/slides/#{slug(course)}" class="btn btn-primary w-100 btn-lg mb-2">
+                                                        <i class="fa fa-sign-in me-2"></i>Enroll Free
+                                                    </a>
+                                                </t>
+                                                <a href="/my-learning/redeem" class="btn btn-outline-success w-100 mb-3">
+                                                    <i class="fa fa-ticket me-2"></i>Redeem Voucher
                                                 </a>
                                             </t>
-                                            <a href="/my-learning/redeem" class="btn btn-outline-success w-100 mb-3">
-                                                <i class="fa fa-ticket me-2"></i>Redeem Voucher
-                                            </a>
                                         </t>
 
                                         <hr/>

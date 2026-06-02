@@ -15,6 +15,16 @@
             </a>
         </xpath>
 
+        <!-- Add My Learning link for authenticated users before user dropdown -->
+        <xpath expr="//t[@t-call='portal.user_dropdown']" position="before">
+            <t t-if="not request.env.user._is_public()">
+                <a href="/my-learning"
+                   class="btn btn-outline-primary btn-sm ms-2 o_navlink_background text-reset">
+                    <i class="fa fa-graduation-cap me-1"></i>My Learning
+                </a>
+            </t>
+        </xpath>
+
         <!-- Add Redeem Code button for authenticated users after user dropdown -->
         <xpath expr="//t[@t-call='portal.user_dropdown']" position="after">
             <t t-if="not request.env.user._is_public()">
