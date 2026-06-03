@@ -27,6 +27,8 @@ class SaleOrder(models.Model):
                 ('partner_id', '=', self.partner_id.id),
             ], limit=1)
             if existing:
+                if existing.enrollment_type != 'b2c_payment':
+                    existing.write({'enrollment_type': 'b2c_payment'})
                 continue
             SlidePartner.create({
                 'channel_id': course.id,

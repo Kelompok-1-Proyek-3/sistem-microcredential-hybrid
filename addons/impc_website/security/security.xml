@@ -13,6 +13,16 @@
     <!-- access to impc.* models for internal (non-admin) users.     -->
     <!-- ============================================================ -->
 
+    <!-- Teacher: internal users who manage courses and issue certificates -->
+    <record id="group_impc_teacher" model="res.groups">
+        <field name="name">IMPC Teacher</field>
+        <field name="implied_ids" eval="[
+            (4, ref('base.group_user')),
+            (4, ref('survey.group_survey_user')),
+        ]"/>
+        <field name="comment">Teachers who manage courses and can issue certificates to their students.</field>
+    </record>
+
     <!-- Officer: internal users who need read/write access to IMPC models -->
     <record id="group_impc_officer" model="res.groups">
         <field name="name">IMPC Officer</field>
@@ -74,6 +84,18 @@
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Teachers can only see certificates for courses they teach -->
+    <record id="rule_certificate_teacher" model="ir.rule">
+        <field name="name">IMPC Certificate: Teachers see own course certificates</field>
+        <field name="model_id" ref="model_impc_certificate"/>
+        <field name="domain_force">[('channel_id.instructor_ids', 'in', [user.partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('impc_website.group_impc_teacher'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="False"/>
     </record>
 

@@ -114,6 +114,54 @@
         </field>
     </record>
 
+    <!-- ============================================================ -->
+    <!-- Certificates Smart Button in Header                          -->
+    <!-- ============================================================ -->
+    <record id="view_slide_channel_form_impc_cert_button" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc.cert.button</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="oe_button_box" name="impc_button_box">
+                    <button name="%(action_impc_certificate)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-certificate"
+                            domain="[('channel_id', '=', id)]"
+                            context="{'default_channel_id': id}">
+                        <div class="o_stat_info">
+                            <field name="certificate_count"/>
+                            <span class="o_stat_text">Digital Certificates</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_slide_channel_form_impc_final_exam_label" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc.final.exam.label</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides_survey.slide_channel_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//create[@name='add_slide_certificate']" position="attributes">
+                <attribute name="string">Add Final Exam</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_slide_slide_form_impc_final_exam_label" model="ir.ui.view">
+        <field name="name">slide.slide.form.impc.final.exam.label</field>
+        <field name="model">slide.slide</field>
+        <field name="inherit_id" ref="website_slides_survey.slide_slide_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='survey_id']" position="attributes">
+                <attribute name="string">Final Exam</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Approval column in list view -->
     <record id="view_slide_channel_list_impc_approval" model="ir.ui.view">
         <field name="name">slide.channel.list.impc.approval</field>

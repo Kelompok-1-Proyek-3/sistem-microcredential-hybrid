@@ -78,18 +78,20 @@ class SlideChannelPartner(models.Model):
                 record.exam_unlocked = True
 
     def _check_completion_and_set_pending(self):
-        """Check if enrollment is fully completed and set pending flag."""
+        """Issue or queue a digital certificate when completion criteria are met."""
         for record in self:
             if (
                 record.member_status == 'completed'
                 and record.completion >= 100
                 and not record.certificate_id
-                and not record.certificate_pending
             ):
-                record.certificate_pending = True
+                if record.exam_unlocked:
+                    self.env['impc.certificate'].sudo()._issue_for_enrollment(record)
+                elif not record.certificate_pending:
+                    record.certificate_pending = True
 
     def write(self, vals):
         res = super().write(vals)
-        if 'member_status' in vals or 'completion' in vals:
+        if {'member_status', 'completion', 'completed_slides_count', 'exam_unlocked'} & set(vals):
             self._check_completion_and_set_pending()
         return res

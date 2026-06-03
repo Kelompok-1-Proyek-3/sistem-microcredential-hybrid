@@ -11,7 +11,8 @@
     <menuitem id="menu_impc_root"
               name="IMPC Microcredential"
               web_icon="impc_website,static/description/icon.png"
-              sequence="100"/>
+              sequence="100"
+              groups="base.group_user,impc_website.group_impc_teacher,impc_website.group_impc_officer,impc_website.group_impc_manager"/>
 
     <!-- ======================== -->
     <!-- Approvals (Admin only)   -->
@@ -74,10 +75,11 @@
     <!-- Certificates             -->
     <!-- ======================== -->
     <menuitem id="menu_impc_certificates"
-              name="Certificates"
+              name="Digital Certificates"
               parent="menu_impc_root"
               action="action_impc_certificate"
-              sequence="20"/>
+              sequence="20"
+              groups="base.group_user,impc_website.group_impc_teacher,impc_website.group_impc_officer,impc_website.group_impc_manager"/>
 
     <!-- ======================== -->
     <!-- Session Attendance       -->
@@ -86,6 +88,7 @@
               name="Session Attendance"
               parent="menu_impc_root"
               action="action_impc_session_attendance"
-              sequence="30"/>
+              sequence="30"
+              groups="impc_website.group_impc_officer,impc_website.group_impc_manager"/>
 
 </odoo>

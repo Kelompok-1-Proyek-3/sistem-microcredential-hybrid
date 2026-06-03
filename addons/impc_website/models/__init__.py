@@ -1,6 +1,9 @@
 from . import (
+    account_payment_method,
     certificate,
     event_event,
+    payment_provider,
+    payment_transaction,
     event_registration,
     redeem_code,
     redeem_code_batch,

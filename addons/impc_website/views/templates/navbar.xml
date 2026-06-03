@@ -89,7 +89,7 @@
                                 <ul class="dropdown-menu shadow border-0">
                                     <li>
                                         <a class="dropdown-item" href="/web#action=impc_website.action_impc_certificate">
-                                            <i class="fa fa-certificate me-2 text-success"/>Certificates
+                                            <i class="fa fa-certificate me-2 text-success"/>Digital Certificates
                                         </a>
                                     </li>
                                     <li>
@@ -125,7 +125,34 @@
                     </t>
 
                     <!-- ============================================ -->
-                    <!-- 3. LEARNER (Odoo Role: Portal)               -->
+                    <!-- 3. TEACHER                                   -->
+                    <!--    impc_website.group_impc_teacher           -->
+                    <!-- ============================================ -->
+                    <t t-elif="request.env.user.has_group('impc_website.group_impc_teacher')">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/event">Events</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold" href="/web#action=impc_website.action_impc_certificate">
+                                    <i class="fa fa-certificate me-1"/>Digital Certificates
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/web">
+                                    <i class="fa fa-th-large me-1"/>Backend
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-primary px-3 py-2" style="font-size:0.75rem;">
+                                <i class="fa fa-graduation-cap me-1"/>Teacher
+                            </span>
+                            <t t-call="portal.user_dropdown"/>
+                        </div>
+                    </t>
+
+                    <!-- ============================================ -->
+                    <!-- 4. LEARNER (Odoo Role: Portal)               -->
                     <!--    base.group_portal                         -->
                     <!-- ============================================ -->
                     <t t-elif="request.env.user.has_group('base.group_portal')">
@@ -140,7 +167,7 @@
                     </t>
 
                     <!-- ============================================ -->
-                    <!-- 4. INTERNAL USER (Role: User / Employee)     -->
+                    <!-- 5. INTERNAL USER (Role: User / Employee)     -->
                     <!--    Teachers, Event Coordinators, Officers    -->
                     <!--    These users work primarily in backend     -->
                     <!-- ============================================ -->
