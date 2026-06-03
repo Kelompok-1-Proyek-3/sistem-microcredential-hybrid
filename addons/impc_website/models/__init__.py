@@ -4,6 +4,7 @@ from . import (
     event_registration,
     redeem_code,
     redeem_code_batch,
+    sale_order,
     session_attendance,
     slide_channel,
     slide_channel_partner,
