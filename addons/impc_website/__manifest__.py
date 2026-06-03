@@ -64,6 +64,7 @@ Features:
         "views/templates/corporate.xml",
         "views/templates/contact.xml",
         "views/templates/verify_certificate.xml",
+        "views/templates/event_custom.xml",
         # Portal Templates
         "views/portal/dashboard.xml",
         "views/portal/my_courses.xml",
@@ -76,6 +77,7 @@ Features:
         "views/admin/event_approvals.xml",
         # Wizard
         "wizard/generate_redeem_codes_views.xml",
+        "wizard/publish_approved_events_views.xml",
     ],
     "assets": {
         "web.assets_frontend": [

@@ -159,6 +159,19 @@ class IMPCPortalController(http.Controller):
         """Student upcoming events/sessions."""
         partner = request.env.user.partner_id
 
+        # Get ALL event registrations for this user (not just course-linked events)
+        all_registrations = (
+            request.env["event.registration"]
+            .sudo()
+            .search(
+                [
+                    ("partner_id", "=", partner.id),
+                    ("state", "in", ["draft", "open", "done"]),
+                ],
+                order="create_date desc",  # Fixed: order by registration date, not event date
+            )
+        )
+
         # Get enrollments with hybrid/offline courses
         enrollments = (
             request.env["slide.channel.partner"]
@@ -173,23 +186,19 @@ class IMPCPortalController(http.Controller):
         )
 
         events_data = []
-        for enrollment in enrollments:
-            event = enrollment.channel_id.event_id
-            if event:
-                # Check registration
-                registration = (
-                    request.env["event.registration"]
-                    .sudo()
-                    .search(
-                        [
-                            ("event_id", "=", event.id),
-                            ("partner_id", "=", partner.id),
-                        ],
-                        limit=1,
-                    )
-                )
-
-                # Check attendance
+        
+        # Add all direct event registrations (standalone events)
+        for registration in all_registrations:
+            event = registration.event_id
+            
+            # Check if this event is linked to a course enrollment
+            enrollment = enrollments.filtered(
+                lambda e: e.channel_id.event_id == event
+            )
+            
+            # Check attendance
+            attendance = None
+            if enrollment:
                 attendance = (
                     request.env["impc.session.attendance"]
                     .sudo()
@@ -202,18 +211,19 @@ class IMPCPortalController(http.Controller):
                     )
                 )
 
-                events_data.append(
-                    {
-                        "enrollment": enrollment,
-                        "event": event,
-                        "registration": registration,
-                        "attendance": attendance,
-                        "is_registered": bool(registration),
-                        "attendance_status": attendance.attendance_status
-                        if attendance
-                        else "pending",
-                    }
-                )
+            events_data.append(
+                {
+                    "enrollment": enrollment[:1] if enrollment else None,
+                    "event": event,
+                    "registration": registration,
+                    "attendance": attendance,
+                    "is_registered": True,
+                    "attendance_status": attendance.attendance_status
+                    if attendance
+                    else "pending",
+                    "is_standalone": not bool(enrollment),  # Event not linked to course
+                }
+            )
 
         values = {
             "events_data": events_data,
