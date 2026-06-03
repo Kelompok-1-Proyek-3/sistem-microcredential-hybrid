@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <!-- ============================================================ -->
     <!-- IMPC Security Groups                                         -->
+    <!--                                                              -->
+    <!-- We use Odoo's built-in roles for role separation:           -->
+    <!--   Administrator  = base.group_system (Role: Administrator)  -->
+    <!--   Teacher/Coord  = base.group_user   (Role: User/Internal)  -->
+    <!--   Learner        = base.group_portal (Role: Portal)         -->
+    <!--                                                              -->
+    <!-- These two internal groups exist only to grant model-level   -->
+    <!-- access to impc.* models for internal (non-admin) users.     -->
     <!-- ============================================================ -->
 
-    <!-- Officer: can manage courses, view codes, manage certificates -->
+    <!--
+        Extend Odoo's built-in Administrator group to automatically include
+        IMPC Manager access. Any user with Role = Administrator will inherit
+        full access to all IMPC models (certificates, redeem codes, attendance)
+        without needing manual group assignment.
+    -->
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('impc_website.group_impc_manager'))]"/>
+    </record>
+
+    <!-- Officer: internal users who need read/write access to IMPC models -->
     <record id="group_impc_officer" model="res.groups">
         <field name="name">IMPC Officer</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="comment">Can manage courses, view redeem codes, and manage certificates.</field>
+        <field name="comment">Grants access to IMPC models for internal users (courses, codes, certificates).</field>
     </record>
 
-    <!-- Manager: full CRUD on all IMPC models, bulk code generation -->
+    <!-- Manager: internal users who need full CRUD on IMPC models -->
     <record id="group_impc_manager" model="res.groups">
         <field name="name">IMPC Manager</field>
         <field name="implied_ids" eval="[(4, ref('impc_website.group_impc_officer'))]"/>

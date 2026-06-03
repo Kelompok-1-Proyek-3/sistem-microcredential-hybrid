@@ -183,6 +183,15 @@ class IMPCWebsiteController(http.Controller):
         values = self._get_auth_data()
         return request.render('impc_website.corporate_page', values)
 
+    @http.route(['/contact', '/impc/contact'], type='http', auth='public', website=True, sitemap=True)
+    def contact(self, inquiry=None, **kw):
+        """Contact page with CRM lead form."""
+        values = {
+            **self._get_auth_data(),
+            'inquiry': inquiry or kw.get('inquiry') or request.params.get('inquiry'),
+        }
+        return request.render('impc_website.contact_page', values)
+
     @http.route([
         '/verify-certificate',
         '/impc/verify',

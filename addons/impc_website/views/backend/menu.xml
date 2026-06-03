@@ -3,6 +3,8 @@
 
     <!-- ============================================================ -->
     <!-- IMPC Backend Menu                                            -->
+    <!-- Approvals sub-menu is restricted to Odoo Administrators     -->
+    <!-- (base.group_system) who act as IMPC platform administrators  -->
     <!-- ============================================================ -->
 
     <!-- Top-level menu -->
@@ -11,7 +13,46 @@
               web_icon="impc_website,static/description/icon.png"
               sequence="100"/>
 
-    <!-- Sub-menus -->
+    <!-- ======================== -->
+    <!-- Approvals (Admin only)   -->
+    <!-- ======================== -->
+    <menuitem id="menu_impc_approvals"
+              name="Approvals"
+              parent="menu_impc_root"
+              sequence="5"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_impc_course_approvals"
+              name="Course Approvals"
+              parent="menu_impc_approvals"
+              action="action_impc_pending_courses"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_impc_all_courses_approval"
+              name="All Submitted Courses"
+              parent="menu_impc_approvals"
+              action="action_impc_all_courses_approval"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_impc_event_approvals"
+              name="Event Approvals"
+              parent="menu_impc_approvals"
+              action="action_impc_pending_events"
+              sequence="30"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_impc_all_events_approval"
+              name="All Submitted Events"
+              parent="menu_impc_approvals"
+              action="action_impc_all_events_approval"
+              sequence="40"
+              groups="base.group_system"/>
+
+    <!-- ======================== -->
+    <!-- Redeem Codes             -->
+    <!-- ======================== -->
     <menuitem id="menu_impc_redeem"
               name="Redeem Codes"
               parent="menu_impc_root"
@@ -29,12 +70,18 @@
               action="action_impc_redeem_code_batch"
               sequence="20"/>
 
+    <!-- ======================== -->
+    <!-- Certificates             -->
+    <!-- ======================== -->
     <menuitem id="menu_impc_certificates"
               name="Certificates"
               parent="menu_impc_root"
               action="action_impc_certificate"
               sequence="20"/>
 
+    <!-- ======================== -->
+    <!-- Session Attendance       -->
+    <!-- ======================== -->
     <menuitem id="menu_impc_attendance"
               name="Session Attendance"
               parent="menu_impc_root"

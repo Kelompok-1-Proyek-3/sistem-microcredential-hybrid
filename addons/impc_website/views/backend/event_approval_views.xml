@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Event Approval Views (IMPC Workflow)                         -->
+    <!-- ============================================================ -->
+
+    <!-- Extend native event.event form to add IMPC Approval tab     -->
+    <!-- Buttons are placed inside the tab to avoid XPath fragility  -->
+    <!-- against different Odoo 19 header structures.                 -->
+    <record id="view_event_form_impc_approval" model="ir.ui.view">
+        <field name="name">event.event.form.impc.approval</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <!-- Add IMPC Approval page inside the main notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="IMPC Approval" name="impc_approval">
+                    <!-- Workflow action buttons -->
+                    <div class="mb-3 d-flex flex-wrap gap-2">
+                        <button name="action_impc_submit_for_review"
+                                string="Submit for Review"
+                                type="object"
+                                class="btn btn-warning"
+                                invisible="impc_approval_state != 'draft' and impc_approval_state != 'rejected'"
+                                />
+                        <button name="action_impc_start_review"
+                                string="Start Review"
+                                type="object"
+                                class="btn btn-info"
+                                invisible="impc_approval_state != 'submitted'"
+                                groups="base.group_system"/>
+                        <button name="action_impc_approve"
+                                string="Approve Event"
+                                type="object"
+                                class="btn btn-success"
+                                invisible="impc_approval_state not in ('submitted', 'under_review')"
+                                groups="base.group_system"/>
+                        <button name="action_impc_reject"
+                                string="Reject"
+                                type="object"
+                                class="btn btn-danger"
+                                invisible="impc_approval_state not in ('submitted', 'under_review')"
+                                groups="base.group_system"/>
+                        <button name="action_impc_reset_to_draft"
+                                string="Reset to Draft"
+                                type="object"
+                                class="btn btn-secondary"
+                                invisible="impc_approval_state != 'rejected'"/>
+                    </div>
+                    <!-- Approval status fields -->
+                    <group>
+                        <group string="Approval Status">
+                            <field name="impc_approval_state" widget="statusbar"
+                                   statusbar_visible="draft,submitted,under_review,approved"
+                                   readonly="1"/>
+                            <field name="impc_submitted_by" readonly="1"/>
+                            <field name="impc_reviewed_by" readonly="1"/>
+                            <field name="impc_review_date" readonly="1"/>
+                        </group>
+                        <group string="Rejection Details">
+                            <field name="impc_rejection_reason" readonly="1"
+                                   invisible="not impc_rejection_reason"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List view for event approvals (IMPC-specific columns only) -->
+    <record id="view_event_list_impc_approval" model="ir.ui.view">
+        <field name="name">event.event.list.impc.approval</field>
+        <field name="model">event.event</field>
+        <field name="arch" type="xml">
+            <list string="Event Approvals"
+                  decoration-warning="impc_approval_state == 'submitted'"
+                  decoration-info="impc_approval_state == 'under_review'"
+                  decoration-success="impc_approval_state == 'approved'"
+                  decoration-danger="impc_approval_state == 'rejected'">
+                <field name="name" string="Event"/>
+                <field name="date_begin" string="Start Date"/>
+                <field name="date_end" string="End Date"/>
+                <field name="impc_approval_state" string="IMPC Status" widget="badge"/>
+                <field name="impc_submitted_by" string="Submitted By"/>
+                <field name="impc_reviewed_by" string="Reviewed By"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action: Pending Event Approvals -->
+    <record id="action_impc_pending_events" model="ir.actions.act_window">
+        <field name="name">Pending Event Approvals</field>
+        <field name="res_model">event.event</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'list', 'view_id': ref('view_event_list_impc_approval')})]"/>
+        <field name="domain">[('impc_approval_state', 'in', ['submitted', 'under_review'])]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No pending event approvals
+            </p>
+            <p>
+                When Event Coordinators submit events for review, they will appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: All Events with IMPC Status (non-draft) -->
+    <record id="action_impc_all_events_approval" model="ir.actions.act_window">
+        <field name="name">All Events (IMPC Approval)</field>
+        <field name="res_model">event.event</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'list', 'view_id': ref('view_event_list_impc_approval')})]"/>
+        <field name="domain">[('impc_approval_state', '!=', 'draft')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No submitted events found
+            </p>
+        </field>
+    </record>
+
+</odoo>

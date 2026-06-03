@@ -2,38 +2,164 @@
 <odoo>
 
     <template id="impc_header_extend" inherit_id="website.template_header_default" name="IMPC Navbar - Extend Native Header">
-        <!-- Add impc-navbar class to the navbar via _navbar_classes variable -->
-        <xpath expr="//t[@t-call='website.navbar']/t[@t-set='_navbar_classes']" position="attributes">
-            <attribute name="t-valuef" add=" impc-navbar" separator=" "/>
+        <xpath expr="//t[@t-call='website.navbar']" position="replace">
+            <t t-call="impc_website.impc_navbar"/>
         </xpath>
+    </template>
 
-        <!-- Replace brand with IMPC brand -->
-        <xpath expr="//t[@t-call='website.placeholder_header_brand']" position="replace">
-            <a class="navbar-brand fw-bold" href="/">
-                <span class="text-primary">IMPC</span>
-                <span class="text-muted small ms-1 d-none d-md-inline">Microcredential</span>
-            </a>
-        </xpath>
-
-        <!-- Add My Learning link for authenticated users before user dropdown -->
-        <xpath expr="//t[@t-call='portal.user_dropdown']" position="before">
-            <t t-if="not request.env.user._is_public()">
-                <a href="/my-learning"
-                   class="btn btn-outline-primary btn-sm ms-2 o_navlink_background text-reset">
-                    <i class="fa fa-graduation-cap me-1"></i>My Learning
+    <template id="impc_navbar" name="IMPC Navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="/">
+                    <span class="text-primary">IMPC</span>
+                    <span class="text-muted small ms-1 d-none d-md-inline">Microcredential</span>
                 </a>
-            </t>
-        </xpath>
 
-        <!-- Add Redeem Code button for authenticated users after user dropdown -->
-        <xpath expr="//t[@t-call='portal.user_dropdown']" position="after">
-            <t t-if="not request.env.user._is_public()">
-                <a href="/my-learning/redeem"
-                   class="btn btn-outline-success btn-sm ms-2 o_navlink_background text-reset">
-                    Redeem Code
-                </a>
-            </t>
-        </xpath>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#impcNavbar"
+                        aria-controls="impcNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="impcNavbar">
+
+                    <!-- ============================================ -->
+                    <!-- 1. PUBLIC (not logged in)                    -->
+                    <!-- ============================================ -->
+                    <t t-if="request.env.user._is_public()">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/event">Events</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                        </ul>
+                        <div class="d-flex gap-2">
+                            <a href="/web/login" class="btn btn-outline-primary btn-sm">Login</a>
+                            <a href="/web/signup" class="btn btn-primary btn-sm">Register</a>
+                        </div>
+                    </t>
+
+                    <!-- ============================================ -->
+                    <!-- 2. ADMINISTRATOR (Odoo Role: Administrator)  -->
+                    <!--    base.group_system                         -->
+                    <!-- ============================================ -->
+                    <t t-elif="request.env.user.has_group('base.group_system')">
+                        <t t-set="nav_pending_courses" t-value="request.env['slide.channel'].sudo().search_count([('approval_state', 'in', ['submitted', 'under_review'])])"/>
+                        <t t-set="nav_pending_events" t-value="request.env['event.event'].sudo().search_count([('impc_approval_state', 'in', ['submitted', 'under_review'])])"/>
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold" href="/management/dashboard">
+                                    <i class="fa fa-tachometer me-1"/>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-semibold" href="#"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-check-square-o me-1"/>Approvals
+                                    <t t-if="nav_pending_courses + nav_pending_events > 0">
+                                        <span class="badge bg-danger ms-1" style="font-size:0.65rem;">
+                                            <t t-out="nav_pending_courses + nav_pending_events"/>
+                                        </span>
+                                    </t>
+                                </a>
+                                <ul class="dropdown-menu shadow border-0">
+                                    <li>
+                                        <a class="dropdown-item" href="/management/approvals/courses">
+                                            <i class="fa fa-book me-2 text-warning"/>Course Approvals
+                                            <t t-if="nav_pending_courses">
+                                                <span class="badge bg-warning text-dark ms-1"><t t-out="nav_pending_courses"/></span>
+                                            </t>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/management/approvals/events">
+                                            <i class="fa fa-calendar me-2 text-danger"/>Event Approvals
+                                            <t t-if="nav_pending_events">
+                                                <span class="badge bg-danger ms-1"><t t-out="nav_pending_events"/></span>
+                                            </t>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-semibold" href="#"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-cogs me-1"/>Operations
+                                </a>
+                                <ul class="dropdown-menu shadow border-0">
+                                    <li>
+                                        <a class="dropdown-item" href="/web#action=impc_website.action_impc_certificate">
+                                            <i class="fa fa-certificate me-2 text-success"/>Certificates
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/web#action=impc_website.action_impc_redeem_code">
+                                            <i class="fa fa-ticket me-2 text-warning"/>Redeem Codes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/web#action=impc_website.action_impc_session_attendance">
+                                            <i class="fa fa-users me-2 text-info"/>Session Attendance
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"/></li>
+                                    <li>
+                                        <a class="dropdown-item" href="/web#model=res.users&amp;view_type=list">
+                                            <i class="fa fa-user-circle me-2 text-secondary"/>User Management
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold" href="/web">
+                                    <i class="fa fa-th-large me-1"/>Backend
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-primary px-3 py-2" style="font-size:0.75rem;">
+                                <i class="fa fa-shield me-1"/>Administrator
+                            </span>
+                            <t t-call="portal.user_dropdown"/>
+                        </div>
+                    </t>
+
+                    <!-- ============================================ -->
+                    <!-- 3. LEARNER (Odoo Role: Portal)               -->
+                    <!--    base.group_portal                         -->
+                    <!-- ============================================ -->
+                    <t t-elif="request.env.user.has_group('base.group_portal')">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" href="/my-learning">My Learning</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/event">Events</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/my-learning/redeem">Redeem</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/my-learning/certificates">Certificates</a></li>
+                        </ul>
+                        <t t-call="portal.user_dropdown"/>
+                    </t>
+
+                    <!-- ============================================ -->
+                    <!-- 4. INTERNAL USER (Role: User / Employee)     -->
+                    <!--    Teachers, Event Coordinators, Officers    -->
+                    <!--    These users work primarily in backend     -->
+                    <!-- ============================================ -->
+                    <t t-else="">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/event">Events</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/web">
+                                    <i class="fa fa-th-large me-1"/>Backend
+                                </a>
+                            </li>
+                        </ul>
+                        <t t-call="portal.user_dropdown"/>
+                    </t>
+
+                </div>
+            </div>
+        </nav>
     </template>
 
 </odoo>
