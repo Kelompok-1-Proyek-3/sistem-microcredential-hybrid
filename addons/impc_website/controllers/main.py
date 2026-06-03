@@ -1,4 +1,4 @@
-from odoo import http
+from odoo import fields, http
 from odoo.http import request
 
 
@@ -42,6 +42,7 @@ class IMPCWebsiteController(http.Controller):
         Auth-aware: shows marketing content for guests, dashboard for logged-in users.
         """
         SlideChannel = request.env['slide.channel'].sudo()
+        EventEvent = request.env['event.event'].sudo()
         is_authenticated = not request.env.user._is_public()
 
         featured_courses = SlideChannel.search([
@@ -54,6 +55,13 @@ class IMPCWebsiteController(http.Controller):
                 ('is_published', '=', True),
             ], limit=6, order='create_date desc')
 
+        # Get featured/upcoming events that are approved and published
+        featured_events = EventEvent.search([
+            ('website_published', '=', True),
+            ('impc_approval_state', '=', 'approved'),
+            ('date_end', '>=', fields.Datetime.now()),
+        ], limit=3, order='date_begin')
+
         total_courses = SlideChannel.search_count([('is_published', '=', True)])
         total_students = request.env['slide.channel.partner'].sudo().search_count([
             ('member_status', 'in', ['joined', 'ongoing', 'completed']),
@@ -65,6 +73,7 @@ class IMPCWebsiteController(http.Controller):
 
         values = {
             'featured_courses': featured_courses,
+            'featured_events': featured_events,
             'total_courses': total_courses,
             'total_students': total_students,
             'total_certificates': total_certificates,

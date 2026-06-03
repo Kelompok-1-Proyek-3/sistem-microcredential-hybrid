@@ -68,6 +68,7 @@ class EventEvent(models.Model):
                 "impc_approval_state": "approved",
                 "impc_reviewed_by": self.env.user.id,
                 "impc_review_date": fields.Datetime.now(),
+                "website_published": True,  # Auto-publish to website when approved
             }
         )
 
@@ -91,3 +92,21 @@ class EventEvent(models.Model):
                 "impc_rejection_reason": False,
             }
         )
+
+    def _auto_publish_approved_events(self):
+        """Utility method to auto-publish all approved events that are not yet published.
+        Can be called manually or via scheduled action."""
+        approved_unpublished = self.search([
+            ("impc_approval_state", "=", "approved"),
+            ("website_published", "=", False),
+        ])
+        if approved_unpublished:
+            approved_unpublished.write({"website_published": True})
+        return len(approved_unpublished)
+
+    def action_publish_event(self):
+        """Manually publish an approved event to the website."""
+        self.ensure_one()
+        if self.impc_approval_state == "approved":
+            self.website_published = True
+        return True

@@ -6,3 +6,10 @@ def post_init_hook(env):
             'company_id': env.ref('base.main_company').id,
             'user_id': env.ref('base.public_user').id,
         })
+
+
+def post_load_hook(env):
+    """Auto-publish all approved events when module is upgraded."""
+    EventEvent = env['event.event']
+    if hasattr(EventEvent, '_auto_publish_approved_events'):
+        EventEvent._auto_publish_approved_events()

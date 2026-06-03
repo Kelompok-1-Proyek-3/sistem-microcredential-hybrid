@@ -85,6 +85,7 @@ Features:
         ],
     },
     "post_init_hook": "post_init_hook",
+    "post_load_hook": "post_load_hook",
     "images": ["static/description/banner.png"],
     "installable": True,
     "application": True,

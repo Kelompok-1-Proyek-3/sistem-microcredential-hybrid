@@ -47,6 +47,13 @@
                                 type="object"
                                 class="btn btn-secondary"
                                 invisible="impc_approval_state != 'rejected'"/>
+                        <!-- Publish to Website button (for already approved events) -->
+                        <button name="action_publish_event"
+                                string="Publish to Website"
+                                type="object"
+                                class="btn btn-primary"
+                                invisible="impc_approval_state != 'approved' or website_published"
+                                groups="base.group_system"/>
                     </div>
                     <!-- Approval status fields -->
                     <group>

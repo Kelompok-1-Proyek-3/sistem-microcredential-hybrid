@@ -165,45 +165,72 @@
                             <p class="text-muted">Ikuti sesi tatap muka, webinar, dan workshop dari instruktur terbaik</p>
                         </div>
                         <div class="row g-4">
-                            <div class="col-md-4">
-                                <div class="card border-0 shadow-sm h-100 rounded-3">
-                                    <div class="card-body p-4">
-                                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                             style="width: 60px; height: 60px;">
-                                            <i class="fa fa-calendar fa-2x text-info"></i>
+                            <t t-if="featured_events">
+                                <t t-foreach="featured_events" t-as="event">
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm h-100 rounded-3">
+                                            <div class="card-body p-4">
+                                                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                     style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-calendar fa-2x text-info"></i>
+                                                </div>
+                                                <h5 class="fw-bold" t-field="event.name"></h5>
+                                                <p class="text-muted small mb-2">
+                                                    <i class="fa fa-calendar-o me-1"></i>
+                                                    <span t-field="event.date_begin" t-options='{"widget": "date", "format": "dd MMM yyyy"}'></span>
+                                                </p>
+                                                <p class="text-muted small mb-3" t-if="event.address_id">
+                                                    <i class="fa fa-map-marker me-1"></i>
+                                                    <span t-field="event.address_id.city"></span>
+                                                </p>
+                                                <a t-attf-href="/event/{{slug(event)}}" class="text-decoration-none">Lihat Detail →</a>
+                                            </div>
                                         </div>
-                                        <h5 class="fw-bold">Hybrid Bootcamp</h5>
-                                        <p class="text-muted small">Sesi intensif untuk praktik langsung dan mentoring.</p>
-                                        <a href="/event" class="text-decoration-none">Lihat Event</a>
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <!-- Fallback: Static placeholder when no events -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3">
+                                        <div class="card-body p-4">
+                                            <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 60px; height: 60px;">
+                                                <i class="fa fa-calendar fa-2x text-info"></i>
+                                            </div>
+                                            <h5 class="fw-bold">Hybrid Bootcamp</h5>
+                                            <p class="text-muted small">Sesi intensif untuk praktik langsung dan mentoring.</p>
+                                            <a href="/event" class="text-decoration-none">Lihat Event</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card border-0 shadow-sm h-100 rounded-3">
-                                    <div class="card-body p-4">
-                                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                             style="width: 60px; height: 60px;">
-                                            <i class="fa fa-users fa-2x text-warning"></i>
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3">
+                                        <div class="card-body p-4">
+                                            <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 60px; height: 60px;">
+                                                <i class="fa fa-users fa-2x text-warning"></i>
+                                            </div>
+                                            <h5 class="fw-bold">Industry Webinar</h5>
+                                            <p class="text-muted small">Update tren industri dan studi kasus terbaru.</p>
+                                            <a href="/event" class="text-decoration-none">Lihat Event</a>
                                         </div>
-                                        <h5 class="fw-bold">Industry Webinar</h5>
-                                        <p class="text-muted small">Update tren industri dan studi kasus terbaru.</p>
-                                        <a href="/event" class="text-decoration-none">Lihat Event</a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card border-0 shadow-sm h-100 rounded-3">
-                                    <div class="card-body p-4">
-                                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                             style="width: 60px; height: 60px;">
-                                            <i class="fa fa-certificate fa-2x text-success"></i>
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100 rounded-3">
+                                        <div class="card-body p-4">
+                                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 60px; height: 60px;">
+                                                <i class="fa fa-certificate fa-2x text-success"></i>
+                                            </div>
+                                            <h5 class="fw-bold">Certification Clinic</h5>
+                                            <p class="text-muted small">Persiapan ujian dan pendampingan sertifikasi.</p>
+                                            <a href="/event" class="text-decoration-none">Lihat Event</a>
                                         </div>
-                                        <h5 class="fw-bold">Certification Clinic</h5>
-                                        <p class="text-muted small">Persiapan ujian dan pendampingan sertifikasi.</p>
-                                        <a href="/event" class="text-decoration-none">Lihat Event</a>
                                     </div>
                                 </div>
-                            </div>
+                            </t>
                         </div>
                     </div>
                 </section>
