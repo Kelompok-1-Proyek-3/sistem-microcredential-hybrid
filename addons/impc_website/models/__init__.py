@@ -1,0 +1,15 @@
+from . import (
+    account_payment_method,
+    certificate,
+    event_event,
+    payment_provider,
+    payment_transaction,
+    event_registration,
+    redeem_code,
+    redeem_code_batch,
+    sale_order,
+    session_attendance,
+    slide_channel,
+    slide_channel_partner,
+    website,
+)

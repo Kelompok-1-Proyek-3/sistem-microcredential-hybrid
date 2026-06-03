@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Website Data (Default Pages, Sequences)                 -->
+    <!-- ============================================================ -->
+
+    <!-- Certificate Sequence -->
+    <record id="seq_impc_certificate" model="ir.sequence">
+        <field name="name">IMPC Certificate Sequence</field>
+        <field name="code">impc.certificate</field>
+        <field name="prefix">CERT-%(year)s-</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Default Website Menu Items -->
+    <record id="menu_courses" model="website.menu">
+        <field name="name">Courses</field>
+        <field name="url">/courses</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">20</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+
+    <record id="menu_pricing" model="website.menu">
+        <field name="name">Pricing</field>
+        <field name="url">/pricing</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">30</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+
+    <record id="menu_corporate" model="website.menu">
+        <field name="name">Corporate</field>
+        <field name="url">/corporate-training</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">40</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+
+    <record id="menu_about" model="website.menu">
+        <field name="name">About</field>
+        <field name="url">/about</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">50</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+
+    <record id="menu_verify" model="website.menu">
+        <field name="name">Verify Certificate</field>
+        <field name="url">/verify-certificate</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">60</field>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+
+</odoo>

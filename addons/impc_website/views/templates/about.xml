@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC About Page                                              -->
+    <!-- ============================================================ -->
+
+    <template id="about_page" name="IMPC About Us">
+        <t t-call="website.layout">
+            <t t-set="title">About Us - IMPC Microcredential</t>
+
+            <div class="impc-about-page">
+
+                <!-- Hero -->
+                <section class="bg-primary text-white py-5">
+                    <div class="container text-center">
+                        <h1 class="fw-bold mb-3">Tentang IMPC</h1>
+                        <p class="lead opacity-75 col-lg-8 mx-auto">
+                            Indonesia Microcredential Platform Center adalah platform pembelajaran
+                            dan sertifikasi mikro terdepan yang menghubungkan profesional
+                            dengan kompetensi yang dibutuhkan industri.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Mission & Vision -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6">
+                                <h2 class="fw-bold mb-4">Misi Kami</h2>
+                                <p class="text-muted">
+                                    Menyediakan akses pendidikan berkualitas tinggi yang terjangkau,
+                                    fleksibel, dan relevan dengan kebutuhan industri melalui program
+                                    microcredential yang terstruktur dan terverifikasi.
+                                </p>
+                                <p class="text-muted">
+                                    Kami percaya bahwa setiap profesional berhak mendapatkan kesempatan
+                                    untuk terus berkembang, tanpa terbatas oleh waktu, lokasi, atau biaya.
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="card border-0 bg-primary bg-opacity-10 p-3 text-center rounded-3">
+                                            <h3 class="fw-bold text-primary mb-0">50+</h3>
+                                            <small class="text-muted">Kursus Tersedia</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card border-0 bg-success bg-opacity-10 p-3 text-center rounded-3">
+                                            <h3 class="fw-bold text-success mb-0">1000+</h3>
+                                            <small class="text-muted">Alumni</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card border-0 bg-warning bg-opacity-10 p-3 text-center rounded-3">
+                                            <h3 class="fw-bold text-warning mb-0">50+</h3>
+                                            <small class="text-muted">Partner Industri</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card border-0 bg-info bg-opacity-10 p-3 text-center rounded-3">
+                                            <h3 class="fw-bold text-info mb-0">95%</h3>
+                                            <small class="text-muted">Satisfaction Rate</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Values -->
+                <section class="bg-light py-5">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold">Nilai-Nilai Kami</h2>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 text-center rounded-3">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                         style="width: 60px; height: 60px;">
+                                        <i class="fa fa-diamond fa-lg text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Kualitas</h5>
+                                    <p class="text-muted small">
+                                        Kurikulum dirancang bersama praktisi industri untuk memastikan
+                                        relevansi dan kualitas pembelajaran.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 text-center rounded-3">
+                                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                         style="width: 60px; height: 60px;">
+                                        <i class="fa fa-universal-access fa-lg text-success"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Aksesibilitas</h5>
+                                    <p class="text-muted small">
+                                        Platform yang dapat diakses kapan saja, di mana saja,
+                                        dengan berbagai mode pembelajaran yang fleksibel.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 p-4 text-center rounded-3">
+                                    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                         style="width: 60px; height: 60px;">
+                                        <i class="fa fa-handshake-o fa-lg text-warning"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Kolaborasi</h5>
+                                    <p class="text-muted small">
+                                        Bekerja sama dengan perusahaan dan institusi pendidikan
+                                        untuk menciptakan ekosistem pembelajaran yang holistik.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA -->
+                <section class="py-5">
+                    <div class="container text-center">
+                        <h3 class="fw-bold mb-3">Bergabung Bersama Kami</h3>
+                        <p class="text-muted mb-4">
+                            Mulai perjalanan pengembangan kompetensi Anda hari ini.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="/courses" class="btn btn-primary btn-lg px-4">Jelajahi Kursus</a>
+                            <a href="/corporate-training" class="btn btn-outline-dark btn-lg px-4">Kerjasama</a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

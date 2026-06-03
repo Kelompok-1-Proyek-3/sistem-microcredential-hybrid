@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_weekly_event_conversion_report" model="ir.cron">
+            <field name="name">Marketing: Weekly Event Conversion Report</field>
+            <field name="model_id" ref="model_marketing_event_conversion_report"/>
+            <field name="state">code</field>
+            <field name="code">model._sync_weekly_conversion_report()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+        </record>
+        <record id="ir_cron_weekly_event_conversion_export" model="ir.cron">
+            <field name="name">Marketing: Export Weekly Event Conversion CSV</field>
+            <field name="model_id" ref="model_marketing_event_conversion_report"/>
+            <field name="state">code</field>
+            <field name="code">model._export_weekly_conversion_csv()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+        </record>
+        <record id="ir_cron_monthly_survey_report" model="ir.cron">
+            <field name="name">Marketing: Monthly Survey Report</field>
+            <field name="model_id" ref="model_marketing_survey_report"/>
+            <field name="state">code</field>
+            <field name="code">model._sync_monthly_survey_report()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+        </record>
+        <record id="ir_cron_monthly_survey_export" model="ir.cron">
+            <field name="name">Marketing: Export Monthly Survey CSV</field>
+            <field name="model_id" ref="model_marketing_survey_report"/>
+            <field name="state">code</field>
+            <field name="code">model._export_monthly_survey_csv()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+        </record>
+    </data>
+</odoo>

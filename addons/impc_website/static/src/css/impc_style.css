@@ -1,0 +1,319 @@
+/* ============================================================ */
+/* IMPC Website - Main Stylesheet                               */
+/* ============================================================ */
+
+/* === Variables === */
+:root {
+    --impc-primary: #0d6efd;
+    --impc-primary-dark: #0a58ca;
+    --impc-secondary: #1a237e;
+    --impc-success: #198754;
+    --impc-warning: #ffc107;
+    --impc-info: #0dcaf0;
+    --impc-dark: #212529;
+    --impc-light: #f8f9fa;
+    --impc-border-radius: 12px;
+    --impc-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    --impc-shadow-hover: 0 5px 25px rgba(0, 0, 0, 0.12);
+    --impc-transition: all 0.3s ease;
+}
+
+/* === Navbar === */
+.impc-navbar {
+    transition: var(--impc-transition);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.impc-navbar .navbar-brand {
+    font-size: 1.4rem;
+}
+
+.impc-navbar .nav-link {
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem !important;
+    color: #555;
+    transition: var(--impc-transition);
+    border-radius: 6px;
+}
+
+.impc-navbar .nav-link:hover {
+    color: var(--impc-primary);
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* === Hero Section === */
+.impc-hero {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 50%, #f0f8ff 100%);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.impc-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(13, 110, 253, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(13, 110, 253, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 60% 80%, rgba(25, 135, 84, 0.03) 0%, transparent 50%);
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.impc-hero-illustration .card {
+    transform: rotate(-2deg);
+    transition: var(--impc-transition);
+}
+
+.impc-hero-illustration .card:hover {
+    transform: rotate(0deg);
+}
+
+/* === Stats Section === */
+.impc-stats {
+    background: linear-gradient(135deg, var(--impc-primary) 0%, var(--impc-secondary) 100%);
+}
+
+/* === Course Cards === */
+.impc-course-card {
+    transition: var(--impc-transition);
+    border-radius: var(--impc-border-radius) !important;
+}
+
+.impc-course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--impc-shadow-hover);
+}
+
+.impc-course-card .card-img-top {
+    transition: var(--impc-transition);
+}
+
+.impc-course-card:hover .card-img-top {
+    transform: scale(1.03);
+}
+
+.impc-course-card .impc-course-card-img {
+    overflow: hidden;
+}
+
+/* === Category Cards === */
+.impc-category-card {
+    transition: var(--impc-transition);
+}
+
+.impc-category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--impc-shadow-hover);
+}
+
+/* === Dashboard === */
+.impc-dashboard .card {
+    transition: var(--impc-transition);
+}
+
+.impc-dashboard .card:hover {
+    box-shadow: var(--impc-shadow-hover);
+}
+
+/* === Progress Bars === */
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+/* === Buttons === */
+.btn-primary {
+    background: linear-gradient(135deg, var(--impc-primary) 0%, var(--impc-primary-dark) 100%);
+    border: none;
+    transition: var(--impc-transition);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* === Cards General === */
+.card {
+    border-radius: var(--impc-border-radius) !important;
+}
+
+.shadow-sm {
+    box-shadow: var(--impc-shadow) !important;
+}
+
+/* === Footer === */
+.impc-footer {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
+}
+
+.impc-footer a:hover {
+    color: var(--impc-primary) !important;
+    transition: var(--impc-transition);
+}
+
+/* === Pricing Page === */
+.impc-pricing-page .card {
+    transition: var(--impc-transition);
+}
+
+.impc-pricing-page .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--impc-shadow-hover);
+}
+
+/* === Certificate Cards === */
+.impc-my-certificates .card-header {
+    border-radius: var(--impc-border-radius) var(--impc-border-radius) 0 0 !important;
+}
+
+/* === Redeem Page === */
+.impc-redeem-page input[name="code"] {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+}
+
+.impc-redeem-page input[name="code"]::placeholder {
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+/* === Course Detail === */
+.impc-course-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.impc-course-detail .nav-tabs .nav-link {
+    font-weight: 600;
+    color: #666;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 3px solid transparent;
+}
+
+.impc-course-detail .nav-tabs .nav-link.active {
+    color: var(--impc-primary);
+    border-bottom-color: var(--impc-primary);
+    background: transparent;
+}
+
+.impc-course-detail .accordion-button:not(.collapsed) {
+    background-color: rgba(13, 110, 253, 0.05);
+    color: var(--impc-primary);
+}
+
+/* === Verify Certificate === */
+.impc-verify-page .card,
+.impc-verify-result .card {
+    overflow: hidden;
+}
+
+/* === Events Page === */
+.impc-my-events .card {
+    transition: var(--impc-transition);
+}
+
+.impc-my-events .card:hover {
+    box-shadow: var(--impc-shadow-hover);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .impc-hero {
+        min-height: 60vh;
+    }
+
+    .impc-hero h1 {
+        font-size: 2rem;
+    }
+
+    .impc-navbar .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .impc-stats h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .impc-hero {
+        min-height: auto;
+        padding: 3rem 0;
+    }
+
+    .impc-course-card .card-body {
+        padding: 1rem;
+    }
+
+    .impc-dashboard .card-body {
+        padding: 1rem;
+    }
+}
+
+/* === Animations === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.impc-homepage section {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* === Badge Styles === */
+.badge {
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.4em 0.8em;
+}
+
+/* === Accordion === */
+.accordion-item {
+    border: none !important;
+}
+
+.accordion-button {
+    font-size: 0.95rem;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}

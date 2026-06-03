@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Simple notice for public users on event pages -->
+    <template id="event_login_notice" inherit_id="website.layout" name="IMPC Event - Login Notice" active="True" customize_show="True">
+        <xpath expr="//main" position="before">
+            <t t-if="request.httprequest.path.startswith('/event') and request.env.user._is_public()">
+                <div class="container mt-3">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <i class="fa fa-info-circle me-2"></i>
+                        <strong>Note:</strong> You must 
+                        <a t-attf-href="/web/login?redirect={{request.httprequest.path}}" class="alert-link fw-bold">login</a> or 
+                        <a href="/web/signup" class="alert-link fw-bold">create an account</a> 
+                        to register for events.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Add check for existing registration and show alert -->
+    <template id="event_registration_status" inherit_id="website_event.event_description_full" name="IMPC Event - Registration Status">
+        <xpath expr="//div[@id='o_wevent_event_main_col']" position="inside">
+            <!-- Check if logged in user is already registered -->
+            <t t-if="not request.env.user._is_public()">
+                <t t-set="user_registration" t-value="request.env['event.registration'].sudo().search([
+                    ('event_id', '=', event.id),
+                    ('partner_id', '=', request.env.user.partner_id.id),
+                    ('state', 'in', ['draft', 'open', 'done'])
+                ], limit=1)"/>
+                
+                <t t-if="user_registration">
+                    <!-- Show already registered alert -->
+                    <div class="alert alert-success mb-4" role="alert">
+                        <h5 class="alert-heading">
+                            <i class="fa fa-check-circle me-2"></i>You are already registered!
+                        </h5>
+                        <p class="mb-2">You have successfully registered for this event.</p>
+                        <hr/>
+                        <a t-attf-href="/event/{{slug(event)}}/registration/success?registration_ids={{user_registration.id}}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="fa fa-ticket me-1"></i>View Your Ticket
+                        </a>
+                    </div>
+                    
+                    <!-- Hide register button with CSS -->
+                    <style>
+                        /* Hide all register buttons if already registered */
+                        a[href*="/register"]:not([href*="registration/success"]) {
+                            display: none !important;
+                        }
+                    </style>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

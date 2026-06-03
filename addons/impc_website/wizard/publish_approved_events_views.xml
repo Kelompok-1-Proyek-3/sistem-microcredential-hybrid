@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Wizard Form View -->
+    <record id="view_publish_approved_events_wizard_form" model="ir.ui.view">
+        <field name="name">impc.publish.approved.events.wizard.form</field>
+        <field name="model">impc.publish.approved.events.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <div class="alert alert-info mb-0" role="alert">
+                        <i class="fa fa-info-circle me-2"></i>
+                        <strong>Bulk Publish to Website</strong>
+                        <p class="mb-0 mt-2">
+                            This wizard will publish all approved events that are currently unpublished on the website.
+                        </p>
+                    </div>
+                </group>
+                
+                <group>
+                    <field name="event_count" string="Events to Publish"/>
+                    <field name="event_ids" widget="many2many_tags" readonly="1" 
+                           invisible="event_count == 0"/>
+                </group>
+
+                <div class="alert alert-warning" role="alert" invisible="event_count > 0">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    <strong>No Events Found</strong>
+                    <p class="mb-0">
+                        All approved events are already published on the website.
+                    </p>
+                </div>
+
+                <footer>
+                    <button name="action_publish_events" 
+                            string="Publish Events" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="event_count == 0"/>
+                    <button string="Cancel" 
+                            class="btn-secondary" 
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_publish_approved_events_wizard" model="ir.actions.act_window">
+        <field name="name">Publish Approved Events</field>
+        <field name="res_model">impc.publish.approved.events.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="event.model_event_event"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

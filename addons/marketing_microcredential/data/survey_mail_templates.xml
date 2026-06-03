@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_survey_invite" model="mail.template">
+            <field name="name">Survey: Undangan Peserta</field>
+            <field name="model_id" ref="survey.model_survey_user_input"/>
+            <field name="subject">[IMPC] Survei Kursus: ${object.survey_id.title}</field>
+            <field name="email_to">${object.email or object.partner_id.email}</field>
+            <field name="body_html"><![CDATA[
+                <p>Halo ${object.partner_id.name or 'Peserta'},</p>
+                <p>Terima kasih telah menyelesaikan kursus. Mohon isi survei singkat berikut:</p>
+                <p><a href="${object.get_start_url()}">Mulai Survei</a></p>
+                <p>Terima kasih atas waktunya.</p>
+            ]]></field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

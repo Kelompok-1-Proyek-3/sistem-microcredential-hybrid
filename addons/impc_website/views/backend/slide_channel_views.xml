@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Slide Channel (Course) Backend View Extensions               -->
+    <!-- ============================================================ -->
+
+    <!-- Extend slide.channel form view -->
+    <record id="view_slide_channel_form_impc" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
+        <field name="arch" type="xml">
+            <!-- Add IMPC tab in the notebook -->
+            <xpath expr="//page[@name='options']" position="after">
+                <page string="IMPC Settings" name="impc_settings">
+                    <group>
+                        <group string="Learning Mode">
+                            <field name="learning_mode"/>
+                            <field name="event_id" required="learning_mode in ('hybrid', 'offline')" invisible="learning_mode == 'online'"/>
+                            <field name="event_date_begin" invisible="not event_id" readonly="1"/>
+                            <field name="event_date_end" invisible="not event_id" readonly="1"/>
+                            <field name="event_location" invisible="not event_id" readonly="1"/>
+                            <field name="difficulty_level"/>
+                            <field name="estimated_duration"/>
+                            <field name="sks_weight"/>
+                            <field name="is_featured"/>
+                        </group>
+                        <group string="Additional Info">
+                            <field name="instructor_ids" widget="many2many_tags"/>
+                            <field name="prerequisite_ids" widget="many2many_tags"/>
+                            <field name="enrolled_count"/>
+                            <field name="certificate_count"/>
+                        </group>
+                    </group>
+                    <group string="Content Description">
+                        <field name="short_description"/>
+                        <field name="target_audience"/>
+                        <field name="learning_outcomes"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extend slide.channel tree view -->
+    <record id="view_slide_channel_tree_impc" model="ir.ui.view">
+        <field name="name">slide.channel.tree.impc</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.slide_channel_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_published']" position="before">
+                <field name="learning_mode"/>
+                <field name="difficulty_level"/>
+                <field name="is_featured"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Approval Workflow - Form View Extension                       -->
+    <!-- ============================================================ -->
+    <record id="view_slide_channel_form_impc_approval" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc.approval</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
+        <field name="arch" type="xml">
+            <!-- Approval state statusbar in the header -->
+            <xpath expr="//header" position="inside">
+                <field name="approval_state" widget="statusbar"
+                       statusbar_visible="draft,submitted,under_review,approved"
+                       readonly="1"/>
+            </xpath>
+            <!-- Approval action buttons in header -->
+            <xpath expr="//header/button[last()]" position="after">
+                <button name="action_submit_for_review" string="Submit for Review"
+                        type="object" class="btn-warning"
+                        invisible="approval_state != 'draft' and approval_state != 'rejected'"/>
+                <button name="action_start_review" string="Start Review"
+                        type="object" class="btn-info"
+                        invisible="approval_state != 'submitted'"
+                        groups="base.group_system"/>
+                <button name="action_approve" string="Approve &amp; Publish"
+                        type="object" class="btn-success"
+                        invisible="approval_state not in ('submitted', 'under_review')"
+                        groups="base.group_system"/>
+                <button name="action_reject" string="Reject"
+                        type="object" class="btn-danger"
+                        invisible="approval_state not in ('submitted', 'under_review')"
+                        groups="base.group_system"/>
+                <button name="action_reset_to_draft" string="Reset to Draft"
+                        type="object"
+                        invisible="approval_state != 'rejected'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Approval fields in IMPC Settings tab -->
+    <record id="view_slide_channel_form_impc_approval_fields" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc.approval.fields</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="impc_website.view_slide_channel_form_impc"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='impc_settings']" position="inside">
+                <group string="Approval Workflow" col="2">
+                    <field name="approval_state" readonly="1"/>
+                    <field name="submitted_by" readonly="1"/>
+                    <field name="reviewed_by" readonly="1"/>
+                    <field name="review_date" readonly="1"/>
+                    <field name="rejection_reason" readonly="1" colspan="2"
+                           invisible="not rejection_reason"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Certificates Smart Button in Header                          -->
+    <!-- ============================================================ -->
+    <record id="view_slide_channel_form_impc_cert_button" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc.cert.button</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.view_slide_channel_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="oe_button_box" name="impc_button_box">
+                    <button name="%(action_impc_certificate)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-certificate"
+                            domain="[('channel_id', '=', id)]"
+                            context="{'default_channel_id': id}">
+                        <div class="o_stat_info">
+                            <field name="certificate_count"/>
+                            <span class="o_stat_text">Digital Certificates</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_slide_channel_form_impc_final_exam_label" model="ir.ui.view">
+        <field name="name">slide.channel.form.impc.final.exam.label</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides_survey.slide_channel_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//create[@name='add_slide_certificate']" position="attributes">
+                <attribute name="string">Add Final Exam</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_slide_slide_form_impc_final_exam_label" model="ir.ui.view">
+        <field name="name">slide.slide.form.impc.final.exam.label</field>
+        <field name="model">slide.slide</field>
+        <field name="inherit_id" ref="website_slides_survey.slide_slide_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='survey_id']" position="attributes">
+                <attribute name="string">Final Exam</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Approval column in list view -->
+    <record id="view_slide_channel_list_impc_approval" model="ir.ui.view">
+        <field name="name">slide.channel.list.impc.approval</field>
+        <field name="model">slide.channel</field>
+        <field name="inherit_id" ref="website_slides.slide_channel_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_published']" position="after">
+                <field name="approval_state"
+                       decoration-warning="approval_state == 'submitted'"
+                       decoration-info="approval_state == 'under_review'"
+                       decoration-success="approval_state == 'approved'"
+                       decoration-danger="approval_state == 'rejected'"
+                       decoration-muted="approval_state == 'draft'"
+                       widget="badge"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action: Pending Course Approvals -->
+    <record id="action_impc_pending_courses" model="ir.actions.act_window">
+        <field name="name">Pending Course Approvals</field>
+        <field name="res_model">slide.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('approval_state', 'in', ['submitted', 'under_review'])]</field>
+        <field name="context">{'search_default_approval_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No pending course approvals
+            </p>
+            <p>
+                When Teachers submit courses for review, they will appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action: All Courses with Approval State -->
+    <record id="action_impc_all_courses_approval" model="ir.actions.act_window">
+        <field name="name">All Courses (Approval)</field>
+        <field name="res_model">slide.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('approval_state', '!=', 'draft')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No submitted courses found
+            </p>
+        </field>
+    </record>
+
+</odoo>

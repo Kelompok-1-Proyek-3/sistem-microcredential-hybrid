@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_sale_b2b_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>KONTRAK B2B MICROCREDENTIAL</h2>
+                        <h3><t t-esc="o.name"/></h3>
+
+                        <table class="table table-sm mt-4">
+                            <tr>
+                                <td><strong>Customer</strong></td>
+                                <td><t t-esc="o.partner_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Periode</strong></td>
+                                <td>
+                                    <t t-esc="o.contract_start_date"/> —
+                                    <t t-esc="o.expiry_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Nilai</strong></td>
+                                <td>
+                                    <t t-esc="o.currency_id.symbol"/>
+                                    <t t-esc="'{:,.0f}'.format(o.amount_total)"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <h5>Detail Kursus</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Kursus</th>
+                                    <th>Mode</th>
+                                    <th>Jumlah Peserta</th>
+                                    <th>Kode Redeem</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.order_line" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <!-- KOREKSI: slide_channel_id bukan course_id -->
+                                            <t t-esc="line.slide_channel_id.name if line.slide_channel_id else line.name"/>
+                                        </td>
+                                        <td><t t-esc="line.learning_mode or '—'"/></td>
+                                        <td><t t-esc="line.student_count"/></td>
+                                        <td><t t-esc="line.redeem_code_count"/></td>
+                                        <td>
+                                            <t t-esc="o.currency_id.symbol"/>
+                                            <t t-esc="'{:,.0f}'.format(line.price_unit)"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.currency_id.symbol"/>
+                                            <t t-esc="'{:,.0f}'.format(line.price_subtotal)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Sesi Hybrid (jika ada) -->
+                                    <tr t-if="line.learning_mode == 'HYBRID' and line.hybrid_session_summary">
+                                        <td colspan="6" class="text-muted small">
+                                            Jadwal Sesi Tatap Muka:
+                                            <t t-esc="line.hybrid_session_summary"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="mt-5 row">
+                            <div class="col-6 text-center">
+                                <p>Pihak Perusahaan</p>
+                                <br/><br/><br/>
+                                <p>(_____________________)</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <p>IMPC Sales Manager</p>
+                                <br/><br/><br/>
+                                <p>(_____________________)</p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

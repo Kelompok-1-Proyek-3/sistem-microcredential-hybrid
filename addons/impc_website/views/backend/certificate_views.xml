@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Certificate Backend Views                                    -->
+    <!-- ============================================================ -->
+
+    <!-- Certificate Tree View -->
+    <record id="view_impc_certificate_tree" model="ir.ui.view">
+        <field name="name">impc.certificate.tree</field>
+        <field name="model">impc.certificate</field>
+        <field name="arch" type="xml">
+            <list string="Digital Certificates" decoration-success="state == 'issued'" decoration-danger="state == 'revoked'" decoration-muted="state == 'draft'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="channel_id"/>
+                <field name="completion_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'issued'" decoration-danger="state == 'revoked'" decoration-info="state == 'draft'"/>
+                <field name="verification_code" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Certificate Form View -->
+    <record id="view_impc_certificate_form" model="ir.ui.view">
+        <field name="name">impc.certificate.form</field>
+        <field name="model">impc.certificate</field>
+        <field name="arch" type="xml">
+            <form string="Digital Certificate">
+                <header>
+                    <button name="action_generate" string="Generate Certificate" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_revoke" string="Revoke" type="object"
+                            class="btn-danger" invisible="state != 'issued'"
+                            confirm="Are you sure you want to revoke this certificate?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,issued"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Certificate Details">
+                            <field name="partner_id"/>
+                            <field name="channel_id"/>
+                            <field name="channel_partner_id"/>
+                            <field name="completion_date"/>
+                        </group>
+                        <group string="Verification">
+                            <field name="verification_code"/>
+                            <field name="verification_url" widget="url"/>
+                            <field name="qr_code" widget="image" class="oe_avatar"/>
+                            <field name="attachment_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Certificate Search View -->
+    <record id="view_impc_certificate_search" model="ir.ui.view">
+        <field name="name">impc.certificate.search</field>
+        <field name="model">impc.certificate</field>
+        <field name="arch" type="xml">
+            <search string="Search Digital Certificates">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="channel_id"/>
+                <field name="verification_code"/>
+                <separator/>
+                <filter name="issued" string="Issued" domain="[('state', '=', 'issued')]"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="revoked" string="Revoked" domain="[('state', '=', 'revoked')]"/>
+                <separator/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_course" string="Course" context="{'group_by': 'channel_id'}"/>
+                    <filter name="group_student" string="Student" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'completion_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Certificate Action -->
+    <record id="action_impc_certificate" model="ir.actions.act_window">
+        <field name="name">Digital Certificates</field>
+        <field name="res_model">impc.certificate</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_impc_certificate_search"/>
+        <field name="context">{'search_default_issued': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No digital certificates issued yet
+            </p>
+            <p>
+                Certificates are automatically generated when students complete courses.
+            </p>
+        </field>
+    </record>
+
+</odoo>

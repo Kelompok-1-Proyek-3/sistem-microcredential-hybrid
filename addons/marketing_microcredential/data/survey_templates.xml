@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="survey_post_course_satisfaction" model="survey.survey">
+            <field name="title">Survei Kepuasan Kursus</field>
+            <field name="description">Survei singkat untuk evaluasi kualitas kursus.</field>
+            <field name="access_mode">public</field>
+        </record>
+
+        <record id="survey_post_course_q1_content" model="survey.question">
+            <field name="survey_id" ref="survey_post_course_satisfaction"/>
+            <field name="title">Kualitas konten kursus</field>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="survey_post_course_q1_a1" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q1_content"/>
+            <field name="value">1</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="survey_post_course_q1_a2" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q1_content"/>
+            <field name="value">2</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="survey_post_course_q1_a3" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q1_content"/>
+            <field name="value">3</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="survey_post_course_q1_a4" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q1_content"/>
+            <field name="value">4</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="survey_post_course_q1_a5" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q1_content"/>
+            <field name="value">5</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="survey_post_course_q2_instructor" model="survey.question">
+            <field name="survey_id" ref="survey_post_course_satisfaction"/>
+            <field name="title">Kualitas instruktur (jika ada)</field>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="survey_post_course_q2_a1" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q2_instructor"/>
+            <field name="value">1</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="survey_post_course_q2_a2" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q2_instructor"/>
+            <field name="value">2</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="survey_post_course_q2_a3" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q2_instructor"/>
+            <field name="value">3</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="survey_post_course_q2_a4" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q2_instructor"/>
+            <field name="value">4</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="survey_post_course_q2_a5" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q2_instructor"/>
+            <field name="value">5</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="survey_post_course_q3_usability" model="survey.question">
+            <field name="survey_id" ref="survey_post_course_satisfaction"/>
+            <field name="title">Kemudahan penggunaan platform</field>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="survey_post_course_q3_a1" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q3_usability"/>
+            <field name="value">1</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="survey_post_course_q3_a2" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q3_usability"/>
+            <field name="value">2</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="survey_post_course_q3_a3" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q3_usability"/>
+            <field name="value">3</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="survey_post_course_q3_a4" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q3_usability"/>
+            <field name="value">4</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="survey_post_course_q3_a5" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q3_usability"/>
+            <field name="value">5</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="survey_post_course_q4_difficulty" model="survey.question">
+            <field name="survey_id" ref="survey_post_course_satisfaction"/>
+            <field name="title">Tingkat kesulitan materi</field>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="survey_post_course_q4_a1" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q4_difficulty"/>
+            <field name="value">1</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="survey_post_course_q4_a2" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q4_difficulty"/>
+            <field name="value">2</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="survey_post_course_q4_a3" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q4_difficulty"/>
+            <field name="value">3</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="survey_post_course_q4_a4" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q4_difficulty"/>
+            <field name="value">4</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="survey_post_course_q4_a5" model="survey.question.answer">
+            <field name="question_id" ref="survey_post_course_q4_difficulty"/>
+            <field name="value">5</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="survey_post_course_q5_feedback" model="survey.question">
+            <field name="survey_id" ref="survey_post_course_satisfaction"/>
+            <field name="title">Masukan atau komentar tambahan</field>
+            <field name="question_type">text_box</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="survey_nps" model="survey.survey">
+            <field name="title">Survei NPS Kursus</field>
+            <field name="description">Seberapa besar Anda merekomendasikan kursus ini?</field>
+            <field name="access_mode">public</field>
+        </record>
+
+        <record id="survey_nps_question" model="survey.question">
+            <field name="survey_id" ref="survey_nps"/>
+            <field name="title">Seberapa besar kemungkinan Anda merekomendasikan kursus ini? (0-10)</field>
+            <field name="question_type">simple_choice</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="survey_nps_answer_0" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">0</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="survey_nps_answer_1" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">1</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="survey_nps_answer_2" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">2</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="survey_nps_answer_3" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">3</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="survey_nps_answer_4" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">4</field>
+            <field name="sequence">5</field>
+        </record>
+        <record id="survey_nps_answer_5" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">5</field>
+            <field name="sequence">6</field>
+        </record>
+        <record id="survey_nps_answer_6" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">6</field>
+            <field name="sequence">7</field>
+        </record>
+        <record id="survey_nps_answer_7" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">7</field>
+            <field name="sequence">8</field>
+        </record>
+        <record id="survey_nps_answer_8" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">8</field>
+            <field name="sequence">9</field>
+        </record>
+        <record id="survey_nps_answer_9" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">9</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="survey_nps_answer_10" model="survey.question.answer">
+            <field name="question_id" ref="survey_nps_question"/>
+            <field name="value">10</field>
+            <field name="sequence">11</field>
+        </record>
+
+        <record id="survey_nps" model="survey.survey">
+            <field name="nps_question_id" ref="survey_nps_question"/>
+        </record>
+    </data>
+</odoo>

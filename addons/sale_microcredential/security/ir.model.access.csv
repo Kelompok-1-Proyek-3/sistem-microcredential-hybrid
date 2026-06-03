@@ -5,3 +5,4 @@ access_res_partner_microcredential,res.partner (Sales Microcredential),base.mode
 access_res_users_microcredential,res.users (Sales Microcredential),base.model_res_users,sales_team.group_sale_salesman,1,1,1,0
 access_hr_partner_sale_order,sale.order (HR Partner - Read Only),sale.model_sale_order,sale_microcredential.group_hr_partner,1,0,0,0
 access_hr_partner_sale_order_line,sale.order.line (HR Partner - Read Only),sale.model_sale_order_line,sale_microcredential.group_hr_partner,1,0,0,0
+access_sale_redeem_code_wizard,access_sale_redeem_code_wizard,sale_microcredential.model_sale_redeem_code_wizard,base.group_user,1,1,1,0

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Server Action: Send B2B Contract Confirmation Email (dipanggil dari action menu) -->
+        <!-- Catatan: Email juga otomatis terkirim via override action_confirm() di sale_order_workflow.py -->
+        <record id="action_server_send_b2b_email" model="ir.actions.server">
+            <field name="name">Send B2B Contract Confirmation Email</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code"><![CDATA[
+for record in records:
+    record.action_send_contract_confirmation()
+            ]]></field>
+        </record>
+    </data>
+</odoo>

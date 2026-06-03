@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_marketing_survey_report_tree" model="ir.ui.view">
+        <field name="name">marketing.survey.report.tree</field>
+        <field name="model">marketing.survey.report</field>
+        <field name="arch" type="xml">
+            <list string="Monthly Survey Report">
+                <field name="survey_id"/>
+                <field name="month_start"/>
+                <field name="month_end"/>
+                <field name="response_count"/>
+                <field name="avg_score"/>
+                <field name="nps_score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_marketing_survey_report_form" model="ir.ui.view">
+        <field name="name">marketing.survey.report.form</field>
+        <field name="model">marketing.survey.report</field>
+        <field name="arch" type="xml">
+            <form string="Monthly Survey Report">
+                <sheet>
+                    <group>
+                        <field name="survey_id"/>
+                        <field name="month_start"/>
+                        <field name="month_end"/>
+                        <field name="response_count"/>
+                        <field name="avg_score"/>
+                        <field name="nps_score"/>
+                        <field name="last_synced"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_marketing_survey_report" model="ir.actions.act_window">
+        <field name="name">Monthly Survey Report</field>
+        <field name="res_model">marketing.survey.report</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
