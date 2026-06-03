@@ -156,6 +156,11 @@
                                                           t-attf-class="bg-#{course.learning_mode == 'online' and 'success' or course.learning_mode == 'hybrid' and 'warning' or 'info'}">
                                                         <t t-out="(course.learning_mode or 'online').upper()"/>
                                                     </span>
+                                                    <t t-if="is_authenticated and course.id in enrolled_ids">
+                                                        <span class="badge bg-success position-absolute top-0 start-0 m-2">
+                                                            <i class="fa fa-check me-1"></i>Enrolled
+                                                        </span>
+                                                    </t>
                                                 </div>
                                                 <!-- Card Body -->
                                                 <div class="card-body d-flex flex-column">

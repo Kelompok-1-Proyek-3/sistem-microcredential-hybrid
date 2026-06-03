@@ -14,7 +14,7 @@
 
                     <!-- Header -->
                     <div class="mb-4">
-                        <h3 class="fw-bold mb-1">Sesi Tatap Muka</h3>
+                        <h3 class="fw-bold mb-1">Upcoming Events</h3>
                         <p class="text-muted mb-0">
                             Jadwal sesi offline/hybrid untuk kursus Anda
                         </p>
@@ -59,7 +59,7 @@
 
                                             <!-- Attendance Status -->
                                             <div class="d-flex align-items-center justify-content-between p-2 rounded"
-                                                 t-attf-class="bg-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'} bg-opacity-10">
+                                                  t-attf-class="bg-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'} bg-opacity-10">
                                                 <span class="small fw-bold"
                                                       t-attf-class="text-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'}">
                                                     <i t-attf-class="fa me-1 #{ev['attendance_status'] == 'hadir' and 'fa-check-circle' or ev['attendance_status'] == 'tidak_hadir' and 'fa-times-circle' or 'fa-clock-o'}"></i>

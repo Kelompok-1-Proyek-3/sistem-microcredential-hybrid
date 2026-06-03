@@ -21,17 +21,17 @@
                                         Selamat Datang, <t t-out="request.env.user.name"/>!
                                     </h3>
                                     <p class="opacity-75 mb-3">
-                                        Lanjutkan perjalanan belajar Anda. Konsistensi adalah kunci keberhasilan.
+                                        Lanjutkan perjalanan belajar Anda dengan cepat dari My Learning.
                                     </p>
                                     <t t-if="continue_course">
                                         <a t-attf-href="/slides/#{slug(continue_course.channel_id)}"
                                            class="btn btn-light btn-sm px-4 fw-bold">
-                                            <i class="fa fa-play me-2"></i>Lanjutkan Belajar
+                                            <i class="fa fa-play me-2"></i>Continue Learning
                                         </a>
                                     </t>
                                     <t t-else="">
                                         <a href="/courses" class="btn btn-light btn-sm px-4 fw-bold">
-                                            <i class="fa fa-search me-2"></i>Jelajahi Kursus
+                                            <i class="fa fa-search me-2"></i>Browse Courses
                                         </a>
                                     </t>
                                 </div>
@@ -53,7 +53,7 @@
                                     </div>
                                     <div>
                                         <h4 class="fw-bold mb-0" t-out="total_in_progress"/>
-                                        <small class="text-muted">In Progress</small>
+                                        <small class="text-muted">Active Courses</small>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                 <div class="card border-0 shadow-sm rounded-3 mb-4">
                                     <div class="card-header bg-white border-0 pt-3 px-4">
                                         <h5 class="fw-bold mb-0">
-                                            <i class="fa fa-play-circle text-primary me-2"></i>Lanjutkan Belajar
+                                            <i class="fa fa-play-circle text-primary me-2"></i>Continue Learning
                                         </h5>
                                     </div>
                                     <div class="card-body px-4 pb-4">
@@ -138,14 +138,14 @@
                                 </div>
                             </t>
 
-                            <!-- Enrolled Courses -->
+                            <!-- Active Courses -->
                             <div class="card border-0 shadow-sm rounded-3">
                                 <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
                                     <h5 class="fw-bold mb-0">
-                                        <i class="fa fa-book text-primary me-2"></i>Kursus Saya
+                                        <i class="fa fa-book text-primary me-2"></i>Active Courses
                                     </h5>
                                     <a href="/my-learning/courses" class="btn btn-outline-primary btn-sm">
-                                        Lihat Semua
+                                        View All
                                     </a>
                                 </div>
                                 <div class="card-body px-4 pb-4">
@@ -215,12 +215,12 @@
                                 </div>
                             </div>
 
-                            <!-- Recent Certificates -->
+                            <!-- Certificates Summary -->
                             <t t-if="certificates">
                                 <div class="card border-0 shadow-sm rounded-3 mb-4">
                                     <div class="card-body p-3">
                                         <h6 class="fw-bold mb-3">
-                                            <i class="fa fa-certificate text-warning me-2"></i>Sertifikat Terbaru
+                                            <i class="fa fa-certificate text-warning me-2"></i>Certificates Summary
                                         </h6>
                                         <t t-foreach="certificates[:3]" t-as="cert">
                                             <div class="d-flex align-items-center py-2 border-bottom">

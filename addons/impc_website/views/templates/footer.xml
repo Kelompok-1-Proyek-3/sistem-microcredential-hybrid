@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="impc_footer" name="IMPC Footer" inherit_id="website.layout">
+       <template id="impc_footer" name="IMPC Footer" inherit_id="website.layout">
         <xpath expr="//footer[@id='bottom']" position="inside">
             <div class="impc-footer bg-dark text-light pt-5 pb-3">
                 <div class="container">
@@ -39,7 +39,7 @@
                                 <li class="mb-2"><a href="/about" class="text-secondary text-decoration-none">About Us</a></li>
                                 <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Careers</a></li>
                                 <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
-                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Contact</a></li>
+                                <li class="mb-2"><a href="/contact" class="text-secondary text-decoration-none">Contact</a></li>
                             </ul>
                         </div>
 
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-        </xpath>
+  </xpath>
     </template>
 
 </odoo>

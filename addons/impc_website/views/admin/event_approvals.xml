@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Admin - Event Approvals                                 -->
+    <!-- ============================================================ -->
+
+    <template id="admin_event_approvals" name="IMPC Admin - Event Approvals">
+        <t t-call="website.layout">
+            <t t-set="title">Event Approvals - IMPC Management</t>
+
+            <div class="impc-admin-approvals py-4" style="background:#f8f9fa; min-height:80vh;">
+                <div class="container-xl">
+
+                    <!-- Breadcrumb + Header -->
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/management/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Event Approvals</li>
+                        </ol>
+                    </nav>
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h2 class="fw-bold mb-1" style="color: var(--impc-secondary);">
+                                <i class="fa fa-calendar me-2"/>Event Approvals
+                            </h2>
+                            <p class="text-muted mb-0">
+                                Review, approve, or reject events submitted by Event Coordinators.
+                            </p>
+                        </div>
+                        <t t-if="pending_count">
+                            <span class="badge bg-danger fs-6 px-3 py-2">
+                                <i class="fa fa-clock-o me-1"/>
+                                <t t-out="pending_count"/> Pending
+                            </span>
+                        </t>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <ul class="nav nav-pills mb-4 gap-1">
+                        <li class="nav-item">
+                            <a t-attf-class="nav-link #{current_state == 'pending' and 'active' or ''}"
+                               href="/management/approvals/events?state=pending">Pending</a>
+                        </li>
+                        <li class="nav-item">
+                            <a t-attf-class="nav-link #{current_state == 'under_review' and 'active' or ''}"
+                               href="/management/approvals/events?state=under_review">Under Review</a>
+                        </li>
+                        <li class="nav-item">
+                            <a t-attf-class="nav-link #{current_state == 'approved' and 'active' or ''}"
+                               href="/management/approvals/events?state=approved">Approved</a>
+                        </li>
+                        <li class="nav-item">
+                            <a t-attf-class="nav-link #{current_state == 'rejected' and 'active' or ''}"
+                               href="/management/approvals/events?state=rejected">Rejected</a>
+                        </li>
+                        <li class="nav-item">
+                            <a t-attf-class="nav-link #{current_state == 'all' and 'active' or ''}"
+                               href="/management/approvals/events?state=all">All</a>
+                        </li>
+                    </ul>
+
+                    <!-- Event List -->
+                    <t t-if="events">
+                        <div class="row g-3">
+                            <t t-foreach="events" t-as="event">
+                                <div class="col-12">
+                                    <div class="card border-0 shadow-sm" style="border-radius: var(--impc-border-radius);">
+                                        <div class="card-body p-4">
+                                            <div class="row align-items-start">
+
+                                                <!-- Event Info -->
+                                                <div class="col-md-7">
+                                                    <div class="d-flex align-items-center mb-2 gap-2">
+                                                        <span t-attf-class="badge #{
+                                                            'bg-warning text-dark' if event.impc_approval_state == 'submitted' else
+                                                            'bg-info text-white' if event.impc_approval_state == 'under_review' else
+                                                            'bg-success' if event.impc_approval_state == 'approved' else
+                                                            'bg-danger' if event.impc_approval_state == 'rejected' else 'bg-secondary'
+                                                        }">
+                                                            <t t-out="event.impc_approval_state.replace('_', ' ').title()"/>
+                                                        </span>
+
+                                                    </div>
+                                                    <h5 class="fw-bold mb-1">
+                                                        <t t-out="event.name"/>
+                                                    </h5>
+                                                    <div class="d-flex flex-wrap gap-3 mb-2" style="font-size:0.82rem;">
+                                                        <t t-if="event.date_begin">
+                                                            <span class="text-muted">
+                                                                <i class="fa fa-calendar me-1"/>
+                                                                <t t-out="event.date_begin.strftime('%d %b %Y, %H:%M')"/>
+                                                            </span>
+                                                        </t>
+                                                        <t t-if="event.address_inline">
+                                                            <span class="text-muted">
+                                                                <i class="fa fa-map-marker me-1"/>
+                                                                <t t-out="event.address_inline"/>
+                                                            </span>
+                                                        </t>
+                                                        <span class="text-muted">
+                                                            <i class="fa fa-user me-1"/>
+                                                            Submitted by: <strong><t t-out="event.impc_submitted_by.name or '—'"/></strong>
+                                                        </span>
+                                                        <t t-if="event.impc_reviewed_by">
+                                                            <span class="text-muted">
+                                                                <i class="fa fa-check me-1"/>
+                                                                Reviewed by: <strong><t t-out="event.impc_reviewed_by.name"/></strong>
+                                                            </span>
+                                                        </t>
+                                                    </div>
+                                                    <!-- Rejection Reason -->
+                                                    <t t-if="event.impc_rejection_reason">
+                                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" style="font-size:0.85rem;">
+                                                            <strong>Rejection Reason:</strong>
+                                                            <t t-out="event.impc_rejection_reason"/>
+                                                        </div>
+                                                    </t>
+                                                </div>
+
+                                                <!-- Action Buttons -->
+                                                <div class="col-md-5">
+                                                    <div class="d-flex flex-column gap-2">
+
+                                                        <!-- Approve -->
+                                                        <t t-if="event.impc_approval_state in ('submitted', 'under_review')">
+                                                            <form t-attf-action="/management/approvals/events/#{event.id}/review" method="post">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="action" value="approve"/>
+                                                                <button type="submit" class="btn btn-success w-100">
+                                                                    <i class="fa fa-check me-1"/>Approve Event
+                                                                </button>
+                                                            </form>
+                                                        </t>
+
+                                                        <!-- Start Review -->
+                                                        <t t-if="event.impc_approval_state == 'submitted'">
+                                                            <form t-attf-action="/management/approvals/events/#{event.id}/review" method="post">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="action" value="start_review"/>
+                                                                <button type="submit" class="btn btn-outline-info w-100">
+                                                                    <i class="fa fa-eye me-1"/>Start Review
+                                                                </button>
+                                                            </form>
+                                                        </t>
+
+                                                        <!-- Reject -->
+                                                        <t t-if="event.impc_approval_state in ('submitted', 'under_review')">
+                                                            <form t-attf-action="/management/approvals/events/#{event.id}/review" method="post">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="action" value="reject"/>
+                                                                <textarea name="reason" class="form-control mb-2" rows="2"
+                                                                          placeholder="Rejection reason (required)..." required="required"
+                                                                          style="font-size:0.85rem;"/>
+                                                                <button type="submit" class="btn btn-danger w-100">
+                                                                    <i class="fa fa-times me-1"/>Reject
+                                                                </button>
+                                                            </form>
+                                                        </t>
+
+                                                        <!-- Reset to Draft -->
+                                                        <t t-if="event.impc_approval_state == 'rejected'">
+                                                            <form t-attf-action="/management/approvals/events/#{event.id}/review" method="post">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="action" value="reset"/>
+                                                                <button type="submit" class="btn btn-outline-secondary w-100">
+                                                                    <i class="fa fa-undo me-1"/>Reset to Draft
+                                                                </button>
+                                                            </form>
+                                                        </t>
+
+                                                        <!-- Open in Backend -->
+                                                        <a t-attf-href="/web#model=event.event&amp;id=#{event.id}&amp;view_type=form"
+                                                           class="btn btn-outline-secondary btn-sm" target="_blank">
+                                                            <i class="fa fa-external-link me-1"/>Open in Backend
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="card border-0 shadow-sm text-center py-5" style="border-radius: var(--impc-border-radius);">
+                            <i class="fa fa-check-circle fa-3x text-success mb-3"/>
+                            <h5 class="fw-bold text-muted">No events found</h5>
+                            <p class="text-muted">There are no events matching the selected filter.</p>
+                            <a href="/management/approvals/events" class="btn btn-outline-primary">View All Pending</a>
+                        </div>
+                    </t>
+
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+</odoo>

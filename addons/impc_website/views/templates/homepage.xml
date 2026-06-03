@@ -11,7 +11,7 @@
 
             <div class="impc-homepage">
 
-                <!-- ========== HERO SECTION ========== -->
+                <!-- Hero Section -->
                 <section class="impc-hero position-relative overflow-hidden">
                     <div class="impc-hero-bg"></div>
                     <div class="container position-relative py-5">
@@ -26,18 +26,17 @@
                                 </h1>
                                 <p class="lead text-muted mb-4">
                                     Pelajari keterampilan yang dibutuhkan industri melalui kursus
-                                    terstruktur dengan sertifikat digital yang dapat diverifikasi.
-                                    Belajar online, offline, atau hybrid sesuai kebutuhan Anda.
+                                    terstruktur dan sesi event yang terverifikasi. Belajar online,
+                                    offline, atau hybrid sesuai kebutuhan Anda.
                                 </p>
                                 <div class="d-flex flex-wrap gap-3">
                                     <a href="/courses" class="btn btn-primary btn-lg px-4">
                                         <i class="fa fa-book me-2"></i>Jelajahi Kursus
                                     </a>
-                                    <a href="/corporate-training" class="btn btn-outline-dark btn-lg px-4">
-                                        <i class="fa fa-building me-2"></i>Corporate Training
+                                    <a href="/event" class="btn btn-outline-dark btn-lg px-4">
+                                        <i class="fa fa-calendar me-2"></i>Lihat Event
                                     </a>
                                 </div>
-                                <!-- Trust badges -->
                                 <div class="mt-4 pt-3 d-flex align-items-center gap-4 text-muted small">
                                     <span><i class="fa fa-check-circle text-success me-1"></i> Sertifikat Terverifikasi</span>
                                     <span><i class="fa fa-check-circle text-success me-1"></i> Diakui Industri</span>
@@ -82,31 +81,7 @@
                     </div>
                 </section>
 
-                <!-- ========== STATS SECTION ========== -->
-                <section class="impc-stats bg-primary text-white py-4">
-                    <div class="container">
-                        <div class="row text-center g-4">
-                            <div class="col-6 col-md-3">
-                                <h3 class="fw-bold mb-0" t-out="total_students or 0"/>
-                                <small class="opacity-75">Students Enrolled</small>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <h3 class="fw-bold mb-0" t-out="total_courses or 0"/>
-                                <small class="opacity-75">Courses Available</small>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <h3 class="fw-bold mb-0" t-out="total_certificates or 0"/>
-                                <small class="opacity-75">Certificates Issued</small>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <h3 class="fw-bold mb-0">50+</h3>
-                                <small class="opacity-75">Corporate Partners</small>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- ========== FEATURED COURSES ========== -->
+                <!-- Featured Courses -->
                 <section class="impc-featured py-5">
                     <div class="container">
                         <div class="text-center mb-5">
@@ -117,7 +92,6 @@
                             <t t-foreach="featured_courses" t-as="course">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="card impc-course-card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
-                                        <!-- Course Image -->
                                         <div class="impc-course-card-img position-relative">
                                             <t t-if="course.image_512">
                                                 <img t-attf-src="/web/image/slide.channel/#{course.id}/image_512"
@@ -130,33 +104,32 @@
                                                     <i class="fa fa-book fa-3x text-primary opacity-50"></i>
                                                 </div>
                                             </t>
-                                            <!-- Mode Badge -->
                                             <span class="badge position-absolute top-0 end-0 m-2"
                                                   t-attf-class="bg-#{course.learning_mode == 'online' and 'success' or course.learning_mode == 'hybrid' and 'warning' or 'info'}">
                                                 <t t-out="course.learning_mode.upper() if course.learning_mode else 'ONLINE'"/>
                                             </span>
+                                            <t t-if="is_authenticated and course.id in enrolled_ids">
+                                                <span class="badge bg-success position-absolute top-0 start-0 m-2">
+                                                    <i class="fa fa-check me-1"></i>Enrolled
+                                                </span>
+                                            </t>
                                         </div>
-                                        <!-- Card Body -->
                                         <div class="card-body d-flex flex-column">
-                                            <!-- Tags -->
                                             <div class="mb-2">
                                                 <t t-foreach="course.tag_ids[:2]" t-as="tag">
                                                     <span class="badge bg-light text-dark me-1 small" t-out="tag.name"/>
                                                 </t>
                                             </div>
-                                            <!-- Title -->
                                             <h6 class="card-title fw-bold">
                                                 <a t-attf-href="/courses/#{slug(course)}"
                                                    class="text-dark text-decoration-none stretched-link">
                                                     <t t-out="course.name"/>
                                                 </a>
                                             </h6>
-                                            <!-- Description -->
                                             <p class="card-text text-muted small flex-grow-1">
                                                 <t t-out="(course.short_description or course.description_short or '')[:120]"/>
                                                 <t t-if="len(course.short_description or course.description_short or '') > 120">...</t>
                                             </p>
-                                            <!-- Meta -->
                                             <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
                                                 <div class="small text-muted">
                                                     <i class="fa fa-signal me-1"></i>
@@ -184,142 +157,194 @@
                     </div>
                 </section>
 
-                <!-- ========== HOW IT WORKS ========== -->
-                <section class="impc-how-it-works bg-light py-5">
+                <!-- Featured Events -->
+                <section class="impc-events bg-light py-5">
                     <div class="container">
                         <div class="text-center mb-5">
-                            <h2 class="fw-bold">Bagaimana Cara Kerjanya?</h2>
-                            <p class="text-muted">Mulai perjalanan belajar Anda dalam 4 langkah mudah</p>
+                            <h2 class="fw-bold">Event Unggulan</h2>
+                            <p class="text-muted">Ikuti sesi tatap muka, webinar, dan workshop dari instruktur terbaik</p>
                         </div>
                         <div class="row g-4">
-                            <div class="col-md-3 text-center">
-                                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                     style="width: 80px; height: 80px;">
-                                    <i class="fa fa-user-plus fa-2x text-primary"></i>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 rounded-3">
+                                    <div class="card-body p-4">
+                                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-calendar fa-2x text-info"></i>
+                                        </div>
+                                        <h5 class="fw-bold">Hybrid Bootcamp</h5>
+                                        <p class="text-muted small">Sesi intensif untuk praktik langsung dan mentoring.</p>
+                                        <a href="/event" class="text-decoration-none">Lihat Event</a>
+                                    </div>
                                 </div>
-                                <h6 class="fw-bold">1. Daftar</h6>
-                                <p class="text-muted small">Buat akun gratis dan lengkapi profil Anda</p>
                             </div>
-                            <div class="col-md-3 text-center">
-                                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                     style="width: 80px; height: 80px;">
-                                    <i class="fa fa-search fa-2x text-success"></i>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 rounded-3">
+                                    <div class="card-body p-4">
+                                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-users fa-2x text-warning"></i>
+                                        </div>
+                                        <h5 class="fw-bold">Industry Webinar</h5>
+                                        <p class="text-muted small">Update tren industri dan studi kasus terbaru.</p>
+                                        <a href="/event" class="text-decoration-none">Lihat Event</a>
+                                    </div>
                                 </div>
-                                <h6 class="fw-bold">2. Pilih Kursus</h6>
-                                <p class="text-muted small">Jelajahi katalog dan pilih kursus sesuai kebutuhan</p>
                             </div>
-                            <div class="col-md-3 text-center">
-                                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                     style="width: 80px; height: 80px;">
-                                    <i class="fa fa-play-circle fa-2x text-warning"></i>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 rounded-3">
+                                    <div class="card-body p-4">
+                                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-certificate fa-2x text-success"></i>
+                                        </div>
+                                        <h5 class="fw-bold">Certification Clinic</h5>
+                                        <p class="text-muted small">Persiapan ujian dan pendampingan sertifikasi.</p>
+                                        <a href="/event" class="text-decoration-none">Lihat Event</a>
+                                    </div>
                                 </div>
-                                <h6 class="fw-bold">3. Belajar</h6>
-                                <p class="text-muted small">Akses materi, ikuti sesi, dan selesaikan ujian</p>
-                            </div>
-                            <div class="col-md-3 text-center">
-                                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                                     style="width: 80px; height: 80px;">
-                                    <i class="fa fa-certificate fa-2x text-info"></i>
-                                </div>
-                                <h6 class="fw-bold">4. Sertifikasi</h6>
-                                <p class="text-muted small">Dapatkan sertifikat digital yang dapat diverifikasi</p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- ========== LEARNING MODES ========== -->
-                <section class="impc-modes py-5">
+                <!-- Benefits -->
+                <section class="impc-benefits py-5">
                     <div class="container">
                         <div class="text-center mb-5">
-                            <h2 class="fw-bold">Mode Pembelajaran Fleksibel</h2>
-                            <p class="text-muted">Pilih cara belajar yang paling sesuai dengan gaya Anda</p>
+                            <h2 class="fw-bold">Benefits</h2>
+                            <p class="text-muted">Pengalaman belajar yang terstruktur dan siap industri</p>
                         </div>
                         <div class="row g-4">
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-3">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
+                                         style="width: 70px; height: 70px;">
+                                        <i class="fa fa-laptop fa-2x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">Flexible Learning</h5>
+                                    <p class="text-muted small">Online, offline, atau hybrid sesuai kebutuhan Anda.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-3">
                                     <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
                                          style="width: 70px; height: 70px;">
-                                        <i class="fa fa-laptop fa-2x text-success"></i>
+                                        <i class="fa fa-line-chart fa-2x text-success"></i>
                                     </div>
-                                    <h5 class="fw-bold">Online</h5>
-                                    <p class="text-muted small">
-                                        Belajar kapan saja, di mana saja. Akses materi video,
-                                        dokumen, dan quiz secara mandiri.
-                                    </p>
+                                    <h5 class="fw-bold">Progress Tracking</h5>
+                                    <p class="text-muted small">Pantau kemajuan belajar dan capaian sertifikasi.</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-3">
                                     <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
                                          style="width: 70px; height: 70px;">
-                                        <i class="fa fa-exchange fa-2x text-warning"></i>
+                                        <i class="fa fa-briefcase fa-2x text-warning"></i>
                                     </div>
-                                    <h5 class="fw-bold">Hybrid</h5>
-                                    <p class="text-muted small">
-                                        Kombinasi online dan tatap muka. Materi online dilengkapi
-                                        sesi praktik langsung.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-3">
-                                    <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-3"
-                                         style="width: 70px; height: 70px;">
-                                        <i class="fa fa-users fa-2x text-info"></i>
-                                    </div>
-                                    <h5 class="fw-bold">Offline</h5>
-                                    <p class="text-muted small">
-                                        Pembelajaran tatap muka penuh dengan instruktur berpengalaman
-                                        di lokasi yang ditentukan.
-                                    </p>
+                                    <h5 class="fw-bold">Industry Ready</h5>
+                                    <p class="text-muted small">Kurikulum relevan dengan kebutuhan industri.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- ========== CATEGORIES ========== -->
-                <t t-if="categories">
-                    <section class="impc-categories bg-light py-5">
-                        <div class="container">
-                            <div class="text-center mb-5">
-                                <h2 class="fw-bold">Kategori Kursus</h2>
-                                <p class="text-muted">Temukan kursus berdasarkan bidang keahlian</p>
+                <!-- Certification -->
+                <section class="impc-certification bg-light py-5">
+                    <div class="container">
+                        <div class="row align-items-center g-4">
+                            <div class="col-lg-6">
+                                <h2 class="fw-bold mb-3">Sertifikasi Terverifikasi</h2>
+                                <p class="text-muted">
+                                    Setiap peserta yang menyelesaikan kursus akan mendapatkan sertifikat digital
+                                    dengan verifikasi publik. Gunakan sertifikat untuk meningkatkan kredibilitas
+                                    dan karir profesional Anda.
+                                </p>
+                                <a href="/verify-certificate" class="btn btn-outline-primary">
+                                    Verifikasi Sertifikat
+                                </a>
                             </div>
-                            <div class="row g-3 justify-content-center">
-                                <t t-foreach="categories" t-as="cat">
-                                    <div class="col-6 col-md-3">
-                                        <a t-attf-href="/courses?category=#{cat.id}"
-                                           class="card border-0 shadow-sm text-center p-3 rounded-3 text-decoration-none impc-category-card">
-                                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-2"
-                                                 style="width: 50px; height: 50px;">
-                                                <i class="fa fa-folder-open text-primary"></i>
-                                            </div>
-                                            <h6 class="mb-0 text-dark small fw-bold" t-out="cat.name"/>
-                                        </a>
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm rounded-3 p-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="fa fa-certificate fa-2x text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Digital Certificate</h6>
+                                            <small class="text-muted">QR verification and shareable link</small>
+                                        </div>
                                     </div>
-                                </t>
+                                </div>
                             </div>
                         </div>
-                    </section>
-                </t>
+                    </div>
+                </section>
 
-                <!-- ========== CTA SECTION ========== -->
+                <!-- Statistics -->
+                <section class="impc-stats bg-primary text-white py-4">
+                    <div class="container">
+                        <div class="row text-center g-4">
+                            <div class="col-6 col-md-3">
+                                <h3 class="fw-bold mb-0" t-out="total_students or 0"/>
+                                <small class="opacity-75">Students Enrolled</small>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <h3 class="fw-bold mb-0" t-out="total_courses or 0"/>
+                                <small class="opacity-75">Courses Available</small>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <h3 class="fw-bold mb-0" t-out="total_certificates or 0"/>
+                                <small class="opacity-75">Certificates Issued</small>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <h3 class="fw-bold mb-0">50+</h3>
+                                <small class="opacity-75">Partners</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Partners -->
+                <section class="impc-partners py-5">
+                    <div class="container">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold">Partners</h2>
+                            <p class="text-muted">Kolaborasi dengan institusi pendidikan dan industri</p>
+                        </div>
+                        <div class="row g-3 text-center">
+                            <div class="col-6 col-md-3">
+                                <div class="bg-light rounded-3 py-4">Partner A</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="bg-light rounded-3 py-4">Partner B</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="bg-light rounded-3 py-4">Partner C</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="bg-light rounded-3 py-4">Partner D</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Call To Action -->
                 <section class="impc-cta py-5">
                     <div class="container">
                         <div class="bg-primary rounded-4 p-5 text-center text-white">
-                            <h2 class="fw-bold mb-3">Siap Meningkatkan Kompetensi Anda?</h2>
+                            <h2 class="fw-bold mb-3">Siap Memulai Perjalanan Belajar?</h2>
                             <p class="mb-4 opacity-75">
-                                Bergabung dengan ribuan profesional yang telah meningkatkan karir mereka
-                                melalui sertifikasi mikro IMPC.
+                                Jelajahi kursus dan event terbaik untuk meningkatkan kompetensi Anda.
                             </p>
                             <div class="d-flex flex-wrap justify-content-center gap-3">
-                                <a href="/web/signup" class="btn btn-light btn-lg px-4 fw-bold">
-                                    Daftar Gratis
+                                <a href="/courses" class="btn btn-light btn-lg px-4 fw-bold">
+                                    Jelajahi Kursus
                                 </a>
-                                <a href="/corporate-training" class="btn btn-outline-light btn-lg px-4">
-                                    Program Corporate
+                                <a href="/contact?inquiry=team_access" class="btn btn-outline-light btn-lg px-4">
+                                    Request Team Access
                                 </a>
                             </div>
                         </div>

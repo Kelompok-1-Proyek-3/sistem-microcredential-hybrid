@@ -323,26 +323,31 @@
 
                                         <!-- Not Enrolled -->
                                         <t t-if="not is_enrolled">
-                                            <!-- Price (if product linked) -->
-                                            <t t-if="course.product_id">
+                                            <!-- Guest: prompt login first -->
+                                            <t t-if="not is_authenticated">
                                                 <div class="text-center mb-3">
-                                                    <h3 class="fw-bold text-primary mb-0">
-                                                        Rp <t t-out="'{:,.0f}'.format(course.product_id.list_price)"/>
-                                                    </h3>
+                                                    <i class="fa fa-lock fa-2x text-muted mb-2"></i>
+                                                    <p class="text-muted small">Login untuk mendaftar kursus ini</p>
                                                 </div>
-                                                <a t-attf-href="/shop/product/#{slug(course.product_id.product_tmpl_id)}"
+                                                <a t-attf-href="/web/login?redirect=/courses/#{slug(course)}"
                                                    class="btn btn-primary w-100 btn-lg mb-2">
-                                                    <i class="fa fa-shopping-cart me-2"></i>Enroll Now
+                                                    <i class="fa fa-sign-in me-2"></i>Enroll Now
                                                 </a>
                                             </t>
-                                            <t t-if="not course.product_id">
-                                                <a t-attf-href="/slides/#{slug(course)}" class="btn btn-primary w-100 btn-lg mb-2">
-                                                    <i class="fa fa-sign-in me-2"></i>Enroll Free
-                                                </a>
+                                            <!-- Authenticated: show enrollment modal trigger -->
+                                            <t t-if="is_authenticated">
+                                                <t t-if="course.product_id">
+                                                    <div class="text-center mb-3">
+                                                        <h3 class="fw-bold text-primary mb-0">
+                                                            Rp <t t-out="'{:,.0f}'.format(course.product_id.list_price)"/>
+                                                        </h3>
+                                                    </div>
+                                                </t>
+                                                <button type="button" class="btn btn-primary w-100 btn-lg mb-2" data-bs-toggle="modal" data-bs-target="#accessMethodModal">
+                                                    <i class="fa fa-check-circle me-2"></i>Enroll Now
+                                                </button>
+                                                <small class="text-muted d-block text-center">Pilih metode akses setelah klik Enroll.</small>
                                             </t>
-                                            <a href="/my-learning/redeem" class="btn btn-outline-success w-100 mb-3">
-                                                <i class="fa fa-ticket me-2"></i>Redeem Voucher
-                                            </a>
                                         </t>
 
                                         <hr/>
@@ -388,6 +393,64 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Access Method Modal (authenticated users only) -->
+                <t t-if="is_authenticated and not is_enrolled">
+                    <div class="modal fade" id="accessMethodModal" tabindex="-1" aria-labelledby="accessMethodModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="accessMethodModalLabel">Choose Access Method</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-grid gap-3">
+                                        <div class="border rounded-3 p-3">
+                                            <h6 class="fw-bold mb-1">Personal Purchase</h6>
+                                            <p class="text-muted small mb-3">Gunakan checkout standar untuk mendapatkan akses.</p>
+                                            <t t-if="course.product_id">
+                                                <a t-attf-href="/shop/product/#{slug(course.product_id.product_tmpl_id)}" class="btn btn-primary w-100">
+                                                    <i class="fa fa-shopping-cart me-2"></i>Purchase &amp; Enroll
+                                                </a>
+                                            </t>
+                                            <t t-if="not course.product_id">
+                                                <a t-attf-href="/slides/#{slug(course)}" class="btn btn-primary w-100">
+                                                    <i class="fa fa-sign-in me-2"></i>Enroll Free
+                                                </a>
+                                            </t>
+                                        </div>
+
+                                        <div class="border rounded-3 p-3">
+                                            <h6 class="fw-bold mb-1">Use Redeem Code</h6>
+                                            <p class="text-muted small mb-3">Masukkan kode redeem untuk akses kursus.</p>
+                                            <form action="/my-learning/redeem/submit" method="post">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                <div class="input-group">
+                                                    <input type="text" name="code" id="redeem_code_input"
+                                                           class="form-control text-center fw-bold"
+                                                           placeholder="IMPC-XXXX-XXXX-XXXX" maxlength="19" required="required"
+                                                           autocomplete="off"/>
+                                                    <button type="submit" class="btn btn-success" id="redeem_submit_btn">
+                                                        Redeem
+                                                    </button>
+                                                </div>
+                                                <div id="redeem_validation_feedback" class="mt-2" style="display: none;"></div>
+                                            </form>
+                                        </div>
+
+                                        <div class="border rounded-3 p-3">
+                                            <h6 class="fw-bold mb-1">Request Team Access</h6>
+                                            <p class="text-muted small mb-3">Tim kami akan menghubungi Anda untuk akses tim.</p>
+                                            <a href="/contact?inquiry=team_access" class="btn btn-outline-primary w-100">
+                                                <i class="fa fa-envelope me-2"></i>Request Team Access
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
 
                 <!-- ===== RELATED COURSES ===== -->
                 <t t-if="related_courses">
