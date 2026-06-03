@@ -65,7 +65,7 @@ Features:
         "views/templates/corporate.xml",
         "views/templates/contact.xml",
         "views/templates/verify_certificate.xml",
-
+        "views/templates/event_custom.xml",
         # Portal Templates
         "views/portal/dashboard.xml",
         "views/portal/my_courses.xml",
