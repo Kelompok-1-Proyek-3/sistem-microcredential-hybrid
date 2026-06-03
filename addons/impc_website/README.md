@@ -293,6 +293,56 @@ Before deploying:
 pg_dump odoo_production > backup_$(date +%Y%m%d).sql
 ```
 
+## Event Publishing
+
+### Automatic Publishing
+When an event is approved through the IMPC approval workflow, it is automatically published to the website:
+
+```python
+def action_impc_approve(self):
+    """Administrator approves the event and confirms it."""
+    self.write({
+        "impc_approval_state": "approved",
+        "impc_reviewed_by": self.env.user.id,
+        "impc_review_date": fields.Datetime.now(),
+        "website_published": True,  # Auto-publish
+    })
+```
+
+### Manual Publishing Options
+
+**Option 1: Individual Event (UI)**
+1. Open event in backend
+2. Go to "IMPC Approval" tab
+3. Click "Publish to Website" button (only visible for approved but unpublished events)
+
+**Option 2: Bulk Publish (Wizard)**
+1. Go to Events > Events list view
+2. Select multiple approved events (optional)
+3. Click Action > "Publish Approved Events"
+4. Wizard shows count of events to publish
+5. Click "Publish Events" button
+
+**Option 3: Programmatic (Shell)**
+```python
+# In Odoo shell
+events = env['event.event'].search([
+    ('impc_approval_state', '=', 'approved'),
+    ('website_published', '=', False),
+])
+events.write({'website_published': True})
+env.cr.commit()
+```
+
+### Auto-Publish Hook
+The module includes a `post_load_hook` that automatically publishes all approved but unpublished events when the module is upgraded:
+
+```bash
+python odoo-bin -u impc_website -d your_database
+```
+
+This ensures legacy events are automatically published after upgrade.
+
 ## Future Enhancements (Beyond Scope)
 
 1. **Recommendations Engine** - Suggest courses based on completion history
