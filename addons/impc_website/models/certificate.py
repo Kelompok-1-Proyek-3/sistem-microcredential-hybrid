@@ -170,26 +170,53 @@ class ImpcCertificate(models.Model):
             record.state = 'revoked'
 
     @api.model
+    def _issue_for_enrollment(self, enrollment):
+        """Create or repair the digital certificate for a completed enrollment."""
+        enrollment.ensure_one()
+        certificate = self.sudo().search([
+            ('channel_partner_id', '=', enrollment.id),
+        ], limit=1)
+
+        certificate_vals = {
+            'channel_partner_id': enrollment.id,
+            'partner_id': enrollment.partner_id.id,
+            'channel_id': enrollment.channel_id.id,
+        }
+        if certificate:
+            needs_regeneration = (
+                certificate.partner_id != enrollment.partner_id
+                or certificate.channel_id != enrollment.channel_id
+                or certificate.state != 'issued'
+                or not certificate.attachment_id
+            )
+            certificate.write(certificate_vals)
+        else:
+            certificate = self.sudo().create(certificate_vals)
+            needs_regeneration = True
+
+        if needs_regeneration:
+            certificate.action_generate()
+
+        enrollment.sudo().write({
+            'certificate_id': certificate.id,
+            'certificate_pending': False,
+        })
+        return certificate
+
+    @api.model
     def cron_generate_pending_certificates(self):
         """Scheduled action: generate certificates for enrollments with pending flag."""
         pending = self.env['slide.channel.partner'].sudo().search([
+            '|',
             ('certificate_pending', '=', True),
+            '&',
+            '&',
+            ('member_status', '=', 'completed'),
+            ('certificate_id', '=', False),
+            ('completion', '>=', 100),
         ])
         for enrollment in pending:
             if not enrollment.exam_unlocked:
                 continue
-            existing = self.search([
-                ('channel_partner_id', '=', enrollment.id),
-            ], limit=1)
-            if existing:
-                enrollment.certificate_pending = False
-                continue
-            cert = self.create({
-                'channel_partner_id': enrollment.id,
-                'partner_id': enrollment.partner_id.id,
-                'channel_id': enrollment.channel_id.id,
-            })
-            cert.action_generate()
-            enrollment.certificate_id = cert.id
-            enrollment.certificate_pending = False
+            self._issue_for_enrollment(enrollment)
         return True

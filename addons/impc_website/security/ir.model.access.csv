@@ -1,4 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_impc_certificate_user,impc.certificate.user,model_impc_certificate,base.group_user,1,0,0,0
+access_impc_certificate_teacher,impc.certificate.teacher,model_impc_certificate,impc_website.group_impc_teacher,1,1,1,0
 access_impc_certificate_portal,impc.certificate.portal,model_impc_certificate,base.group_portal,1,0,0,0
 access_impc_certificate_officer,impc.certificate.officer,model_impc_certificate,impc_website.group_impc_officer,1,1,1,0
 access_impc_certificate_manager,impc.certificate.manager,model_impc_certificate,impc_website.group_impc_manager,1,1,1,1

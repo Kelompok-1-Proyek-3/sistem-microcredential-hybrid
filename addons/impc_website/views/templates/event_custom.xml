@@ -21,7 +21,7 @@
 
     <!-- Add check for existing registration and show alert -->
     <template id="event_registration_status" inherit_id="website_event.event_details" name="IMPC Event - Registration Status">
-        <xpath expr="//div[@id='o_wevent_event_main_col']" position="inside">
+        <xpath expr="//div[@name='event']" position="inside">
             <!-- Check if logged in user is already registered -->
             <t t-if="not request.env.user._is_public()">
                 <t t-set="user_registration" t-value="request.env['event.registration'].sudo().search([

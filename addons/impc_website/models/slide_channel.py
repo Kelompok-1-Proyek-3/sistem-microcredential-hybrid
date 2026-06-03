@@ -127,6 +127,51 @@ class SlideChannel(models.Model):
                 ]
             )
 
+    def _get_categorized_slides(self, base_domain, order, force_void=True, limit=False, offset=False):
+        category_data = super()._get_categorized_slides(
+            base_domain,
+            order,
+            force_void=force_void,
+            limit=limit,
+            offset=offset,
+        )
+        visible_category_data = []
+        for category in category_data:
+            slides = category["slides"].filtered(
+                lambda slide: slide.slide_category != "certification"
+            )
+            if not slides and not force_void:
+                continue
+            visible_category_data.append({
+                **category,
+                "total_slides": len(slides),
+                "slides": slides,
+            })
+        return visible_category_data
+
+    def _impc_certification_slide(self):
+        self.ensure_one()
+        return self.slide_content_ids.filtered(
+            lambda slide: slide.slide_category == "certification"
+        )[:1]
+
+    def _impc_lesson_slides(self):
+        self.ensure_one()
+        return self.slide_content_ids.filtered(
+            lambda slide: (
+                slide.slide_category != "certification"
+                and not slide.is_category
+                and slide.website_published
+            )
+        )
+
+    def _impc_lessons_completed(self, channel_progress):
+        self.ensure_one()
+        for slide in self._impc_lesson_slides():
+            if not channel_progress.get(slide.id, {}).get("completed"):
+                return False
+        return True
+
     # === Approval Workflow ===
     approval_state = fields.Selection(
         selection=[

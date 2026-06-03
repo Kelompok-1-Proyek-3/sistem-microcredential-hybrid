@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="course_main_certification_flow" inherit_id="website_slides.course_main" name="IMPC Course Certification Flow">
+        <xpath expr="//t[@t-call='website_slides.course_slides_list']" position="after">
+            <t t-set="impc_certification_slide" t-value="channel._impc_certification_slide()"/>
+            <t t-if="impc_certification_slide">
+                <t t-set="impc_lessons_complete" t-value="channel._impc_lessons_completed(channel_progress)"/>
+
+                <section class="card border-0 shadow-sm mt-4 mb-3 o_not_editable">
+                    <div class="card-body d-flex flex-column flex-md-row align-items-md-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:48px;height:48px;background:#f4edf3;color:#6f4468;">
+                            <i class="fa fa-trophy"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h3 class="h5 mb-1">Final Exam</h3>
+                            <p class="text-muted mb-0" t-if="channel.can_publish">
+                                <span t-field="impc_certification_slide.name"/>
+                            </p>
+                            <p class="text-muted mb-0" t-elif="impc_lessons_complete">
+                                You are ready to take the final exam.
+                            </p>
+                            <p class="text-muted mb-0" t-else="">
+                                Complete the lessons to unlock the final exam.
+                            </p>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a t-if="channel.can_publish"
+                               class="btn btn-outline-primary"
+                               t-attf-href="/odoo/slide.slide/#{impc_certification_slide.id}">
+                                <i class="fa fa-pencil me-1"/>Manage Final Exam
+                            </a>
+                            <a t-if="channel.is_member and impc_lessons_complete"
+                               class="btn btn-primary"
+                               t-attf-href="/slides_survey/slide/get_certification_url?slide_id=#{impc_certification_slide.id}">
+                                <i class="fa fa-play me-1"/>Start Final Exam
+                            </a>
+                            <button t-elif="channel.is_member" class="btn btn-secondary" disabled="disabled">
+                                <i class="fa fa-lock me-1"/>Locked
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
