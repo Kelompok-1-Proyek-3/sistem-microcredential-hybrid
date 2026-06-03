@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- IMPC Event E-Ticket Page                                     -->
+    <!-- ============================================================ -->
+
+    <template id="portal_event_ticket" name="IMPC Event E-Ticket">
+        <t t-call="website.layout">
+            <t t-set="title">Event E-Ticket - IMPC</t>
+            
+            <!-- Print-specific CSS -->
+            <t t-set="head">
+                <style>
+                    @media print {
+                        .o_main_navbar, .o_footer, .btn, .alert, header, footer, 
+                        .back-button-wrapper {
+                            display: none !important;
+                        }
+                        
+                        .ticket-container {
+                            box-shadow: none !important;
+                            border: 2px solid #dee2e6 !important;
+                            page-break-inside: avoid;
+                            margin: 0 auto;
+                            max-width: 800px;
+                        }
+                        
+                        body {
+                            background: white !important;
+                        }
+                    }
+                    
+                    .ticket-header {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    }
+                    
+                    .qr-code-wrapper {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 150px;
+                    }
+                </style>
+            </t>
+
+            <div class="impc-event-ticket py-4">
+                <div class="container">
+                    
+                    <!-- Back Button (hidden in print) -->
+                    <div class="mb-4 back-button-wrapper">
+                        <a href="/my-learning/events" class="btn btn-outline-secondary btn-sm">
+                            <i class="fa fa-arrow-left me-2"></i>Back to My Events
+                        </a>
+                    </div>
+
+                    <!-- Ticket Card -->
+                    <div class="card border-0 shadow-lg rounded-3 overflow-hidden ticket-container mx-auto" style="max-width: 900px;">
+                        
+                        <!-- Header -->
+                        <div class="card-header ticket-header text-white p-4">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h5 class="mb-1 fw-bold">Event Registration</h5>
+                                    <p class="mb-0 opacity-75 small">E-Ticket</p>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-white text-primary px-3 py-2">
+                                        <i class="fa fa-check-circle me-1"></i>CONFIRMED
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Body -->
+                        <div class="card-body p-4">
+                            
+                            <div class="row">
+                                <!-- Left Column: Event Info -->
+                                <div class="col-md-7">
+                                    <!-- Event Name -->
+                                    <h4 class="fw-bold mb-4" t-field="event.name"></h4>
+                                    
+                                    <!-- Event Details -->
+                                    <div class="mb-4">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <div class="d-flex">
+                                                    <div class="me-3" style="width: 24px;">
+                                                        <i class="fa fa-calendar text-primary"></i>
+                                                    </div>
+                                                    <div>
+                                                        <small class="text-muted d-block">Date</small>
+                                                        <div class="fw-semibold">
+                                                            <t t-esc="event.date_begin.strftime('%A, %d %B %Y') if event.date_begin else '-'"></t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="d-flex">
+                                                    <div class="me-3" style="width: 24px;">
+                                                        <i class="fa fa-clock-o text-primary"></i>
+                                                    </div>
+                                                    <div>
+                                                        <small class="text-muted d-block">Time</small>
+                                                        <div class="fw-semibold">
+                                                            <t t-esc="event.date_begin.strftime('%H:%M') if event.date_begin else '-'"></t>
+                                                            - 
+                                                            <t t-esc="event.date_end.strftime('%H:%M') if event.date_end else '-'"></t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" t-if="event.address_id">
+                                                <div class="d-flex">
+                                                    <div class="me-3" style="width: 24px;">
+                                                        <i class="fa fa-map-marker text-primary"></i>
+                                                    </div>
+                                                    <div>
+                                                        <small class="text-muted d-block">Location</small>
+                                                        <div class="fw-semibold">
+                                                            <t t-if="event.address_id.name" t-esc="event.address_id.name"></t>
+                                                            <br t-if="event.address_id.name"/>
+                                                            <t t-if="event.address_id.city" t-esc="event.address_id.city"></t>
+                                                            <t t-if="event.address_id.country_id">, <t t-esc="event.address_id.country_id.name"></t></t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Participant Info -->
+                                    <div class="border-top pt-3">
+                                        <h6 class="fw-bold mb-3 small text-muted">PARTICIPANT INFORMATION</h6>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Name</small>
+                                                <div class="fw-semibold" t-field="registration.name"></div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Email</small>
+                                                <div class="fw-semibold small" t-field="registration.email"></div>
+                                            </div>
+                                            <div class="col-6" t-if="registration.phone">
+                                                <small class="text-muted d-block">Phone</small>
+                                                <div class="fw-semibold" t-field="registration.phone"></div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Registration ID</small>
+                                                <div class="fw-semibold font-monospace" t-esc="registration.id"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: QR Code -->
+                                <div class="col-md-5">
+                                    <div class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded p-4">
+                                        <div class="qr-code-wrapper mb-3">
+                                            <!-- Real QR Code from registration -->
+                                            <t t-if="registration.barcode">
+                                                <img t-att-src="'/report/barcode/?type=QR&amp;value=%s&amp;width=200&amp;height=200' % registration.barcode" 
+                                                     alt="QR Code"
+                                                     class="img-fluid"
+                                                     style="max-width: 200px;"/>
+                                            </t>
+                                            <t t-else="">
+                                                <!-- Fallback if no barcode -->
+                                                <div class="text-center">
+                                                    <i class="fa fa-qrcode fa-5x text-muted"></i>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <p class="text-center small text-muted mb-0">
+                                            Show this ticket at the event entrance
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="card-footer bg-light p-3">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <small class="text-muted">
+                                    Registered on: <t t-esc="registration.create_date.strftime('%d %b %Y, %H:%M') if registration.create_date else '-'"></t>
+                                </small>
+                                <div class="d-print-none">
+                                    <button onclick="window.print()" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-print me-1"></i>Print Ticket
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Important Notes (hidden in print) -->
+                    <div class="alert alert-info mt-4 d-print-none mx-auto" style="max-width: 900px;" role="alert">
+                        <h6 class="alert-heading">
+                            <i class="fa fa-info-circle me-2"></i>Important Notes
+                        </h6>
+                        <ul class="mb-0 small">
+                            <li>Please arrive 15 minutes before the event starts</li>
+                            <li>Bring a valid ID for verification</li>
+                            <li>This QR code will be scanned at the entrance</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

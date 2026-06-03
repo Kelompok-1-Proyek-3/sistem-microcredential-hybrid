@@ -39,8 +39,14 @@
                                                 <div class="flex-grow-1">
                                                     <h6 class="fw-bold mb-1" t-out="ev['event'].name"/>
                                                     <small class="text-muted d-block">
-                                                        <i class="fa fa-book me-1"></i>
-                                                        <t t-out="ev['enrollment'].channel_id.name"/>
+                                                        <t t-if="ev['enrollment']">
+                                                            <i class="fa fa-book me-1"></i>
+                                                            <t t-out="ev['enrollment'].channel_id.name"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <i class="fa fa-calendar me-1"></i>
+                                                            Standalone Event
+                                                        </t>
                                                     </small>
                                                 </div>
                                             </div>
@@ -58,24 +64,36 @@
                                             </div>
 
                                             <!-- Attendance Status -->
-                                            <div class="d-flex align-items-center justify-content-between p-2 rounded"
-                                                  t-attf-class="bg-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'} bg-opacity-10">
-                                                <span class="small fw-bold"
-                                                      t-attf-class="text-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'}">
-                                                    <i t-attf-class="fa me-1 #{ev['attendance_status'] == 'hadir' and 'fa-check-circle' or ev['attendance_status'] == 'tidak_hadir' and 'fa-times-circle' or 'fa-clock-o'}"></i>
-                                                    <t t-if="ev['attendance_status'] == 'hadir'">Hadir (Attended)</t>
-                                                    <t t-elif="ev['attendance_status'] == 'tidak_hadir'">Tidak Hadir</t>
-                                                    <t t-else="">Pending</t>
-                                                </span>
-                                                <t t-if="ev['is_registered']">
+                                            <t t-if="ev['attendance']">
+                                                <div class="d-flex align-items-center justify-content-between p-2 rounded"
+                                                      t-attf-class="bg-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'} bg-opacity-10">
+                                                    <span class="small fw-bold"
+                                                          t-attf-class="text-#{ev['attendance_status'] == 'hadir' and 'success' or ev['attendance_status'] == 'tidak_hadir' and 'danger' or 'warning'}">
+                                                        <i t-attf-class="fa me-1 #{ev['attendance_status'] == 'hadir' and 'fa-check-circle' or ev['attendance_status'] == 'tidak_hadir' and 'fa-times-circle' or 'fa-clock-o'}"></i>
+                                                        <t t-if="ev['attendance_status'] == 'hadir'">Hadir (Attended)</t>
+                                                        <t t-elif="ev['attendance_status'] == 'tidak_hadir'">Tidak Hadir</t>
+                                                        <t t-else="">Pending</t>
+                                                    </span>
+                                                    <t t-if="ev['is_registered']">
+                                                        <span class="badge bg-success bg-opacity-75 small">Registered</span>
+                                                    </t>
+                                                </div>
+                                            </t>
+                                            <t t-else="">
+                                                <!-- No attendance record (standalone event) -->
+                                                <div class="d-flex align-items-center justify-content-between p-2 rounded bg-info bg-opacity-10">
+                                                    <span class="small fw-bold text-info">
+                                                        <i class="fa fa-ticket me-1"></i>
+                                                        Registration Status: <t t-out="ev['registration'].state.title()"/>
+                                                    </span>
                                                     <span class="badge bg-success bg-opacity-75 small">Registered</span>
-                                                </t>
-                                            </div>
+                                                </div>
+                                            </t>
 
                                             <!-- Actions -->
                                             <div class="mt-3">
                                                 <t t-if="ev['is_registered'] and ev['registration']">
-                                                    <a t-attf-href="/my/events/#{ev['registration'].id}"
+                                                    <a t-attf-href="/event/{{slug(ev['event'])}}/registration/success?registration_ids={{ev['registration'].id}}"
                                                        class="btn btn-outline-info btn-sm w-100">
                                                         <i class="fa fa-ticket me-1"></i>Lihat E-Ticket
                                                     </a>

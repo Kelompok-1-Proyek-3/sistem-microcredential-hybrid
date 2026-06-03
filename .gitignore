@@ -3,4 +3,3 @@ data/odoo/*
 data/odoo/*
 \!data/odoo/.gitkeep
 config/odoo.conf
-__pycache__/
