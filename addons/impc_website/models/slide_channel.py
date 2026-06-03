@@ -95,23 +95,30 @@ class SlideChannel(models.Model):
     enrolled_count = fields.Integer(
         string="Enrolled Students",
         compute="_compute_enrolled_count",
+        compute_sudo=True,
     )
     certificate_count = fields.Integer(
         string="Certificates Issued",
         compute="_compute_certificate_count",
+        compute_sudo=True,
     )
 
     @api.depends("channel_partner_ids", "channel_partner_ids.member_status")
     def _compute_enrolled_count(self):
+        grouped_data = self.env["slide.channel.partner"].sudo()._read_group(
+            [
+                ("channel_id", "in", self.ids),
+                ("member_status", "in", ["joined", "ongoing", "completed"]),
+            ],
+            groupby=["channel_id"],
+            aggregates=["__count"],
+        )
+        counts = {channel.id: count for channel, count in grouped_data}
         for record in self:
-            record.enrolled_count = len(
-                record.channel_partner_ids.filtered(
-                    lambda p: p.member_status in ("joined", "ongoing", "completed")
-                )
-            )
+            record.enrolled_count = counts.get(record.id, 0)
 
     def _compute_certificate_count(self):
-        Certificate = self.env["impc.certificate"]
+        Certificate = self.env["impc.certificate"].sudo()
         for record in self:
             record.certificate_count = Certificate.search_count(
                 [
