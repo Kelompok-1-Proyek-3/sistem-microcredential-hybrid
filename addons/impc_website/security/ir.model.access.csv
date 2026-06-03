@@ -7,6 +7,7 @@ access_impc_redeem_code_officer,impc.redeem.code.officer,model_impc_redeem_code,
 access_impc_redeem_code_manager,impc.redeem.code.manager,model_impc_redeem_code,impc_website.group_impc_manager,1,1,1,1
 access_impc_redeem_code_batch_officer,impc.redeem.code.batch.officer,model_impc_redeem_code_batch,impc_website.group_impc_officer,1,1,0,0
 access_impc_redeem_code_batch_manager,impc.redeem.code.batch.manager,model_impc_redeem_code_batch,impc_website.group_impc_manager,1,1,1,1
+access_impc_generate_redeem_codes_wizard_manager,impc.generate.redeem.codes.wizard.manager,model_impc_generate_redeem_codes_wizard,impc_website.group_impc_manager,1,1,1,1
 access_impc_session_attendance_portal,impc.session.attendance.portal,model_impc_session_attendance,base.group_portal,1,0,0,0
 access_impc_session_attendance_officer,impc.session.attendance.officer,model_impc_session_attendance,impc_website.group_impc_officer,1,1,1,0
 access_impc_session_attendance_manager,impc.session.attendance.manager,model_impc_session_attendance,impc_website.group_impc_manager,1,1,1,1

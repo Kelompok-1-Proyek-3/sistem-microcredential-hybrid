@@ -13,16 +13,6 @@
     <!-- access to impc.* models for internal (non-admin) users.     -->
     <!-- ============================================================ -->
 
-    <!--
-        Extend Odoo's built-in Administrator group to automatically include
-        IMPC Manager access. Any user with Role = Administrator will inherit
-        full access to all IMPC models (certificates, redeem codes, attendance)
-        without needing manual group assignment.
-    -->
-    <record id="base.group_system" model="res.groups">
-        <field name="implied_ids" eval="[(4, ref('impc_website.group_impc_manager'))]"/>
-    </record>
-
     <!-- Officer: internal users who need read/write access to IMPC models -->
     <record id="group_impc_officer" model="res.groups">
         <field name="name">IMPC Officer</field>
@@ -35,6 +25,16 @@
         <field name="name">IMPC Manager</field>
         <field name="implied_ids" eval="[(4, ref('impc_website.group_impc_officer'))]"/>
         <field name="comment">Full access to all IMPC models including bulk code generation and certificate management.</field>
+    </record>
+
+    <!--
+        Extend Odoo's built-in Administrator group to automatically include
+        IMPC Manager access. Any user with Role = Administrator will inherit
+        full access to all IMPC models (certificates, redeem codes, attendance)
+        without needing manual group assignment.
+    -->
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('impc_website.group_impc_manager'))]"/>
     </record>
 
     <!-- ============================================================ -->
