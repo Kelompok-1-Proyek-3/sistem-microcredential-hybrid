@@ -29,6 +29,7 @@ Features:
         "website_sale",
         "website_slides_survey",
         "event",
+        "website_event",
         "portal",
         "mail",
     ],
