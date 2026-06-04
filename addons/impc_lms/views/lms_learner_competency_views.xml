@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lms_learner_competency_list" model="ir.ui.view">
+        <field name="name">lms.learner.competency.list</field>
+        <field name="model">lms.learner.competency</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="learner_id"/>
+                <field name="channel_id"/>
+                <field name="competency_name"/>
+                <field name="competency_level"/>
+                <field name="acquired_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lms_learner_competency_form" model="ir.ui.view">
+        <field name="name">lms.learner.competency.form</field>
+        <field name="model">lms.learner.competency</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="learner_id"/>
+                        <field name="channel_id"/>
+                        <field name="certificate_id"/>
+                    </group>
+                    <group>
+                        <field name="competency_name"/>
+                        <field name="competency_level"/>
+                        <field name="acquired_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_lms_competencies" model="ir.actions.act_window">
+        <field name="name">Competencies</field>
+        <field name="res_model">lms.learner.competency</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

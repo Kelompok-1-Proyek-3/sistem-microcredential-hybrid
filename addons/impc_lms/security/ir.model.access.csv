@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lms_learner_admin,lms.learner admin,model_lms_learner,impc_lms.group_lms_admin,1,1,1,1
+access_lms_enrollment_admin,lms.enrollment admin,model_lms_enrollment,impc_lms.group_lms_admin,1,1,1,1
+access_lms_offline_session_admin,lms.offline.session admin,model_lms_offline_session,impc_lms.group_lms_admin,1,1,1,1
+access_lms_eticket_admin,lms.eticket admin,model_lms_eticket,impc_lms.group_lms_admin,1,1,1,1
+access_lms_competency_admin,lms.learner.competency admin,model_lms_learner_competency,impc_lms.group_lms_admin,1,1,1,1
+access_impc_certificate_admin,impc.certificate admin,model_impc_certificate,impc_lms.group_lms_admin,1,1,1,1
+access_impc_course_skill_mapping_admin,impc.course.skill.mapping admin,model_impc_course_skill_mapping,impc_lms.group_lms_admin,1,1,1,1
+access_impc_course_skill_mapping_hr,impc.course.skill.mapping hr,model_impc_course_skill_mapping,hr.group_hr_user,1,1,1,1
+access_lms_enrollment_checkin,lms.enrollment checkin,model_lms_enrollment,impc_lms.group_lms_checkin_admin,1,0,0,0
+access_lms_offline_session_checkin,lms.offline.session checkin,model_lms_offline_session,impc_lms.group_lms_checkin_admin,1,0,0,0
+access_lms_eticket_checkin,lms.eticket checkin,model_lms_eticket,impc_lms.group_lms_checkin_admin,1,0,0,0
+access_lms_learner_b2b,lms.learner b2b,model_lms_learner,impc_lms.group_lms_b2b_manager,1,0,0,0
+access_lms_enrollment_b2b,lms.enrollment b2b,model_lms_enrollment,impc_lms.group_lms_b2b_manager,1,0,0,0
+access_impc_certificate_b2b,impc.certificate b2b,model_impc_certificate,impc_lms.group_lms_b2b_manager,1,0,0,0
+access_lms_competency_b2b,lms.learner.competency b2b,model_lms_learner_competency,impc_lms.group_lms_b2b_manager,1,0,0,0
