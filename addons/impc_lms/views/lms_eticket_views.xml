@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lms_eticket_list" model="ir.ui.view">
+        <field name="name">lms.eticket.list</field>
+        <field name="model">lms.eticket</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="enrollment_id"/>
+                <field name="session_id"/>
+                <field name="token_hash"/>
+                <field name="is_used"/>
+                <field name="used_at"/>
+                <field name="expires_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lms_eticket_form" model="ir.ui.view">
+        <field name="name">lms.eticket.form</field>
+        <field name="model">lms.eticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="enrollment_id"/>
+                        <field name="session_id"/>
+                        <field name="token_hash"/>
+                    </group>
+                    <group>
+                        <field name="is_used"/>
+                        <field name="used_at"/>
+                        <field name="expires_at"/>
+                    </group>
+                    <group>
+                        <field name="qr_code_image"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_lms_etickets" model="ir.actions.act_window">
+        <field name="name">E-tickets</field>
+        <field name="res_model">lms.eticket</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

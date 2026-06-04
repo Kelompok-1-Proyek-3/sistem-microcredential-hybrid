@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_impc_course_skill_mapping_list" model="ir.ui.view">
+        <field name="name">impc.course.skill.mapping.list</field>
+        <field name="model">impc.course_skill_mapping</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="channel_id"/>
+                <field name="skill_type_id"/>
+                <field name="skill_id"/>
+                <field name="skill_level_id"/>
+                <field name="write_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_impc_course_skill_mapping_form" model="ir.ui.view">
+        <field name="name">impc.course.skill.mapping.form</field>
+        <field name="model">impc.course_skill_mapping</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="channel_id"/>
+                        <field name="skill_type_id"/>
+                        <field name="skill_id" domain="[('skill_type_id', '=', skill_type_id)]"/>
+                        <field name="skill_level_id" domain="[('skill_type_id', '=', skill_type_id)]"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_impc_course_skill_mapping_search" model="ir.ui.view">
+        <field name="name">impc.course.skill.mapping.search</field>
+        <field name="model">impc.course_skill_mapping</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="channel_id"/>
+                <field name="skill_type_id"/>
+                <field name="skill_id"/>
+                <field name="skill_level_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_impc_course_skill_mapping" model="ir.actions.act_window">
+        <field name="name">Skill Mapping</field>
+        <field name="res_model">impc.course_skill_mapping</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_impc_course_skill_mapping"
+        name="Skill Mapping"
+        parent="hr.menu_config_employee"
+        action="action_impc_course_skill_mapping"
+        sequence="25"
+        groups="hr.group_hr_user"/>
+</odoo>

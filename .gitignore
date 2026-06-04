@@ -3,3 +3,5 @@ data/odoo/*
 data/odoo/*
 \!data/odoo/.gitkeep
 config/odoo.conf
+docs/5. PRD_HR_GROUP_v3.md
+docs/8. PRD_CUSTOM_LMS_MODULE.md

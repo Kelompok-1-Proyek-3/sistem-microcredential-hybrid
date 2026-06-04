@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_impc_certificate_list" model="ir.ui.view">
+        <field name="name">impc.certificate.list</field>
+        <field name="model">impc.certificate</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="learner_id"/>
+                <field name="partner_id"/>
+                <field name="channel_id"/>
+                <field name="issued_date"/>
+                <field name="skill_synced"/>
+                <field name="is_revoked"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_impc_certificate_form" model="ir.ui.view">
+        <field name="name">impc.certificate.form</field>
+        <field name="model">impc.certificate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="learner_id"/>
+                        <field name="partner_id"/>
+                        <field name="channel_id"/>
+                        <field name="enrollment_id"/>
+                    </group>
+                    <group>
+                        <field name="issued_date"/>
+                        <field name="cert_hash"/>
+                        <field name="skill_synced"/>
+                        <field name="is_revoked"/>
+                    </group>
+                    <group>
+                        <field name="qr_code_image"/>
+                        <field name="pdf_file"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_impc_certificates" model="ir.actions.act_window">
+        <field name="name">Certificates</field>
+        <field name="res_model">impc.certificate</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

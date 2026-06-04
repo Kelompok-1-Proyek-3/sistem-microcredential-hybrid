@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_lms_root"
+        name="LMS"
+        sequence="20"
+        groups="impc_lms.group_lms_admin"/>
+
+    <menuitem
+        id="menu_lms_learners"
+        name="Learners"
+        parent="menu_lms_root"
+        action="action_lms_learners"
+        sequence="10"
+        groups="impc_lms.group_lms_admin"/>
+
+    <menuitem
+        id="menu_lms_enrollments"
+        name="Enrollments"
+        parent="menu_lms_root"
+        action="action_lms_enrollments"
+        sequence="20"
+        groups="impc_lms.group_lms_admin"/>
+
+    <menuitem
+        id="menu_lms_certificates"
+        name="Certificates"
+        parent="menu_lms_root"
+        action="action_impc_certificates"
+        sequence="30"
+        groups="impc_lms.group_lms_admin"/>
+
+    <menuitem
+        id="menu_lms_offline_sessions"
+        name="Offline Sessions"
+        parent="menu_lms_root"
+        action="action_lms_offline_sessions"
+        sequence="40"
+        groups="impc_lms.group_lms_admin"/>
+
+    <menuitem
+        id="menu_lms_etickets"
+        name="E-tickets"
+        parent="menu_lms_root"
+        action="action_lms_etickets"
+        sequence="50"
+        groups="impc_lms.group_lms_admin"/>
+
+    <menuitem
+        id="menu_lms_competencies"
+        name="Competencies"
+        parent="menu_lms_root"
+        action="action_lms_competencies"
+        sequence="60"
+        groups="impc_lms.group_lms_admin"/>
+</odoo>

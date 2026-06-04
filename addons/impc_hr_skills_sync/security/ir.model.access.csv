@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_skill_mapping_log_system,hr.employee.skill.mapping.log.system,model_hr_employee_skill_mapping_log,base.group_system,1,1,1,1
+access_hr_employee_skill_mapping_log_hr_user,hr.employee.skill.mapping.log.hr.user,model_hr_employee_skill_mapping_log,hr.group_hr_user,1,0,0,0
