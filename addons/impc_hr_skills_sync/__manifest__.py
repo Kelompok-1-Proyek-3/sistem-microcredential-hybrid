@@ -12,8 +12,11 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron.xml',
+        'data/ir_cron_at_risk.xml',
+        'data/mail_template_at_risk.xml',
         'views/impc_course_skill_mapping_views.xml',
         'views/hr_employee_skill_mapping_log_views.xml',
+        'views/hr_learning_progress_views.xml',
     ],
     'installable': True,
     'application': False,

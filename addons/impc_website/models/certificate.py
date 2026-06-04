@@ -14,6 +14,7 @@ except ImportError:
 
 class ImpcCertificate(models.Model):
     _name = 'impc.certificate'
+    _inherit = 'impc.certificate'
     _description = 'IMPC Digital Certificate'
     _order = 'create_date desc'
     _rec_name = 'name'
