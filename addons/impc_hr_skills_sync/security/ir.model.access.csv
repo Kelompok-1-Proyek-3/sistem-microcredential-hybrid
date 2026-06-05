@@ -3,3 +3,8 @@ access_hr_employee_skill_mapping_log_system,hr.employee.skill.mapping.log.system
 access_hr_employee_skill_mapping_log_hr_user,hr.employee.skill.mapping.log.hr.user,model_hr_employee_skill_mapping_log,hr.group_hr_user,1,0,0,0
 access_hr_learning_progress_system,hr.learning.progress.system,model_hr_learning_progress,base.group_system,1,1,1,1
 access_hr_learning_progress_hr_user,hr.learning.progress.hr.user,model_hr_learning_progress,hr.group_hr_user,1,0,0,0
+access_hr_learning_profile_note_system,hr.learning.profile.note.system,model_hr_learning_profile_note,base.group_system,1,1,1,1
+access_hr_learning_profile_note_hr_user,hr.learning.profile.note.hr.user,model_hr_learning_profile_note,hr.group_hr_user,1,1,1,1
+access_hr_learning_analytics_system,hr.learning.analytics.system,model_hr_learning_analytics_snapshot,base.group_system,1,1,1,1
+access_hr_learning_analytics_hr_user,hr.learning.analytics.hr.user,model_hr_learning_analytics_snapshot,hr.group_hr_user,1,0,0,0
+

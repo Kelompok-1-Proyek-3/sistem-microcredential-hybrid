@@ -7,6 +7,7 @@ class HrLearningProgress(models.Model):
     _order = 'last_accessed_date desc, id desc'
 
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True, index=True, ondelete='cascade')
+    department_id = fields.Many2one('hr.department', related='employee_id.department_id', string='Department', store=True, index=True)
     channel_id = fields.Many2one('slide.channel', string='Course', required=True, index=True, ondelete='cascade')
     course_name = fields.Char(related='channel_id.name', string='Course Name', store=True)
     learning_mode = fields.Selection([

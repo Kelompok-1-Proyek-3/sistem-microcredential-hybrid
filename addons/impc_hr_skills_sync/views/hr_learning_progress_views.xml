@@ -35,16 +35,19 @@
     </record>
 
     <record id="action_hr_learning_progress" model="ir.actions.act_window">
-        <field name="name">Learning Progress</field>
+        <field name="name">Progress Dashboard</field>
         <field name="res_model">hr.learning.progress</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_hr_learning_progress_search"/>
         <field name="context">{'search_default_group_by_course': 1}</field>
     </record>
 
-    <menuitem id="menu_hr_learning_progress"
-              name="Learning Progress"
-              parent="hr.menu_hr_employee_payroll"
-              action="action_hr_learning_progress"
-              sequence="20"/>
+    <record id="action_hr_learning_at_risk" model="ir.actions.act_window">
+        <field name="name">At-Risk Employees</field>
+        <field name="res_model">hr.learning.progress</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_learning_progress_search"/>
+        <field name="domain">[('status', '=', 'at_risk')]</field>
+        <field name="context">{'search_default_at_risk': 1}</field>
+    </record>
 </odoo>

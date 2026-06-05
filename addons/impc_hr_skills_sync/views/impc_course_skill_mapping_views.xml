@@ -50,11 +50,4 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem
-        id="menu_impc_course_skill_mapping"
-        name="Skill Mapping"
-        parent="hr.menu_config_employee"
-        action="action_impc_course_skill_mapping"
-        sequence="25"
-        groups="hr.group_hr_user"/>
 </odoo>

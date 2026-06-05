@@ -211,9 +211,9 @@ class ImpcCertificate(models.Model):
             '|',
             ('certificate_pending', '=', True),
             '&',
-            '&',
-            ('member_status', '=', 'completed'),
             ('certificate_id', '=', False),
+            '|',
+            ('member_status', '=', 'completed'),
             ('completion', '>=', 100),
         ])
         for enrollment in pending:

@@ -81,8 +81,7 @@ class SlideChannelPartner(models.Model):
         """Issue or queue a digital certificate when completion criteria are met."""
         for record in self:
             if (
-                record.member_status == 'completed'
-                and record.completion >= 100
+                (record.member_status == 'completed' or record.completion >= 100)
                 and not record.certificate_id
             ):
                 if record.exam_unlocked:
