@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend navbar with HR menu for HR managers -->
+    <template id="hr_navbar_extend" inherit_id="impc_website.impc_navbar" name="HR Navbar Extension">
+        <!-- Add HR menu before the last else clause (internal users) -->
+        <xpath expr="//t[@t-else='']" position="before">
+            <!-- ============================================ -->
+            <!-- HR USER (HR Manager or HR User)              -->
+            <!-- ============================================ -->
+            <t t-elif="request.env.user.has_group('hr.group_hr_manager') or request.env.user.has_group('hr.group_hr_user')">
+                <t t-set="nav_at_risk_count" t-value="request.env['hr.learning.progress'].sudo().search_count([('status', '=', 'at_risk')])"/>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="/hr/dashboard">
+                            <i class="fa fa-users me-1"/>HR Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-semibold" href="#"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-chart-bar me-1"/>Analytics
+                        </a>
+                        <ul class="dropdown-menu shadow border-0">
+                            <li>
+                                <a class="dropdown-item" href="/hr/analytics">
+                                    <i class="fa fa-chart-pie me-2 text-primary"/>Learning Analytics
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/hr/at-risk">
+                                    <i class="fa fa-exclamation-triangle me-2 text-warning"/>At-Risk Report
+                                    <t t-if="nav_at_risk_count">
+                                        <span class="badge bg-warning text-dark ms-1" t-out="nav_at_risk_count"/>
+                                    </t>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/hr/employees">
+                                    <i class="fa fa-users me-2 text-info"/>All Employees
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/event">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web">
+                            <i class="fa fa-th-large me-1"/>Backend
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <t t-call="impc_website.impc_cart_link"/>
+                    <span class="badge bg-info px-3 py-2" style="font-size:0.75rem;">
+                        <i class="fa fa-user-tie me-1"/>HR
+                    </span>
+                    <t t-call="portal.user_dropdown"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

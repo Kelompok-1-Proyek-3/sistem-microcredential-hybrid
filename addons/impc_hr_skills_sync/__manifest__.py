@@ -8,6 +8,7 @@
         'hr_skills',
         'website_slides',
         'impc_lms',
+        'impc_website',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -20,6 +21,11 @@
         'views/hr_learning_profile_note_views.xml',
         'views/hr_learning_analytics_views.xml',
         'views/hr_micro_credential_menus.xml',
+        # Web integration views
+        'views/hr_navbar_views.xml',
+        'views/hr_dashboard_views.xml',
+        'views/hr_employee_profile_views.xml',
+        'views/hr_analytics_views.xml',
     ],
     'installable': True,
     'application': False,
