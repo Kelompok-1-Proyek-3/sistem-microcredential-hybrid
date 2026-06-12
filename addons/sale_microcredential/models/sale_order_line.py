@@ -21,9 +21,9 @@ class SaleOrderLine(models.Model):
     )
     learning_mode = fields.Selection(
         selection=[
-            ('ONLINE', 'Online'),
-            ('OFFLINE', 'Offline'),
-            ('HYBRID', 'Hybrid'),
+            ('online', 'Online'),
+            ('offline', 'Offline'),
+            ('hybrid', 'Hybrid'),
         ],
         string='Learning Mode',
         readonly=True,
