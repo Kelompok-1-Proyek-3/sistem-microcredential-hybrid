@@ -11,7 +11,7 @@
         <!-- Add 'My B2B Contracts' quick action button in sidebar for HR partners -->
         <xpath expr="//div[hasclass('d-grid', 'gap-2')]" position="inside">
             <t t-set="is_hr_partner"
-               t-value="request.env.user.is_hr_partner_admin if hasattr(request.env.user, 'is_hr_partner_admin') else False"/>
+               t-value="request.env.user.is_hr_partner_admin"/>
             <t t-if="is_hr_partner">
                 <t t-set="hr_contract_count"
                    t-value="request.env['sale.order'].sudo().search_count([
@@ -29,7 +29,7 @@
         <!-- Add contracts stats card for HR partners (after the 3rd stats card) -->
         <xpath expr="//div[hasclass('col-md-4')][last()]" position="after">
             <t t-set="is_hr_partner"
-               t-value="request.env.user.is_hr_partner_admin if hasattr(request.env.user, 'is_hr_partner_admin') else False"/>
+               t-value="request.env.user.is_hr_partner_admin"/>
             <t t-if="is_hr_partner">
                 <t t-set="hr_contracts"
                    t-value="request.env['sale.order'].sudo().search([
