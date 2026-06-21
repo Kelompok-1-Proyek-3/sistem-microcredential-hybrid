@@ -18,8 +18,12 @@ class SaleOrderLine(models.Model):
             ('hybrid', 'Hybrid'),
         ],
         string='Learning Mode',
+<<<<<<< HEAD
         readonly=True,
         help='Auto-filled from the selected course.',
+=======
+        help='Mode pembelajaran untuk line ini.',
+>>>>>>> 42dfb97135ddfe2f75cdcc4a016e4fcafe923a67
     )
     hybrid_session_summary = fields.Text(
         string='Jadwal Sesi Tatap Muka',
