@@ -56,7 +56,7 @@ class RedeemCodeWizard(models.TransientModel):
             'redeem_code_batch_status': 'PENDING',
         })
 
-        BatchModel = self.env['impc.redeem.code.batch'].sudo()
+        batch_model = self.env['impc.redeem.code.batch'].sudo()
         last_batch = None
 
         try:
@@ -66,7 +66,7 @@ class RedeemCodeWizard(models.TransientModel):
             for line in lines:
                 expiry_date = date.today() + timedelta(days=line.redeem_code_expiry_days)
 
-                batch = BatchModel.create({
+                batch = batch_model.create({
                     'name': f'{order.name} - {line.slide_channel_id.name}',
                     'course_id': line.slide_channel_id.id,
                     'partner_id': order.partner_id.id,
@@ -75,6 +75,7 @@ class RedeemCodeWizard(models.TransientModel):
                     'state': 'draft',
                 })
                 batch.action_generate_codes()
+                self._send_batch_email(batch, order)
                 last_batch = batch
 
                 _logger.info(
@@ -108,3 +109,50 @@ class RedeemCodeWizard(models.TransientModel):
             raise
 
         return {'type': 'ir.actions.act_window_close'}
+
+    def _send_batch_email(self, batch, order):
+        """Send redeem code batch email to the purchasing company."""
+        template = self.env.ref(
+            'sale_microcredential.email_template_redeem_code_ready',
+            raise_if_not_found=False,
+        )
+        recipient = batch.partner_id.email or order.partner_id.email
+        if not template or not recipient:
+            _logger.warning(
+                'Skip redeem code email for batch %s: template or recipient missing',
+                batch.name,
+            )
+            order.message_post(
+                body=(
+                    f"Redeem code batch <b>{batch.name}</b> sudah dibuat, "
+                    f"tetapi email notifikasi belum terkirim karena template atau email perusahaan belum tersedia."
+                )
+            )
+            return False
+
+        try:
+            template.send_mail(
+                batch.id,
+                force_send=True,
+                email_values={'email_to': recipient},
+            )
+        except Exception:
+            _logger.exception(
+                'Failed to send redeem code email for batch %s',
+                batch.name,
+            )
+            order.message_post(
+                body=(
+                    f"Redeem code batch <b>{batch.name}</b> berhasil dibuat, "
+                    f"tetapi email ke <b>{recipient}</b> gagal dikirim."
+                )
+            )
+            return False
+
+        order.message_post(
+            body=(
+                f"Email redeem code untuk batch <b>{batch.name}</b> sudah dikirim ke "
+                f"<b>{recipient}</b>."
+            )
+        )
+        return True

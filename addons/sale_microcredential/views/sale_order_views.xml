@@ -53,7 +53,7 @@
             <!-- Tambah kolom pada order lines untuk B2B (Odoo 17+: list bukan tree) -->
             <xpath expr="//field[@name='order_line']/list" position="inside">
                 <field name="slide_channel_id" optional="show"/>
-                <field name="learning_mode" optional="show" readonly="1"/>
+                <field name="learning_mode" optional="show"/>
                 <field name="redeem_code_count" optional="show"/>
                 <field name="redeem_code_expiry_days" optional="show"/>
                 <field name="student_count" optional="show"/>

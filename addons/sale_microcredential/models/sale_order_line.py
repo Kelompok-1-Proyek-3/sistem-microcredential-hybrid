@@ -26,8 +26,7 @@ class SaleOrderLine(models.Model):
             ('hybrid', 'Hybrid'),
         ],
         string='Learning Mode',
-        readonly=True,
-        help='Diambil read-only dari course (dikelola Website Group via slide.channel).',
+        help='Mode pembelajaran untuk line ini.',
     )
     hybrid_session_summary = fields.Text(
         string='Jadwal Sesi Tatap Muka',

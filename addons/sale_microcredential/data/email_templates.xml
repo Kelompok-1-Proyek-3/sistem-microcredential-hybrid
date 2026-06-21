@@ -20,15 +20,35 @@
 
         <!-- Template: Distribusi Redeem Code -->
         <record id="email_template_redeem_code_ready" model="mail.template">
-            <field name="name">B2B Contract — Redeem Code Siap</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="subject">Redeem Code Siap: Kontrak {{ object.name }}</field>
+            <field name="name">Redeem Code — Batch Siap</field>
+            <field name="model_id" ref="impc_website.model_impc_redeem_code_batch"/>
+            <field name="subject">Redeem Code Siap: {{ object.name }}</field>
             <field name="email_to">{{ object.partner_id.email }}</field>
             <field name="body_html"><![CDATA[
                 <p>Yth. {{ object.partner_id.name }},</p>
-                <p>Redeem code untuk kontrak <strong>{{ object.name }}</strong>
-                   (Batch: {{ object.redeem_code_batch_id }}) telah siap.</p>
-                <p>Silakan unduh via portal HR Anda atau hubungi sales kami.</p>
+                <p>Redeem code untuk batch <strong>{{ object.name }}</strong>
+                   untuk kursus <strong>{{ object.course_id.name }}</strong> telah siap.</p>
+                <p>Silakan distribusikan kode berikut kepada karyawan yang berhak:</p>
+                <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; width:100%;">
+                    <thead>
+                        <tr>
+                            <th align="left">Kode</th>
+                            <th align="left">Status</th>
+                            <th align="left">Berlaku Sampai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="object.code_ids" t-as="code">
+                            <tr>
+                                <td><strong><t t-out="code.code"/></strong></td>
+                                <td><t t-out="code.state"/></td>
+                                <td><t t-out="code.expiry_date"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <p>Anda juga dapat melihat ringkasan batch ini melalui portal HR.</p>
+                <p>Salam,<br/>Tim Sales IMPC</p>
             ]]></field>
             <field name="auto_delete" eval="True"/>
         </record>
