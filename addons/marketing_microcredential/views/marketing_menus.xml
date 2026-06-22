@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_marketing_microcredential_root" name="Marketing Microcredential" sequence="10"/>
+    <menuitem id="menu_marketing_microcredential_root" name="IMPC Marketing"
+              sequence="10" groups="base.group_system"/>
 
     <menuitem
         id="menu_marketing_event_conversion_report"
-        name="Weekly Event Conversion"
+        name="IMPC Weekly Event Conversion"
         parent="menu_marketing_microcredential_root"
         action="action_marketing_event_conversion_report"
         sequence="10"
+        groups="base.group_system"
     />
     <menuitem
         id="menu_marketing_survey_report"
-        name="Monthly Survey Report"
+        name="IMPC Monthly Survey Report"
         parent="menu_marketing_microcredential_root"
         action="action_marketing_survey_report"
         sequence="20"
+        groups="base.group_system"
     />
 </odoo>

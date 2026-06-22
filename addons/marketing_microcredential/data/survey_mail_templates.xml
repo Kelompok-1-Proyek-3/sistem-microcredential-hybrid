@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="mail_template_survey_invite" model="mail.template">
-            <field name="name">Survey: Undangan Peserta</field>
+            <field name="name">IMPC Survey — Undangan Peserta</field>
             <field name="model_id" ref="survey.model_survey_user_input"/>
-            <field name="subject">[IMPC] Survei Kursus: ${object.survey_id.title}</field>
-            <field name="email_to">${object.email or object.partner_id.email}</field>
-            <field name="body_html"><![CDATA[
-                <p>Halo ${object.partner_id.name or 'Peserta'},</p>
-                <p>Terima kasih telah menyelesaikan kursus. Mohon isi survei singkat berikut:</p>
-                <p><a href="${object.get_start_url()}">Mulai Survei</a></p>
-                <p>Terima kasih atas waktunya.</p>
-            ]]></field>
+            <field name="subject">[IMPC] Survei Kursus: {{ object.survey_id.title }}</field>
+            <field name="email_to">{{ object.email or object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                        <tr>
+                            <td style="background-color: #0d6efd; padding: 30px; text-align: center;">
+                                <h1 style="color: white; margin: 0;">IMPC Microcredential</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Survei Kepuasan</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 30px; background-color: #ffffff;">
+                                <h2 style="color: #333;">Halo, <t t-out="object.partner_id.name or 'Peserta'"/>!</h2>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Terima kasih telah menyelesaikan kursus <strong><t t-out="object.survey_id.title"/></strong>.
+                                    Mohon luangkan waktu singkat untuk mengisi survei berikut:
+                                </p>
+                                <p style="text-align: center; margin: 30px 0;">
+                                    <a t-att-href="object.get_start_url()"
+                                       style="background-color: #0d6efd; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                        Mulai Survei
+                                    </a>
+                                </p>
+                                <p style="color: #999; font-size: 12px;">
+                                    Survei dapat diisi hingga batas waktu yang ditentukan.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                                <p style="color: #999; font-size: 12px; margin: 0;">
+                                    IMPC — Indonesia Microcredential Platform Center
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
             <field name="auto_delete" eval="True"/>
         </record>
     </data>

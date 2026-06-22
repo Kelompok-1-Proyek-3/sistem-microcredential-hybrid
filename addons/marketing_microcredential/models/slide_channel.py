@@ -9,7 +9,7 @@ class SlideChannel(models.Model):
         string='Event Offline',
         help='Event offline yang di-link ke course hybrid.',
     )
-    event_date = fields.Datetime(
+    event_date = fields.Datetime(        
         string='Tanggal Event',
         compute='_compute_event_info',
         store=True,
