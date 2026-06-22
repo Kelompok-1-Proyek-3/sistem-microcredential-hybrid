@@ -227,7 +227,7 @@ class SlideChannel(models.Model):
         self.approval_state = "under_review"
 
     def action_approve(self):
-        """Administrator approves and publishes the course."""
+        """Administrator approves and publishes the course and all its content."""
         self.ensure_one()
         self.write(
             {
@@ -237,6 +237,9 @@ class SlideChannel(models.Model):
                 "is_published": True,
             }
         )
+        # Automatically publish all slides/content in the course
+        if self.slide_content_ids:
+            self.slide_content_ids.write({"website_published": True})
 
     def action_reject(self):
         """Administrator rejects the course. Set rejection_reason before calling."""
@@ -249,6 +252,9 @@ class SlideChannel(models.Model):
                 "is_published": False,
             }
         )
+        # Unpublish all slides/content when course is rejected
+        if self.slide_content_ids:
+            self.slide_content_ids.write({"website_published": False})
 
     def action_reset_to_draft(self):
         """Reset the course approval state back to draft (e.g., after rejection)."""
@@ -257,8 +263,12 @@ class SlideChannel(models.Model):
             {
                 "approval_state": "draft",
                 "rejection_reason": False,
+                "is_published": False,
             }
         )
+        # Unpublish all slides/content when reset to draft
+        if self.slide_content_ids:
+            self.slide_content_ids.write({"website_published": False})
 
     # === Search API ===
     @api.model
