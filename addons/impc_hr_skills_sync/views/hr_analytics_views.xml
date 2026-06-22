@@ -247,7 +247,7 @@
                     // Department Chart
                     var deptData = <t t-raw="dept_chart_data"/>;
                     var deptCtx = document.getElementById('dept-chart');
-                    if (deptCtx && deptData.labels.length > 0) {
+                    if (deptCtx &amp;&amp; deptData.labels.length > 0) {
                         new Chart(deptCtx, {
                             type: 'bar',
                             data: {
@@ -480,7 +480,7 @@
                     // Timeline Chart
                     var timelineData = <t t-raw="timeline_chart_data"/>;
                     var timelineCtx = document.getElementById('timeline-chart');
-                    if (timelineCtx && timelineData.labels.length > 0) {
+                    if (timelineCtx &amp;&amp; timelineData.labels.length > 0) {
                         new Chart(timelineCtx, {
                             type: 'line',
                             data: {
