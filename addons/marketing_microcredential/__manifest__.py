@@ -15,8 +15,8 @@
     'data': [
         'security/marketing_microcredential_groups.xml',
         'security/ir.model.access.csv',
-        'data/survey_templates.xml',
         'data/survey_mail_templates.xml',
+        'data/survey_templates.xml',
         'data/communication_templates.xml',
         'data/survey_automation.xml',
         'data/ir_cron_data.xml',
@@ -29,5 +29,6 @@
     'installable': True,
     'application': True,
     'auto_install': False,
+    'post_init_hook': 'post_init_hook',
     'license': 'LGPL-3',
 }
