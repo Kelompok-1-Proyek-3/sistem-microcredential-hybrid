@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="survey_post_course_satisfaction" model="survey.survey">
             <field name="title">IMPC Survei Kepuasan Kursus</field>
             <field name="description">Survei singkat untuk evaluasi kualitas kursus.</field>
             <field name="access_mode">public</field>
+            <field name="certification" eval="True"/>
+            <field name="scoring_type">scoring_without_answers</field>
+            <field name="certification_mail_template_id" ref="marketing_microcredential.mail_template_survey_invite"/>
         </record>
 
         <record id="survey_post_course_q1_content" model="survey.question">
@@ -146,6 +149,9 @@
             <field name="title">IMPC Survei NPS Kursus</field>
             <field name="description">Seberapa besar Anda merekomendasikan kursus IMPC ini?</field>
             <field name="access_mode">public</field>
+            <field name="certification" eval="True"/>
+            <field name="scoring_type">scoring_without_answers</field>
+            <field name="certification_mail_template_id" ref="marketing_microcredential.mail_template_survey_invite"/>
         </record>
 
         <record id="survey_nps_question" model="survey.question">
