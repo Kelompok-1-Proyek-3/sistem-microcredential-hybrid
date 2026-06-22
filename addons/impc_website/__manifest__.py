@@ -32,6 +32,7 @@ Features:
         "website_event",
         "portal",
         "mail",
+        "impc_lms",
     ],
     "data": [
         # Security

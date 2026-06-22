@@ -53,11 +53,4 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem
-        id="menu_hr_employee_skill_mapping_log"
-        name="Skill Mapping Logs"
-        parent="hr.menu_config_employee"
-        action="action_hr_employee_skill_mapping_log"
-        sequence="30"
-        groups="hr.group_hr_user"/>
 </odoo>

@@ -14,6 +14,7 @@ except ImportError:
 
 class ImpcCertificate(models.Model):
     _name = 'impc.certificate'
+    _inherit = 'impc.certificate'
     _description = 'IMPC Digital Certificate'
     _order = 'create_date desc'
     _rec_name = 'name'
@@ -210,9 +211,9 @@ class ImpcCertificate(models.Model):
             '|',
             ('certificate_pending', '=', True),
             '&',
-            '&',
-            ('member_status', '=', 'completed'),
             ('certificate_id', '=', False),
+            '|',
+            ('member_status', '=', 'completed'),
             ('completion', '>=', 100),
         ])
         for enrollment in pending:
