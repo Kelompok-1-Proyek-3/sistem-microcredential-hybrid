@@ -14,6 +14,15 @@ class SaleOrderWorkflow(models.Model):
 	"""
 	_inherit = 'sale.order'
 
+	@api.onchange('contract_type')
+	def _onchange_contract_type(self):
+		"""Auto-fill contract_start_date when B2B is selected."""
+		if self.contract_type == 'B2B_CONTRACT':
+			if not self.contract_start_date:
+				self.contract_start_date = fields.Date.today()
+		else:
+			self.contract_start_date = False
+
 	@api.depends('expiry_date')
 	def _compute_renewal_opportunity(self):
 		from datetime import date, timedelta
@@ -62,9 +71,10 @@ class SaleOrderWorkflow(models.Model):
 	def action_confirm(self):
 		"""Override Odoo native confirm untuk trigger workflow B2B."""
 		res = super().action_confirm()
-		for order in self:
-			if order.contract_type == 'B2B_CONTRACT':
-				order.contract_start_date = fields.Date.today()
+		b2b_orders = self.filtered(lambda o: o.contract_type == 'B2B_CONTRACT')
+		if b2b_orders:
+			b2b_orders.write({'contract_start_date': fields.Date.today()})
+			for order in b2b_orders:
 				order.action_send_contract_confirmation()
 				_logger.info('B2B Contract %s confirmed, start date set.', order.name)
 		return res

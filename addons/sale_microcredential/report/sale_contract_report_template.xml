@@ -61,7 +61,7 @@
                                         </td>
                                     </tr>
                                     <!-- Sesi Hybrid (jika ada) -->
-                                    <tr t-if="line.learning_mode == 'HYBRID' and line.hybrid_session_summary">
+                                    <tr t-if="line.learning_mode == 'hybrid' and line.hybrid_session_summary">
                                         <td colspan="6" class="text-muted small">
                                             Jadwal Sesi Tatap Muka:
                                             <t t-esc="line.hybrid_session_summary"/>

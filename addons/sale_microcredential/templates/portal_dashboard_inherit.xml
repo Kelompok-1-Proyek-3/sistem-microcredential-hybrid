@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Extend impc_website portal dashboard to show B2B contract info
+        for HR partner users.
+    -->
+    <template id="portal_dashboard_inherit_contracts"
+              inherit_id="impc_website.portal_dashboard"
+              name="IMPC Dashboard - B2B Contracts Section">
+
+        <!-- Add 'My B2B Contracts' quick action button in sidebar for HR partners -->
+        <xpath expr="//div[hasclass('d-grid', 'gap-2')]" position="inside">
+            <t t-set="is_hr_partner"
+               t-value="request.env.user.is_hr_partner_admin"/>
+            <t t-if="is_hr_partner">
+                <t t-set="hr_contract_count"
+                   t-value="request.env['sale.order'].sudo().search_count([
+                       ('partner_id.commercial_partner_id', '=', request.env.user.partner_id.commercial_partner_id.id),
+                       ('contract_type', '=', 'B2B_CONTRACT'),
+                       ('state', 'in', ['sale', 'done']),
+                   ])"/>
+                <a href="/my/contracts" class="btn btn-outline-dark btn-sm text-start">
+                    <i class="fa fa-file-text-o me-2"></i>My Contracts
+                    <span t-if="hr_contract_count" class="badge bg-dark ms-1" t-out="hr_contract_count"/>
+                </a>
+            </t>
+        </xpath>
+
+        <!-- Add contracts stats card for HR partners (after the 3rd stats card) -->
+        <xpath expr="//div[hasclass('col-md-4')][last()]" position="after">
+            <t t-set="is_hr_partner"
+               t-value="request.env.user.is_hr_partner_admin"/>
+            <t t-if="is_hr_partner">
+                <t t-set="hr_contracts"
+                   t-value="request.env['sale.order'].sudo().search([
+                       ('partner_id.commercial_partner_id', '=', request.env.user.partner_id.commercial_partner_id.id),
+                       ('contract_type', '=', 'B2B_CONTRACT'),
+                       ('state', 'in', ['sale', 'done']),
+                   ], order='date_order desc', limit=5)"/>
+                <t t-set="hr_active_codes"
+                   t-value="request.env['impc.redeem.code'].sudo().search_count([
+                       ('batch_id.partner_id.commercial_partner_id', '=', request.env.user.partner_id.commercial_partner_id.id),
+                       ('state', '=', 'active'),
+                   ])"/>
+                <t t-set="hr_claimed_codes"
+                   t-value="request.env['impc.redeem.code'].sudo().search_count([
+                       ('batch_id.partner_id.commercial_partner_id', '=', request.env.user.partner_id.commercial_partner_id.id),
+                       ('state', '=', 'claimed'),
+                   ])"/>
+                <div class="col-12 mt-3">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0">
+                                <i class="fa fa-building text-dark me-2"></i>B2B Contracts
+                            </h5>
+                            <a href="/my/contracts" class="btn btn-outline-dark btn-sm">
+                                View All
+                            </a>
+                        </div>
+                        <div class="card-body px-4 pb-4">
+                            <div class="row g-2 mb-3">
+                                <div class="col-4 text-center">
+                                    <h5 class="fw-bold mb-0" t-out="len(hr_contracts)"/>
+                                    <small class="text-muted">Contracts</small>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h5 class="fw-bold mb-0 text-success" t-out="hr_active_codes"/>
+                                    <small class="text-muted">Active Codes</small>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h5 class="fw-bold mb-0 text-primary" t-out="hr_claimed_codes"/>
+                                    <small class="text-muted">Claimed</small>
+                                </div>
+                            </div>
+                            <t t-if="hr_contracts">
+                                <t t-foreach="hr_contracts[:3]" t-as="contract">
+                                    <div class="d-flex align-items-center py-2 border-bottom">
+                                        <div class="bg-dark bg-opacity-10 rounded p-2 me-2">
+                                            <i class="fa fa-file-text-o text-dark small"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <a t-attf-href="/my/contracts/#{contract.id}"
+                                               class="fw-bold small d-block text-decoration-none"
+                                               t-out="contract.name"/>
+                                            <small class="text-muted">
+                                                <t t-esc="contract.contract_start_date"/> —
+                                                <t t-esc="contract.expiry_date"/>
+                                            </small>
+                                        </div>
+                                        <span t-attf-class="badge bg-#{
+                                            'success' if contract.redeem_code_batch_status == 'GENERATED'
+                                            else 'warning' if contract.redeem_code_batch_status == 'PENDING'
+                                            else 'danger' if contract.redeem_code_batch_status == 'FAILED'
+                                            else 'secondary'
+                                        }">
+                                            <t t-esc="contract.redeem_code_batch_status or 'N/A'"/>
+                                        </span>
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-if="not hr_contracts">
+                                <div class="text-center py-3">
+                                    <p class="text-muted mb-0 small">Belum ada kontrak B2B aktif.</p>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+
+    </template>
+</odoo>

@@ -1,19 +1,11 @@
 # addons/sale_microcredential/models/sale_order_line.py
-# DEV 1: Field definitions ONLY.
-# TIDAK ADA method, TIDAK ADA @api.depends, TIDAK ADA action.
-#
-# KOREKSI ODOO 19:
-#   - Field course FK menggunakan nama 'slide_channel_id' dan comodel 'slide.channel'
-#   - Model 'elearning.course' TIDAK ADA di Odoo 19 — gunakan 'slide.channel'
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     # ── COURSE LINKAGE ─────────────────────────────────────────
-    # Referensi ke slide.channel (native Odoo 19 eLearning model)
-    # Field name: slide_channel_id (bukan course_id) — konsisten dengan PRD
     slide_channel_id = fields.Many2one(
         comodel_name='slide.channel',
         string='Course',
@@ -21,21 +13,22 @@ class SaleOrderLine(models.Model):
     )
     learning_mode = fields.Selection(
         selection=[
-            ('ONLINE', 'Online'),
-            ('OFFLINE', 'Offline'),
-            ('HYBRID', 'Hybrid'),
+            ('online', 'Online'),
+            ('offline', 'Offline'),
+            ('hybrid', 'Hybrid'),
         ],
         string='Learning Mode',
+<<<<<<< HEAD
         readonly=True,
-        help='Diambil read-only dari course (dikelola Website Group via slide.channel).',
+        help='Auto-filled from the selected course.',
+=======
+        help='Mode pembelajaran untuk line ini.',
+>>>>>>> 42dfb97135ddfe2f75cdcc4a016e4fcafe923a67
     )
     hybrid_session_summary = fields.Text(
         string='Jadwal Sesi Tatap Muka',
         readonly=True,
-        help=(
-            'READ-ONLY. Diisi dari event.event yang di-link ke slide.channel '
-            'oleh Marketing Group.'
-        ),
+        help='Auto-filled from the course event for hybrid/offline mode.',
     )
 
     # ── REDEEM CODE CONFIG PER LINE ────────────────────────────
@@ -55,3 +48,22 @@ class SaleOrderLine(models.Model):
         string='Durasi Akses Kursus (Hari)',
         default=90,
     )
+
+    # ── ONCHANGE ───────────────────────────────────────────────
+    @api.onchange('slide_channel_id')
+    def _onchange_slide_channel_id(self):
+        """Auto-fill learning_mode and hybrid_session_summary from course."""
+        if self.slide_channel_id:
+            self.learning_mode = self.slide_channel_id.learning_mode
+            if self.slide_channel_id.learning_mode in ('hybrid', 'offline') and self.slide_channel_id.event_id:
+                event = self.slide_channel_id.event_id
+                self.hybrid_session_summary = (
+                    f"{event.name}\n"
+                    f"Tanggal: {event.date_begin} - {event.date_end}\n"
+                    f"Lokasi: {event.address_inline or 'TBD'}"
+                )
+            else:
+                self.hybrid_session_summary = False
+        else:
+            self.learning_mode = False
+            self.hybrid_session_summary = False

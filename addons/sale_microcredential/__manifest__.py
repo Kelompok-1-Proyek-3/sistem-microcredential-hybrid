@@ -13,14 +13,12 @@
         'mail',
         'base_setup',
         'website_slides',   # untuk slide.channel (eLearning model di Odoo 19)
+        'impc_website',     # direct ORM access to impc.redeem.code.batch
     ],
     'data': [
         # Security (DEV 1) — harus di-load pertama
         'security/sale_microcredential_groups.xml',
         'security/ir.model.access.csv',
-
-        # Config Parameters
-        'data/ir_config_parameters.xml',
 
         # Data & Automation (DEV 2)
         'data/email_templates.xml',
@@ -39,6 +37,7 @@
         'templates/portal_contract_list.xml',
         'templates/portal_contract_detail.xml',
         'templates/portal_redeem_codes.xml',
+        'templates/portal_dashboard_inherit.xml',
 
         # Report
         'report/sale_contract_report_action.xml',
