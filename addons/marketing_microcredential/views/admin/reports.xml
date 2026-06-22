@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="admin_reports_conversions" name="IMPC Admin: Event Conversion Reports">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2>IMPC — Weekly Event Conversion</h2>
+                <p class="text-muted">Laporan konversi event ke enrollment per minggu.</p>
+
+                <t t-if="not reports">
+                    <div class="alert alert-info">Belum ada data laporan.</div>
+                </t>
+
+                <t t-if="reports">
+                    <table class="table table-hover o_portal_my_doc_table">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Course</th>
+                                <th>Week Start</th>
+                                <th>Week End</th>
+                                <th>Registered</th>
+                                <th>Attended</th>
+                                <th>Enrolled</th>
+                                <th>Conversion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="reports" t-as="r">
+                                <tr>
+                                    <td><t t-esc="r.event_id.name"/></td>
+                                    <td><t t-esc="r.course_id.name or '-'"/></td>
+                                    <td><t t-esc="r.week_start"/></td>
+                                    <td><t t-esc="r.week_end"/></td>
+                                    <td><t t-esc="r.registered_count"/></td>
+                                    <td><t t-esc="r.attended_count"/></td>
+                                    <td><t t-esc="r.enrolled_count"/></td>
+                                    <td>
+                                        <span t-attf-class="badge #{'bg-success' if r.conversion_rate >= 50 else 'bg-warning' if r.conversion_rate >= 25 else 'bg-danger'}">
+                                            <t t-esc="round(r.conversion_rate, 1)"/>%
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="admin_reports_surveys" name="IMPC Admin: Monthly Survey Reports">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2>IMPC — Monthly Survey Report</h2>
+                <p class="text-muted">Laporan survei bulanan (response count, avg score, NPS).</p>
+
+                <t t-if="not reports">
+                    <div class="alert alert-info">Belum ada data laporan.</div>
+                </t>
+
+                <t t-if="reports">
+                    <table class="table table-hover o_portal_my_doc_table">
+                        <thead>
+                            <tr>
+                                <th>Survey</th>
+                                <th>Month Start</th>
+                                <th>Month End</th>
+                                <th>Responses</th>
+                                <th>Avg Score</th>
+                                <th>NPS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="reports" t-as="r">
+                                <tr>
+                                    <td><t t-esc="r.survey_id.title"/></td>
+                                    <td><t t-esc="r.month_start"/></td>
+                                    <td><t t-esc="r.month_end"/></td>
+                                    <td><t t-esc="r.response_count"/></td>
+                                    <td><t t-esc="r.avg_score"/></td>
+                                    <td>
+                                        <span t-attf-class="badge #{'bg-success' if r.nps_score >= 50 else 'bg-warning' if r.nps_score >= 0 else 'bg-danger'}">
+                                            <t t-esc="round(r.nps_score, 1)"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

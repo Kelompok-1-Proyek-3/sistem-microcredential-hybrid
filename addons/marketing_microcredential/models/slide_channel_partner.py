@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from odoo import fields, models
 
 
@@ -65,6 +67,7 @@ class SlideChannelPartner(models.Model):
             'survey_id': survey.id,
             'partner_id': partner.id,
             'email': partner.email,
+            'deadline': fields.Datetime.now() + timedelta(days=14),
         })
 
         if template:
