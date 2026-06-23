@@ -56,3 +56,15 @@ class HRPartnerPortal(CustomerPortal):
             'sale_microcredential.portal_contract_detail',
             {'order': order, 'page_name': 'contract'},
         )
+
+    @http.route('/my/contracts/<int:order_id>/redeem-codes',
+                type='http', auth='user', website=True)
+    def portal_contract_redeem_codes(self, order_id, **kw):
+        order = request.env['sale.order'].browse(order_id)
+        # Security check
+        if order.partner_id.commercial_partner_id != request.env.user.partner_id.commercial_partner_id:
+            return request.redirect('/my/contracts')
+        return request.render(
+            'sale_microcredential.portal_redeem_codes',
+            {'order': order, 'page_name': 'contract'},
+        )

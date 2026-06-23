@@ -57,8 +57,9 @@ class SaleOrder(models.Model):
         default=False,
         copy=False,
     )
-    redeem_code_batch_id = fields.Char(
-        string='Redeem Code Batch ID',
+    redeem_code_batch_id = fields.Many2one(
+        'impc.redeem.code.batch',
+        string='Redeem Code Batch',
         copy=False,
     )
     redeem_codes_requested_at = fields.Datetime(

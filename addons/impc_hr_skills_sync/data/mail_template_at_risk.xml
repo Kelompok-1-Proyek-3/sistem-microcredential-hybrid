@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_at_risk_alert" model="mail.template">
+            <field name="name">HR: At-Risk Learning Alert</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="subject">🚨 At-Risk Learning Alert: {{ object.name }}</field>
+            <field name="email_to">{{ object.parent_id.work_email or 'hr@example.com' }}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Hi Manager/HR,
+        <br/><br/>
+        <t t-out="object.name or ''">Employee</t> appears to be at risk in their course:
+        <br/><br/>
+        <strong>Course:</strong> <t t-out="ctx.get('course_name') or ''">Course Name</t><br/>
+        <strong>Status:</strong> Behind Schedule<br/>
+        <strong>Current Progress:</strong> <t t-out="ctx.get('progress_pct') or '0'">0</t>%<br/>
+        <br/>
+        <strong>Recommended Action:</strong> Reach out to discuss barriers and provide support.
+        <br/><br/>
+        Best regards,<br/>
+        IMPC Learning System
+    </p>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

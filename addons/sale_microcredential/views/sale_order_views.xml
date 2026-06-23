@@ -7,26 +7,32 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
 
+            <!-- Contract Type selector — always visible above notebook -->
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <group>
+                        <field name="contract_type"/>
+                        <field name="partner_type" invisible="contract_type != 'B2B_CONTRACT'"/>
+                    </group>
+                </group>
+            </xpath>
+
             <!-- Tambahkan tab B2B Contract di bawah tab Order Lines -->
             <xpath expr="//notebook" position="inside">
                 <page string="Kontrak B2B" name="b2b_contract"
                       invisible="contract_type != 'B2B_CONTRACT'">
                     <group>
-                        <group string="Tipe Kontrak">
-                            <field name="contract_type"/>
-                            <field name="partner_type"/>
-                        </group>
                         <group string="Periode Kontrak">
                             <field name="contract_start_date"/>
                             <field name="expiry_date"/>
                             <field name="renewal_opportunity" widget="boolean_toggle"/>
                         </group>
-                    </group>
-                    <group string="Status Redeem Code">
-                        <field name="redeem_code_batch_status"/>
-                        <field name="redeem_code_batch_id" readonly="1"/>
-                        <field name="redeem_codes_requested_at" readonly="1"/>
-                        <field name="redeem_codes_generated_at" readonly="1"/>
+                        <group string="Status Redeem Code">
+                            <field name="redeem_code_batch_status"/>
+                            <field name="redeem_code_batch_id" readonly="1"/>
+                            <field name="redeem_codes_requested_at" readonly="1"/>
+                            <field name="redeem_codes_generated_at" readonly="1"/>
+                        </group>
                     </group>
                     <div>
                         <!-- Tombol Generate Redeem Code -->
@@ -47,7 +53,7 @@
             <!-- Tambah kolom pada order lines untuk B2B (Odoo 17+: list bukan tree) -->
             <xpath expr="//field[@name='order_line']/list" position="inside">
                 <field name="slide_channel_id" optional="show"/>
-                <field name="learning_mode" optional="show" readonly="1"/>
+                <field name="learning_mode" optional="show"/>
                 <field name="redeem_code_count" optional="show"/>
                 <field name="redeem_code_expiry_days" optional="show"/>
                 <field name="student_count" optional="show"/>

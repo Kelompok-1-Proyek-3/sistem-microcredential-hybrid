@@ -94,7 +94,7 @@ class HrEmployeeSkill(models.Model):
                     'certificate_id': cert.id,
                     'skill_level_before_id': level_before.id if level_before else False,
                     'skill_level_after_id': mapping.skill_level_id.id,
-                    'change_date': cert.issued_date.date() if cert.issued_date else fields.Date.today(),
+                    'change_date': cert.issued_date if cert.issued_date else fields.Date.today(),
                 })
 
             cert.skill_synced = True

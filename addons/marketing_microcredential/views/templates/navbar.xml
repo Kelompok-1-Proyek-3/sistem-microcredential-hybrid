@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="navbar" inherit_id="impc_website.impc_navbar" name="IMPC Marketing Navbar">
+        <xpath expr="//a[contains(@href,'action_impc_session_attendance')]/.." position="after">
+            <li groups="base.group_system">
+                <a class="dropdown-item" href="/management/reports/conversions">
+                    <i class="fa fa-line-chart me-2 text-info"/>Conversion Reports
+                </a>
+            </li>
+            <li groups="base.group_system">
+                <a class="dropdown-item" href="/management/reports/surveys">
+                    <i class="fa fa-pie-chart me-2 text-success"/>Survey Reports
+                </a>
+            </li>
+        </xpath>
+    </template>
+</odoo>

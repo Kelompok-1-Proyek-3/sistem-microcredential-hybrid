@@ -1,29 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--
-        Template ini untuk menampilkan daftar redeem code (dari batch_id).
-        Data aktual kode diambil dari Website Group via API — template ini
-        hanya menampilkan metadata batch dan link download CSV.
-        Koordinasikan format response dengan Website Group.
+        Template: Portal Redeem Codes
+        Shows redeem codes from impc.redeem.code.batch linked to the sale.order.
+        Data is read directly from the ORM via the batch relationship.
     -->
     <template id="portal_redeem_codes" name="Portal: Redeem Codes">
         <t t-call="portal.portal_layout">
             <div class="container mt-4">
                 <h3>Redeem Codes — <t t-esc="order.name"/></h3>
 
-                <div class="alert alert-info">
-                    <strong>Batch ID:</strong> <t t-esc="order.redeem_code_batch_id"/><br/>
-                    <strong>Di-generate:</strong> <t t-esc="order.redeem_codes_generated_at"/><br/>
-                    <em>Kode ditampilkan 4 karakter pertama saja untuk keamanan.</em>
-                </div>
+                <t t-if="order.redeem_code_batch_id">
+                    <div class="alert alert-info">
+                        <strong>Batch:</strong> <t t-esc="order.redeem_code_batch_id.name"/><br/>
+                        <strong>Kursus:</strong> <t t-esc="order.redeem_code_batch_id.course_id.name"/><br/>
+                        <strong>Berlaku sampai:</strong> <t t-esc="order.redeem_code_batch_id.expiry_date"/><br/>
+                        <strong>Di-generate:</strong> <t t-esc="order.redeem_codes_generated_at"/>
+                    </div>
 
-                <!-- Download CSV -->
-                <t t-if="order.redeem_codes_generated">
-                    <a t-attf-href="/api/v1/elearning/redeem-codes/download/#{order.redeem_code_batch_id}"
-                       class="btn btn-primary mb-3" target="_blank">
-                        Download CSV Redeem Codes
-                    </a>
+                    <!-- Code statistics -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm text-center p-3">
+                                <h4 class="fw-bold mb-0" t-out="order.redeem_code_batch_id.codes_total"/>
+                                <small class="text-muted">Total Codes</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm text-center p-3">
+                                <h4 class="fw-bold mb-0 text-success" t-out="order.redeem_code_batch_id.codes_active"/>
+                                <small class="text-muted">Active</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm text-center p-3">
+                                <h4 class="fw-bold mb-0 text-primary" t-out="order.redeem_code_batch_id.codes_claimed"/>
+                                <small class="text-muted">Claimed</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code listing (first 4 chars masked for security) -->
+                    <h5 class="mt-4">Daftar Kode</h5>
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Status</th>
+                                <th>Claimed By</th>
+                                <th>Tanggal Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="order.redeem_code_batch_id.code_ids" t-as="code">
+                                <tr>
+                                    <td>
+                                        <code>
+                                            <t t-esc="code.code[:9]"/>****
+                                        </code>
+                                    </td>
+                                    <td>
+                                        <span t-attf-class="badge bg-#{
+                                            'success' if code.state == 'active'
+                                            else 'primary' if code.state == 'claimed'
+                                            else 'secondary' if code.state == 'expired'
+                                            else 'danger'
+                                        }">
+                                            <t t-esc="code.state"/>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <t t-if="code.claimed_by" t-esc="code.claimed_by.name"/>
+                                        <t t-else="">—</t>
+                                    </td>
+                                    <td>
+                                        <t t-if="code.claimed_date">
+                                            <t t-esc="code.claimed_date" t-options="{'widget': 'date'}"/>
+                                        </t>
+                                        <t t-else="">—</t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
                 </t>
+
                 <t t-else="">
                     <div class="alert alert-warning">
                         Redeem code belum di-generate. Hubungi sales manager Anda.

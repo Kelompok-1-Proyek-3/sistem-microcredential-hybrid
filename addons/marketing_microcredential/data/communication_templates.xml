@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- H-7: Announcement -->
+        <record id="mail_template_hybrid_h7_reminder" model="mail.template">
+            <field name="name">IMPC Hybrid — H-7 Reminder</field>
+            <field name="model_id" ref="event.model_event_registration"/>
+            <field name="subject">[IMPC] Pengumuman: Sesi Offline {{ object.event_id.name }} — 7 Hari Lagi</field>
+            <field name="email_to">{{ object.email or object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                        <tr>
+                            <td style="background-color: #0d6efd; padding: 30px; text-align: center;">
+                                <h1 style="color: white; margin: 0;">IMPC Microcredential</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Pengumuman Sesi Tatap Muka</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 30px; background-color: #ffffff;">
+                                <h2 style="color: #333;">Halo, <t t-out="object.name"/>!</h2>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Sesi tatap muka untuk kursus Anda akan diselenggarakan dalam 7 hari:
+                                </p>
+                                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                    <p style="margin: 0 0 8px 0;"><strong>Tanggal:</strong> <t t-out="object.event_id.date_begin"/></p>
+                                    <p style="margin: 0;"><strong>Lokasi:</strong> <t t-out="object.event_id.address_inline"/></p>
+                                </div>
+                                <p style="color: #666; line-height: 1.6;">
+                                    <strong>PENTING:</strong> Tunjukkan e-ticket QR Anda saat check-in di lokasi. Tiket dapat diakses melalui email konfirmasi pendaftaran Anda.
+                                </p>
+                                <p style="text-align: center; margin: 30px 0;">
+                                    <a t-att-href="'/event/%s' % object.event_id.id"
+                                       style="background-color: #0d6efd; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                        Detail Sesi
+                                    </a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                                <p style="color: #999; font-size: 12px; margin: 0;">
+                                    IMPC — Indonesia Microcredential Platform Center
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- H-1: Reminder -->
+        <record id="mail_template_hybrid_h1_reminder" model="mail.template">
+            <field name="name">IMPC Hybrid — H-1 Reminder</field>
+            <field name="model_id" ref="event.model_event_registration"/>
+            <field name="subject">[IMPC] Reminder: Sesi Offline {{ object.event_id.name }} — Besok!</field>
+            <field name="email_to">{{ object.email or object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                        <tr>
+                            <td style="background-color: #fd7e14; padding: 30px; text-align: center;">
+                                <h1 style="color: white; margin: 0;">IMPC Microcredential</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Reminder — Besok!</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 30px; background-color: #ffffff;">
+                                <h2 style="color: #333;">Halo, <t t-out="object.name"/>!</h2>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Sesi tatap muka diselenggarakan <strong>besok</strong>:
+                                </p>
+                                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #fd7e14;">
+                                    <p style="margin: 0 0 8px 0;"><strong>Tanggal:</strong> <t t-out="object.event_id.date_begin"/></p>
+                                    <p style="margin: 0;"><strong>Lokasi:</strong> <t t-out="object.event_id.address_inline"/></p>
+                                </div>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Jangan lupa bawa e-ticket QR Anda untuk check-in di lokasi.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                                <p style="color: #999; font-size: 12px; margin: 0;">
+                                    IMPC — Indonesia Microcredential Platform Center
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- H-2 jam: Last call -->
+        <record id="mail_template_hybrid_h2h_reminder" model="mail.template">
+            <field name="name">IMPC Hybrid — H-2 Hour Reminder</field>
+            <field name="model_id" ref="event.model_event_registration"/>
+            <field name="subject">[IMPC] 2 Jam Lagi: {{ object.event_id.name }}</field>
+            <field name="email_to">{{ object.email or object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                        <tr>
+                            <td style="background-color: #dc3545; padding: 30px; text-align: center;">
+                                <h1 style="color: white; margin: 0;">IMPC Microcredential</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">2 Jam Lagi!</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 30px; background-color: #ffffff;">
+                                <h2 style="color: #333;">Halo, <t t-out="object.name"/>!</h2>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Sesi tatap muka dimulai <strong>2 jam lagi</strong> di:
+                                </p>
+                                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                    <p style="margin: 0;"><strong>Lokasi:</strong> <t t-out="object.event_id.address_inline"/></p>
+                                </div>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Siapkan e-ticket QR Anda untuk scan check-in di lokasi.
+                                </p>
+                                <p style="color: #999; font-style: italic;">Sampai jumpa!</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                                <p style="color: #999; font-size: 12px; margin: 0;">
+                                    IMPC — Indonesia Microcredential Platform Center
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <!-- Post-session follow-up -->
+        <record id="mail_template_hybrid_post_session" model="mail.template">
+            <field name="name">IMPC Hybrid — Post-Session Follow-up</field>
+            <field name="model_id" ref="event.model_event_registration"/>
+            <field name="subject">[IMPC] Terima Kasih — {{ object.event_id.name }}</field>
+            <field name="email_to">{{ object.email or object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif;">
+                    <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+                        <tr>
+                            <td style="background-color: #198754; padding: 30px; text-align: center;">
+                                <h1 style="color: white; margin: 0;">Terima Kasih!</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Kehadiran Anda telah tercatat</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 30px; background-color: #ffffff;">
+                                <h2 style="color: #333;">Halo, <t t-out="object.name"/>!</h2>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Terima kasih telah menghadiri sesi tatap muka <strong><t t-out="object.event_id.name"/></strong>.
+                                </p>
+                                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #198754;">
+                                    <p style="margin: 0;">Kehadiran Anda telah tercatat. Silakan lanjutkan materi online dan ujian sertifikasi melalui portal pembelajaran Anda.</p>
+                                </div>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Survei kepuasan akan dikirimkan setelah Anda menyelesaikan seluruh kursus.
+                                </p>
+                                <p style="text-align: center; margin: 30px 0;">
+                                    <a href="/my-learning"
+                                       style="background-color: #198754; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                        Lanjutkan Belajar
+                                    </a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+                                <p style="color: #999; font-size: 12px; margin: 0;">
+                                    IMPC — Indonesia Microcredential Platform Center
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

@@ -7,7 +7,10 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         res = super().action_confirm()
         for order in self.filtered(lambda o: o.state == 'sale'):
-            order._impc_create_enrollments()
+            # Skip auto-enrollment for B2B contracts — handled by sale_microcredential
+            contract_type = getattr(order, 'contract_type', 'B2C')
+            if contract_type != 'B2B_CONTRACT':
+                order._impc_create_enrollments()
         return res
 
     def _impc_create_enrollments(self):
