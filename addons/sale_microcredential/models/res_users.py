@@ -28,6 +28,36 @@ class ResUsers(models.Model):
         help=(
             'Tandai user portal sebagai admin HR mitra B2B. '
             'Memberikan akses melihat semua kontrak & redeem code milik perusahaannya. '
-            'User harus memiliki group base.group_portal untuk dapat login ke portal.'
+            'User harus memiliki group base.group_portal untuk dapat login ke portal. '
+            'Otomatis di-set True saat user ditambahkan ke group Sales Microcredential / HR Partner.'
         ),
     )
+
+    def write(self, vals):
+        """Auto-set is_hr_partner_admin when group_hr_partner is assigned."""
+        res = super().write(vals)
+        if 'groups_id' in vals:
+            try:
+                hr_group = self.env.ref(
+                    'sale_microcredential.group_hr_partner',
+                    raise_if_not_found=False,
+                )
+            except Exception:
+                hr_group = None
+            if hr_group:
+                cmd_ids = set()
+                for cmd in vals['groups_id']:
+                    if cmd[0] in (4, 6) and len(cmd) > 1:
+                        if cmd[0] == 4:
+                            cmd_ids.add(cmd[1])
+                        elif cmd[0] == 6:
+                            cmd_ids.update(cmd[2])
+                if hr_group.id in cmd_ids:
+                    users_to_flag = self.filtered(
+                        lambda u: not u.is_hr_partner_admin
+                    )
+                    if users_to_flag:
+                        super(ResUsers, users_to_flag).write(
+                            {'is_hr_partner_admin': True}
+                        )
+        return res
