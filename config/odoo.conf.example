@@ -2,4 +2,4 @@
 addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
 data_dir = /var/lib/odoo
 # Ganti dengan password masing-masing (jangan commit file asli!)
-admin_passwd = your_secure_password_here
+admin_passwd = $pbkdf2-sha512$600000$ldIaozQm5DwH4Nx7D.Gc8w$LGFrRtcWIL42wXen4aR7xs9iB/Cf/Sjz4ua.GTBuhmzOo6Ceio91joYXw5nW1paqvgx226GeQWJvBf.XXaOOHg

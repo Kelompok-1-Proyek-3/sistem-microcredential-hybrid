@@ -13,7 +13,6 @@ except ImportError:
 
 
 class ImpcCertificate(models.Model):
-    _name = 'impc.certificate'
     _inherit = 'impc.certificate'
     _description = 'IMPC Digital Certificate'
     _order = 'create_date desc'
@@ -39,25 +38,13 @@ class ImpcCertificate(models.Model):
     channel_partner_id = fields.Many2one(
         'slide.channel.partner',
         string='Enrollment',
-        required=True,
         ondelete='cascade',
     )
-    partner_id = fields.Many2one(
-        'res.partner',
-        string='Student',
-        required=True,
-    )
-    channel_id = fields.Many2one(
-        'slide.channel',
-        string='Course',
-        required=True,
-    )
+    # Note: partner_id, channel_id, learner_id, enrollment_id 
+    # are defined in impc_lms base model
 
-    # === Certificate Data ===
-    completion_date = fields.Datetime(
-        string='Completion Date',
-        default=fields.Datetime.now,
-    )
+    # Note: issued_date is defined in impc_lms base model
+    
     state = fields.Selection(
         selection=[
             ('draft', 'Draft'),
@@ -115,9 +102,10 @@ class ImpcCertificate(models.Model):
         return super().create(vals_list)
 
     def _generate_verification_code(self):
-        """Generate SHA-256 hash from partner_id + channel_id + completion_date."""
+        """Generate SHA-256 hash from learner_id + channel_id + issued_date."""
         self.ensure_one()
-        raw = f'{self.partner_id.id}-{self.channel_id.id}-{self.completion_date}'
+        # Use learner_id (from impc_lms base model)
+        raw = f'{self.learner_id.id}-{self.channel_id.id}-{self.issued_date or fields.Date.today()}'
         return hashlib.sha256(raw.encode()).hexdigest()
 
     def _generate_qr_code(self):
@@ -174,19 +162,55 @@ class ImpcCertificate(models.Model):
     def _issue_for_enrollment(self, enrollment):
         """Create or repair the digital certificate for a completed enrollment."""
         enrollment.ensure_one()
+        
+        # Get or create learner
+        learner = self.env['lms.learner'].search([
+            ('partner_id', '=', enrollment.partner_id.id)
+        ], limit=1)
+        
+        if not learner:
+            # Determine learner type
+            is_employee = self.env['hr.employee'].search([
+                ('user_id.partner_id', '=', enrollment.partner_id.id)
+            ], limit=1)
+            learner_type = 'internal' if is_employee else 'b2c'
+            
+            learner = self.env['lms.learner'].sudo().create({
+                'partner_id': enrollment.partner_id.id,
+                'learner_type': learner_type
+            })
+        
+        # Get or create LMS enrollment
+        lms_enrollment = self.env['lms.enrollment'].search([
+            ('learner_id', '=', learner.id),
+            ('channel_id', '=', enrollment.channel_id.id)
+        ], limit=1)
+        
+        if not lms_enrollment:
+            lms_enrollment = self.env['lms.enrollment'].sudo().create({
+                'learner_id': learner.id,
+                'channel_id': enrollment.channel_id.id,
+                'status': 'completed',
+                'progress_pct': enrollment.completion or 100.0
+            })
+        
+        # Search for existing certificate
         certificate = self.sudo().search([
-            ('channel_partner_id', '=', enrollment.id),
+            ('learner_id', '=', learner.id),
+            ('channel_id', '=', enrollment.channel_id.id),
         ], limit=1)
 
         certificate_vals = {
-            'channel_partner_id': enrollment.id,
-            'partner_id': enrollment.partner_id.id,
+            'learner_id': learner.id,
             'channel_id': enrollment.channel_id.id,
+            'enrollment_id': lms_enrollment.id,
+            'channel_partner_id': enrollment.id,
+            'issued_date': fields.Date.today(),
         }
+        
         if certificate:
             needs_regeneration = (
-                certificate.partner_id != enrollment.partner_id
-                or certificate.channel_id != enrollment.channel_id
+                certificate.channel_id != enrollment.channel_id
                 or certificate.state != 'issued'
                 or not certificate.attachment_id
             )
