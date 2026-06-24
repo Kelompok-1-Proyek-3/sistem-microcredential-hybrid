@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <!-- Code listing (first 4 chars masked for security) -->
+                    <!-- Code listing (full code visible for HR distribution) -->
                     <h5 class="mt-4">Daftar Kode</h5>
                     <table class="table table-sm table-hover">
                         <thead>
@@ -55,9 +55,12 @@
                             <t t-foreach="order.redeem_code_batch_id.code_ids" t-as="code">
                                 <tr>
                                     <td>
-                                        <code>
-                                            <t t-esc="code.code[:9]"/>****
-                                        </code>
+                                        <code class="user-select-all" t-esc="code.code"/>
+                                        <button class="btn btn-sm btn-outline-secondary ms-1 impc-copy-code-btn"
+                                                t-att-data-code="code.code"
+                                                title="Salin kode">
+                                            <i class="fa fa-clipboard"/>
+                                        </button>
                                     </td>
                                     <td>
                                         <span t-attf-class="badge bg-#{
@@ -93,6 +96,23 @@
 
                 <a href="/my/contracts" class="btn btn-secondary">← Kembali</a>
             </div>
+
+            <script>
+                (function() {
+                    document.addEventListener('click', function(e) {
+                        var btn = e.target.closest('.impc-copy-code-btn');
+                        if (!btn) return;
+                        var code = btn.getAttribute('data-code');
+                        navigator.clipboard.writeText(code).then(function() {
+                            var icon = btn.querySelector('i');
+                            icon.className = 'fa fa-check text-success';
+                            setTimeout(function() {
+                                icon.className = 'fa fa-clipboard';
+                            }, 2000);
+                        });
+                    });
+                })();
+            </script>
         </t>
     </template>
 </odoo>
