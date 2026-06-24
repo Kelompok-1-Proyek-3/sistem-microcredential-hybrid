@@ -174,6 +174,21 @@ class ImpcCertificate(models.Model):
     def _issue_for_enrollment(self, enrollment):
         """Create or repair the digital certificate for a completed enrollment."""
         enrollment.ensure_one()
+
+        learner = self.env['lms.learner'].sudo().search([
+            ('partner_id', '=', enrollment.partner_id.id),
+        ], limit=1)
+        if not learner:
+            learner = self.env['lms.learner'].sudo().create({
+                'partner_id': enrollment.partner_id.id,
+                'learner_type': 'b2c',
+            })
+
+        lms_enrollment = self.env['lms.enrollment'].sudo().search([
+            ('learner_id', '=', learner.id),
+            ('channel_id', '=', enrollment.channel_id.id),
+        ], limit=1)
+
         certificate = self.sudo().search([
             ('channel_partner_id', '=', enrollment.id),
         ], limit=1)
@@ -182,6 +197,8 @@ class ImpcCertificate(models.Model):
             'channel_partner_id': enrollment.id,
             'partner_id': enrollment.partner_id.id,
             'channel_id': enrollment.channel_id.id,
+            'learner_id': learner.id,
+            'enrollment_id': lms_enrollment.id if lms_enrollment else False,
         }
         if certificate:
             needs_regeneration = (
